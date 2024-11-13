@@ -1,7 +1,7 @@
 export const navlinks = [
   {
     name: 'Dashboard',
-    href: '/dashboard',
+    href: '/',
     icon: '/src/assets/dashboard.svg'
   },
   {

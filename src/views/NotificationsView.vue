@@ -1,0 +1,3 @@
+<template>
+  Notifications View
+</template>

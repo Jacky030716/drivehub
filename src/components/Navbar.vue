@@ -1,8 +1,8 @@
 <script setup>
-import Navlink from "./Navlink.vue"
 import { Button } from "@/components/ui/button"
 import { Separator } from '@/components/ui/separator'
 import { navlinks } from "../constant/navlinks.js"
+import { RouterLink, useRoute } from 'vue-router'
 
 const overviewLinks = navlinks.slice(0, 3)
 const resourcesLinks = navlinks.slice(3)
@@ -21,15 +21,17 @@ const resourcesLinks = navlinks.slice(3)
       <!-- Overview Section -->
       <div class="flex flex-col gap-y-3.5">
         <h4 class="text-secondary-600 font-bold text-xl">Overview</h4>
-        <ul class="flex flex-col items-start gap-2.5 text-secondary-500">
-          <Navlink 
+        <div class="flex flex-col items-start gap-2.5 text-secondary-500">
+          <RouterLink 
             v-for="(link, index) in overviewLinks" 
             :key="index" 
-            :name="link.name" 
-            :href="link.href" 
-            :icon="link.icon" 
-          />
-        </ul>
+            :to="link.href"
+            class="flex items-center gap-3 text-secondary-500 hover:font-medium transition-colors ease-in-out hover:text-primary-500 cursor-pointer"
+          > 
+            <img :src="link.icon" :alt="link.name" class="w-5 h-5" />
+            {{ link.name }}
+          </RouterLink>
+        </div>
       </div>
 
       <!-- Separator -->
@@ -38,15 +40,17 @@ const resourcesLinks = navlinks.slice(3)
       <!-- Resources Section -->
       <div class="flex flex-col gap-3.5">
         <h4 class="text-secondary-600 font-bold text-xl">Resources</h4>
-        <ul class="flex flex-col items-start gap-2.5 text-secondary-500">
-          <Navlink 
+        <div class="flex flex-col items-start gap-2.5 text-secondary-500">
+          <RouterLink 
             v-for="(link, index) in resourcesLinks" 
             :key="index" 
-            :name="link.name" 
-            :href="link.href" 
-            :icon="link.icon" 
-          />
-        </ul>
+            :to="link.href"
+            class="flex items-center gap-3 text-secondary-500 hover:font-medium transition-colors ease-in-out hover:text-primary-500 cursor-pointer"
+          > 
+            <img :src="link.icon" :alt="link.name" class="w-5 h-5" />
+            {{ link.name }}
+          </RouterLink>
+        </div>
       </div>
     </div>
 

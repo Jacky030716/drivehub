@@ -1,0 +1,3 @@
+<template>
+  Bookmark View
+</template>

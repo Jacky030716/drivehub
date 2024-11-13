@@ -1,0 +1,3 @@
+<template>
+  Share View
+</template>

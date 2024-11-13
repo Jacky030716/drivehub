@@ -1,0 +1,3 @@
+<template>
+  Hub View
+</template>
