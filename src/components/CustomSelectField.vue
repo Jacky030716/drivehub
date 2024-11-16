@@ -17,7 +17,7 @@ defineProps({
       <SelectLabel class="text-primary font-bold text-left">{{ label }}</SelectLabel>
       <FormControl>
         <Select v-bind="componentField">
-          <SelectTrigger >
+          <SelectTrigger>
             <SelectValue :placeholder="placeholder" />
           </SelectTrigger>
           <SelectContent>
