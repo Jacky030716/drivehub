@@ -1,7 +1,7 @@
 <script setup>
 import Navbar from "@/components/Navbar.vue"
-import SelectList from "@/components/SelectList.vue";
-import LinkLists from "@/components/LinkLists.vue";
+import SelectList from "@/components/SelectHub.vue";
+import HubLists from "@/components/HubLists.vue";
 </script>
 
 <template>
@@ -33,7 +33,7 @@ import LinkLists from "@/components/LinkLists.vue";
 
     <!-- Suggested Files -->
      <div class="w-full px-4">
-       <LinkLists :limit="3" showButton="true"/>
+       <HubLists :limit="3" showButton="true"/>
      </div>
   </div>
 </template>

@@ -31,7 +31,7 @@ const state = reactive({
 onMounted(async() => {
   try {
     const response = await axios({
-      url: "/api/resources",
+      url: "/api/links",
     });
     
     state.categories = Array.from(new Set(response.data.map(item => item.category))).sort();

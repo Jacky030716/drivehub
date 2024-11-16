@@ -4,7 +4,7 @@ import { ChevronRight } from 'lucide-vue-next';
 import { RouterLink } from 'vue-router';
 import axios from 'axios';
 import PulseLoader from "vue-spinner/src/PulseLoader.vue"
-import LinkList from './LinkList.vue';
+import HubList from './HubList.vue';
 
 defineProps({
   limit: Number,
@@ -15,7 +15,7 @@ defineProps({
 })
 
 const state = reactive({
-  resources: [],
+  links: [],
   isLoading: true
 });
 
@@ -45,12 +45,12 @@ const shuffleArray = (array) => {
 
 onMounted(async () => {
   try {
-    state.resources = (await axios({
-      url: "/api/resources",
+    state.links = (await axios({
+      url: "/api/links",
     })).data;
 
-    // Set up category colors after loading resources
-    const uniqueCategories = [...new Set(state.resources.map(item => item.category))];
+    // Set up category colors after loading links
+    const uniqueCategories = [...new Set(state.links.map(item => item.category))];
     const shuffledColors = shuffleArray([...colorPalette]);
 
     uniqueCategories.forEach((category, index) => {
@@ -80,7 +80,7 @@ const getCategoryColor = (category) => {
     <template v-else>
 
       <!-- Link List Items -->
-      <LinkList v-for="resource in state.resources.slice(0, limit || state.resources.length)" :key="resource.id"
+      <HubList v-for="resource in state.links.slice(0, limit || state.links.length)" :key="resource.id"
         :resource="resource" :categoryColor="getCategoryColor(resource.category)" />
 
       <!-- View More Link -->
