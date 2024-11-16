@@ -1,24 +1,25 @@
 <script setup>
 import { computed } from 'vue';
 import { Calendar, Folder, Mail, FileText, ChevronRight } from 'lucide-vue-next';
+import axios from 'axios'
 
-// Sample data - replace this with your actual data
-const links = [
-  {
-    name: "Knowledge Representation Introduction",
-    category: "Artificial Intelligence",
-    session_semester: "2023/2024-1",
-    description: "This comprehensive guide covers the fundamental concepts of knowledge representation in AI, including semantic networks, frames, and logic-based representations. The material explores how machines can effectively store and manipulate information for reasoning tasks...",
-    email: "ai.lecturer@university.edu"
-  },
-  {
-    name: "AJAX Tutorial",
-    category: "Web Development",
-    session_semester: "2023/2024-2",
-    description: "A complete guide to Asynchronous JavaScript and XML, covering modern approaches to building interactive web applications with practical examples and best practices...",
-    email: "webdevvv.staff@university.edu"
+const state = reactive({
+    resources: [],
+    isLoading: true
+})
+onMounted(async() => {
+  try {
+    state.resources = (await axios({
+      url: "http://localhost:8000/resources",
+    })).data
+
+    log(state.resources)
+  } catch (error) {
+    console.log("Error fetching data ", error);
+  } finally {
+    state.isLoading = false;
   }
-];
+});
 
 // Function to truncate description
 const truncateText = (text, limit = 40) => {
@@ -41,45 +42,45 @@ const getCategoryColor = (category) => {
   <div class="mt-4 p-2 w-full">
     <h2 class="text-sm font-semibold text-gray-600 mb-2 flex items-center">
       <FileText class="w-4 h-4 mr-2" />
-      Suggested Links
+      Suggested links
     </h2>
-    <!-- Link List Items -->
+    <!-- resource List Items -->
     <div 
-      v-for="link in links" 
-      :key="link.name"
+      v-for="resource in state.resources" 
+      :key="resource.id"
       class="bg-white p-4 mb-2 rounded-lg shadow hover:shadow-md transition-shadow duration-200 cursor-pointer"
     >
       <div class="flex-1">
         <!-- Title with icon based on category -->
         <div class="flex items-center mb-2">
-          <Folder :class="[getCategoryColor(link.category), 'w-4 h-4 mr-2']" />
-          <p class="text-sm font-semibold">{{ link.name }}</p>
+          <Folder :class="[getCategoryColor(resource.category), 'w-4 h-4 mr-2']" />
+          <p class="text-sm font-semibold">{{ resource.name }}</p>
         </div>
         <!-- Details section -->
         <div class="space-y-1">
           <!-- Category -->
           <div class="flex items-center text-xs text-gray-500">
             <ChevronRight class="w-3 h-3 mr-1" />
-            <span>{{ link.category }}</span>
+            <span>{{ resource.category }}</span>
           </div>
           <!-- Session/Semester -->
           <div class="flex items-center text-xs text-gray-500">
             <Calendar class="w-3 h-3 mr-1" />
-            <span>{{ link.session_semester }}</span>
+            <span>{{ resource.session_semester }}</span>
           </div>
           <!-- Description -->
           <p class="text-xs text-gray-600 mt-1">
-            {{ truncateText(link.description) }}
+            {{ truncateText(resource.description) }}
           </p>
           <!-- Email -->
           <div class="flex items-center text-xs text-gray-500">
             <Mail class="w-3 h-3 mr-1" />
-            <span>{{ link.email }}</span>
+            <span>{{ resource.email }}</span>
           </div>
         </div>
       </div>
     </div>
-    <!-- View More Link -->
+    <!-- View More resource -->
     <div class="text-center mt-4">
       <a href="#" class="text-blue-500 text-sm hover:text-blue-600 transition-colors duration-200 flex items-center justify-center">
         <span>View more</span>
