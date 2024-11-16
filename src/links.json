@@ -34,15 +34,15 @@
       "id": "3"
     },
     {
-      "category": "Meeting",
-      "name": "SE Department Meeting",
-      "session": "2023/2024",
-      "semester": 1,
-      "description": "Mesyuarat Jabatan SE Bil. 1 2023/2024",
-      "email": "hod@se.utm.edu.my",
-      "link": "https://bit.ly/202320241",
-      "feedback": [],
-      "id": "4"
+        "category": "Meeting",
+        "name": "SE Department Meeting",
+        "session": "2023/2024",
+        "semester": 1,
+        "description": "Mesyuarat Jabatan SE Bil. 1 2023/2024",
+        "email": "hod@se.utm.edu.my",
+        "link": "https://bit.ly/202320241",
+        "feedback": [],
+        "id": "4"
     },
     {
       "category": "Timetable",

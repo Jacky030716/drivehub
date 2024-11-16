@@ -1,96 +1,100 @@
 {
   "hubs": [
     {
-      "Course Files": {
-        "categoryId": "1",
-        "categoryCreator": "Muhammad Ali",
-        "categoryDescription": "11/11/2023",
-        "links": [
-          {
-            "category": "Course Files",
-            "name": "SECJ3104-01",
-            "session": "2023/2024",
-            "semester": 1,
-            "description": "Course files submission for AD Course (J) Section 01",
-            "email": "professorAli@fc.edu.my",
-            "link": "https://drive.google.com/drive/folders/ABC123",
-            "feedback": [],
-            "id": "1"
-          }
-        ]
-      }
+      "categoryId": "1",
+      "categoryName": "Course Files",
+      "categoryCreator": "Muhammad Ali",
+      "categoryDescription": "Central repository for academic materials including lecture slides, tutorial worksheets, lab exercises, past year examination papers, and course assessments. Organized by course codes and academic sessions for easy access and reference.",
+      "links": [
+        {
+          "category": "Course Files",
+          "name": "SECJ3104-01",
+          "session": "2023/2024",
+          "semester": 1,
+          "description": "Course files submission for AD Course (J) Section 01",
+          "email": "professorAli@fc.edu.my",
+          "link": "https://drive.google.com/drive/folders/ABC123",
+          "feedback": [],
+          "id": "1"
+        }
+      ]
     },
     {
-      "Course Coordination": {
-        "categoryId": "2",
-        "links": [
-          {
-            "category": "Course Files",
-            "name": "SECJ3104-01",
-            "session": "2023/2024",
-            "semester": 1,
-            "description": "Course files submission for AD Course (J) Section 01",
-            "email": "professorAli@fc.edu.my",
-            "link": "https://drive.google.com/drive/folders/ABC123",
-            "feedback": [],
-            "id": "1"
-          }
-        ]
-      }
+      "categoryId": "2",
+      "categoryName": "Course Coordination",
+      "categoryCreator": "Johanna",
+      "categoryDescription": "Administrative hub for course coordinators containing standardized course materials, assessment guidelines, marking schemes, and moderation reports. Facilitates collaboration between different sections of the same course to maintain teaching consistency.",
+      "links": [
+        {
+          "category": "Course Coordination",
+          "name": "SECJ2013-09",
+          "session": "2022/2023",
+          "semester": 2,
+          "description": "Course files submission for DSA Course Section 09",
+          "email": "admin@utm.edu.my",
+          "link": "https://docs.google.com/spreadsheets/d/XYZ456",
+          "feedback": [],
+          "id": "2"
+        }
+      ]
     },
     {
-      "Training": {
-        "categoryId": "3",
-        "links": [
-          {
-            "category": "Course Files",
-            "name": "SECJ3104-01",
-            "session": "2023/2024",
-            "semester": 1,
-            "description": "Course files submission for AD Course (J) Section 01",
-            "email": "professorAli@fc.edu.my",
-            "link": "https://drive.google.com/drive/folders/ABC123",
-            "feedback": [],
-            "id": "1"
-          }
-        ]
-      }
+      "categoryId": "3",
+      "categoryName": "Training",
+      "categoryCreator": "Mohd Razak",
+      "categoryDescription": "Comprehensive collection of professional development resources including workshop materials, training modules, seminar presentations, and research methodology guides. Features both technical and pedagogical training materials for faculty enhancement.",
+      "links": [
+        {
+          "category": "Training",
+          "name": "UTMFR",
+          "session": "2024/2025",
+          "semester": 1,
+          "description": "UTMFR Slides for the research seminar",
+          "email": "researcher@utm.edu.my",
+          "link": "https://drive.google.com/drive/folders/DEF789",
+          "feedback": [],
+          "id": "3"
+        }
+      ]
     },
     {
-      "Meeting": {
-        "categoryId": "4",
-        "links": [
-          {
-            "category": "Course Files",
-            "name": "SECJ3104-01",
-            "session": "2023/2024",
-            "semester": 1,
-            "description": "Course files submission for AD Course (J) Section 01",
-            "email": "professorAli@fc.edu.my",
-            "link": "https://drive.google.com/drive/folders/ABC123",
-            "feedback": [],
-            "id": "1"
-          }
-        ]
-      }
+      "categoryId": "4",
+      "categoryName": "Meeting",
+      "categoryCreator": "Mohd Razak",
+      "categoryDescription": "Archive of departmental meetings including video recordings, minutes, action items, and follow-up reports. Contains both regular faculty meetings and special committee sessions, organized chronologically with searchable agenda topics.",
+      "links": [
+        {
+          "category": "Meeting",
+          "name": "SE Department Meeting",
+          "session": "2023/2024",
+          "semester": 1,
+          "description": "Mesyuarat Jabatan SE Bil. 1 2023/2024",
+          "email": "hod@se.utm.edu.my",
+          "link": "https://bit.ly/202320241",
+          "feedback": [],
+          "id": "4"
+        }
+      ]
     },
     {
-      "Timetable": {
-        "categoryId": "5",
-        "links": [
-          {
-            "category": "Course Files",
-            "name": "SECJ3104-01",
-            "session": "2023/2024",
-            "semester": 1,
-            "description": "Course files submission for AD Course (J) Section 01",
-            "email": "professorAli@fc.edu.my",
-            "link": "https://drive.google.com/drive/folders/ABC123",
-            "feedback": [],
-            "id": "1"
-          }
-        ]
-      }
+      "categoryId": "5",
+      "categoryName": "Timetable",
+      "categoryCreator": "Hanie Zain",
+      "categoryDescription": "Semester-wise scheduling information including lecture halls, lab allocations, and tutorial room assignments. Features both undergraduate and postgraduate timetables with real-time updates for venue changes and special arrangements.",
+      "links": [
+        {
+          "category": "Timetable",
+          "name": "Undergraduate",
+          "session": "2024/2025",
+          "semester": 1,
+          "description": "Undergraduate course timetable for 2024/2025",
+          "email": "utmtimetable@utm.edu.my",
+          "link": "https://bit.ly/Timetable202420251",
+          "feedback": [],
+          "id": "5"
+        }
+      ]
     }
   ]
 }
+
