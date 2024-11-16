@@ -11,13 +11,13 @@ import Navbar from "@/components/Navbar.vue"
 <h1 class="text-xl font-bold text-gray-800">Notifications</h1>
 <ul class="flex space-x-4 text-sm">
   <li class="cursor-pointer text-blue-600 border-b-2 border-blue-600">
-    All
+    Unread
   </li>
-  <li class="cursor-pointer text-gray-500 hover:text-gray-800">Read</li>
+  <li class="cursor-pointer text-gray-500 hover:text-gray-800">All</li>
 </ul>
 </div>
 
-<!-- This part later use v-for de, for file list -->
+<!-- This part later use v-for de -->
 <div class="space-y-4">
 <NotificationItem
   title="Dr Abu has shared a file to SECJ3104-03 Discrete Structure"

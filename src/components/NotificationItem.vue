@@ -18,7 +18,7 @@ const onActionClick = () => {
 
 <template>
   <div
-    class="flex justify-between items-center bg-white shadow-sm rounded-md p-4 hover:bg-gray-100 transition"
+    class="flex justify-between items-center bg-white shadow-sm rounded-md p-4 hover:bg-gray-100 transition cursor-pointer" 
   >
     <div>
       <p class="text-sm text-gray-800 font-semibold">{{ title }}</p>
