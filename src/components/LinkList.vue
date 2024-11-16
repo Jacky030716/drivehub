@@ -64,7 +64,7 @@ const getCategoryColor = (category) => {
 </script>
 
 <template>
-  <div class="mt-4 p-2 w-full max-w-7xl mx-auto">
+  <div class="mt-4 p-2 w-full">
     <!-- Loading state -->
     <div v-if="state.isLoading" class="text-center py-4">
       Loading...
