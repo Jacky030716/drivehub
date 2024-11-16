@@ -11,13 +11,13 @@ import PulseLoader from "vue-spinner/src/PulseLoader.vue"
 </script>
 
 <template>
-  <div class="bg-gray-100 text-gray-800 font-sans min-h-screen">
+  <div class="max-w-7xl mx-auto bg-gray-100 text-gray-800 font-sans min-h-screen">
     <!-- Header -->
-    <div class="bg-white shadow p-4 w-full max-w-sm mx-auto">
+    <div class="bg-white shadow p-4 w-full">
       <h1 class="text-lg font-semibold text-center">Welcome to DriveHub</h1>
       <div class="mt-2">
 
-        <div class="relative">
+        <div class="w-full relative">
         <i class="pi pi-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
         <input 
           type="text" 
@@ -34,6 +34,8 @@ import PulseLoader from "vue-spinner/src/PulseLoader.vue"
     </div>
 
     <!-- Suggested Files -->
-    <LinkList />
+     <div class="w-full px-4">
+       <LinkList />
+     </div>
   </div>
 </template>

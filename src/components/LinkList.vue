@@ -38,7 +38,7 @@ const getCategoryColor = (category) => {
 </script>
 
 <template>
-  <div class="mt-4 p-2 w-full max-w-sm mx-auto">
+  <div class="mt-4 p-2 w-full">
     <h2 class="text-sm font-semibold text-gray-600 mb-2 flex items-center">
       <FileText class="w-4 h-4 mr-2" />
       Suggested Links
