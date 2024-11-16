@@ -3,7 +3,7 @@ import ResourceForm from '@/components/ResourceForm.vue';
 </script>
 
 <template>
-  <div class="max-w-7xl mx-auto min-h-screen justify-center items-center flex flex-col p-6 gap-8">
+  <div class="max-w-7xl mx-auto justify-center items-center flex flex-col py-12 md:px-0 px-8 gap-8">
     <div class="w-full flex flex-col items-center text-center space-y-4">
         <img src="../assets/drive.jpg" alt="Drive Logo" width="60"/>
         <div>

@@ -2,6 +2,7 @@
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
+import { v4 as uuidv4 } from 'uuid'
 
 import { sessionOptions, semesterOptions, userOptions, categoryOptions, ownerOptions } from '@/constant/options'
 
@@ -24,7 +25,9 @@ const form = useForm({
 })
 
 const onSubmit = form.handleSubmit((values) => {
-  console.log('Form submitted!', values)
+  const fileId = uuidv4()
+  const formData = { ...values, fileId }
+  console.log('Form submitted!', formData)
 })
 </script>
 
