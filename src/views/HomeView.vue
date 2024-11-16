@@ -10,9 +10,6 @@ import PulseLoader from "vue-spinner/src/PulseLoader.vue"
        </div> */
 
 const searchQuery = ref("")
-const selectedCategory = ref("")
-const selectedSession = ref("")
-const selectedEmail = ref("")
 
 </script>
 
