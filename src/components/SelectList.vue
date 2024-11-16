@@ -32,7 +32,7 @@ const state = reactive({
 onMounted(async() => {
   try {
     const response = await axios({
-      url: "http://localhost:8000/resources",
+      url: "/api/resources",
     });
     state.categories = response.data.map(item => item.category);
     state.emails = response.data.map(item => item.email);

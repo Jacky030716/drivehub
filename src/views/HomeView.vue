@@ -13,7 +13,7 @@ import PulseLoader from "vue-spinner/src/PulseLoader.vue"
 <template>
   <div class="bg-gray-100 text-gray-800 font-sans min-h-screen">
     <!-- Header -->
-    <div class="bg-white shadow p-4 w-full max-w-sm mx-auto">
+    <div class="bg-white shadow p-4 w-full max-w-7xl mx-auto">
       <h1 class="text-lg font-semibold text-center">Welcome to DriveHub</h1>
       <div class="mt-2">
 
