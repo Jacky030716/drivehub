@@ -33,7 +33,8 @@ const onSubmit = form.handleSubmit((values) => {
     <div class="min-w-[550px] p-16 flex flex-col justify-center items-center gap-16 bg-neutral-100/10 shadow-xl rounded-xl">
       <div class="flex flex-col items-center space-y-2">
         <img src="../assets/logo.png" alt="logo" class="w-[350px] object-cover inline-block" />
-        <h1 class="text-6xl font-bold text-primary">DriveHub</h1>
+        <h1 class="text-6xl font-serif text-primary">DriveHub</h1>
+        <p class="text-primary italic text-sm">Empowering Collaboration, Simplifying Sharing.</p>
       </div>
 
         <!-- Login Form -->
