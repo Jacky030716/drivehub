@@ -28,7 +28,7 @@ import LinkLists from "@/components/LinkLists.vue";
     
     <h2 class="text-sm font-semibold text-gray-600 mb-2 mt-5 flex items-center">
       <FileText class="w-4 h-4 mr-2" />
-      Suggested Links
+      Suggested Hubs
     </h2>
 
     <!-- Suggested Files -->
