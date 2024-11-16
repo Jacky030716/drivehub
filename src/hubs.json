@@ -74,17 +74,6 @@
           "link": "https://drive.google.com/drive/folders/MOD001",
           "feedback": [],
           "id": "2"
-        },
-        {
-          "category": "Course Coordination",
-          "name": "SECJ3104-Coordination Materials",
-          "session": "2023/2024",
-          "semester": 1,
-          "description": "Standardized materials for SECJ3104 coordination.",
-          "email": "admin@utm.edu.my",
-          "link": "https://drive.google.com/drive/folders/MOD002",
-          "feedback": [],
-          "id": "3"
         }
       ]
     },
@@ -118,17 +107,6 @@
           "link": "https://drive.google.com/drive/folders/TRAIN001",
           "feedback": [],
           "id": "2"
-        },
-        {
-          "category": "Training",
-          "name": "Machine Learning Seminar Materials",
-          "session": "2023/2024",
-          "semester": 1,
-          "description": "Research and training slides from the Machine Learning Seminar.",
-          "email": "researcher@utm.edu.my",
-          "link": "https://drive.google.com/drive/folders/TRAIN002",
-          "feedback": [],
-          "id": "3"
         }
       ]
     },
