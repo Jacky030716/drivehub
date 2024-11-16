@@ -1,82 +1,96 @@
 {
-  "Course Files": {
-    "categoryId": "1",
-    "links": [
-      {
-        "category": "Course Files",
-        "name": "SECJ3104-01",
-        "session": "2023/2024",
-        "semester": 1,
-        "description": "Course files submission for AD Course (J) Section 01",
-        "email": "professorAli@fc.edu.my",
-        "link": "https://drive.google.com/drive/folders/ABC123",
-        "feedback": [],
-        "id": "1"
+  "hubs": [
+    {
+      "Course Files": {
+        "categoryId": "1",
+        "categoryCreator": "Muhammad Ali",
+        "categoryDescription": "11/11/2023",
+        "links": [
+          {
+            "category": "Course Files",
+            "name": "SECJ3104-01",
+            "session": "2023/2024",
+            "semester": 1,
+            "description": "Course files submission for AD Course (J) Section 01",
+            "email": "professorAli@fc.edu.my",
+            "link": "https://drive.google.com/drive/folders/ABC123",
+            "feedback": [],
+            "id": "1"
+          }
+        ]
       }
-    ]
-  },
-  "Course Coordination": {
-    "categoryId": "2",
-    "links": [
-      {
-        "category": "Course Files",
-        "name": "SECJ3104-01",
-        "session": "2023/2024",
-        "semester": 1,
-        "description": "Course files submission for AD Course (J) Section 01",
-        "email": "professorAli@fc.edu.my",
-        "link": "https://drive.google.com/drive/folders/ABC123",
-        "feedback": [],
-        "id": "1"
+    },
+    {
+      "Course Coordination": {
+        "categoryId": "2",
+        "links": [
+          {
+            "category": "Course Files",
+            "name": "SECJ3104-01",
+            "session": "2023/2024",
+            "semester": 1,
+            "description": "Course files submission for AD Course (J) Section 01",
+            "email": "professorAli@fc.edu.my",
+            "link": "https://drive.google.com/drive/folders/ABC123",
+            "feedback": [],
+            "id": "1"
+          }
+        ]
       }
-    ]
-  },
-  "Training": {
-    "categoryId": "3",
-    "links": [
-      {
-        "category": "Course Files",
-        "name": "SECJ3104-01",
-        "session": "2023/2024",
-        "semester": 1,
-        "description": "Course files submission for AD Course (J) Section 01",
-        "email": "professorAli@fc.edu.my",
-        "link": "https://drive.google.com/drive/folders/ABC123",
-        "feedback": [],
-        "id": "1"
+    },
+    {
+      "Training": {
+        "categoryId": "3",
+        "links": [
+          {
+            "category": "Course Files",
+            "name": "SECJ3104-01",
+            "session": "2023/2024",
+            "semester": 1,
+            "description": "Course files submission for AD Course (J) Section 01",
+            "email": "professorAli@fc.edu.my",
+            "link": "https://drive.google.com/drive/folders/ABC123",
+            "feedback": [],
+            "id": "1"
+          }
+        ]
       }
-    ]
-  },
-  "Meeting": {
-    "categoryId": "4",
-    "links": [
-      {
-        "category": "Course Files",
-        "name": "SECJ3104-01",
-        "session": "2023/2024",
-        "semester": 1,
-        "description": "Course files submission for AD Course (J) Section 01",
-        "email": "professorAli@fc.edu.my",
-        "link": "https://drive.google.com/drive/folders/ABC123",
-        "feedback": [],
-        "id": "1"
+    },
+    {
+      "Meeting": {
+        "categoryId": "4",
+        "links": [
+          {
+            "category": "Course Files",
+            "name": "SECJ3104-01",
+            "session": "2023/2024",
+            "semester": 1,
+            "description": "Course files submission for AD Course (J) Section 01",
+            "email": "professorAli@fc.edu.my",
+            "link": "https://drive.google.com/drive/folders/ABC123",
+            "feedback": [],
+            "id": "1"
+          }
+        ]
       }
-    ]
-  },
-  "Timetable": {
-    "categoryId": "5",
-    "links": [
-      {
-        "category": "Course Files",
-        "name": "SECJ3104-01",
-        "session": "2023/2024",
-        "semester": 1,
-        "description": "Course files submission for AD Course (J) Section 01",
-        "email": "professorAli@fc.edu.my",
-        "link": "https://drive.google.com/drive/folders/ABC123",
-        "feedback": [],
-        "id": "1"
+    },
+    {
+      "Timetable": {
+        "categoryId": "5",
+        "links": [
+          {
+            "category": "Course Files",
+            "name": "SECJ3104-01",
+            "session": "2023/2024",
+            "semester": 1,
+            "description": "Course files submission for AD Course (J) Section 01",
+            "email": "professorAli@fc.edu.my",
+            "link": "https://drive.google.com/drive/folders/ABC123",
+            "feedback": [],
+            "id": "1"
+          }
+        ]
       }
-    ]
-  }
+    }
+  ]
 }
