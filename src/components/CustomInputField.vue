@@ -14,7 +14,8 @@ defineProps({
   label: { type: String, required: true },
   name: { type: String, required: true },
   placeholder: { type: String, required: true },
-  span: { type: Number, required: true, default: 4 },
+  span: { type: Number, required: false, default: 4 },
+  type: { type: String, required: false, default: 'text' }
 })
 </script>
 
@@ -23,7 +24,7 @@ defineProps({
     <FormItem :class="`col-span-${span}`">
       <FormLabel class="text-primary font-bold">{{ label }}</FormLabel>
       <FormControl>
-        <Input type="text" :placeholder="placeholder" v-bind="componentField" />
+        <Input :type="type" :placeholder="placeholder" v-bind="componentField" class="focus:border-primary"/>
       </FormControl>
       <FormMessage class="text-xs" />
     </FormItem>

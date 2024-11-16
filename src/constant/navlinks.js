@@ -33,5 +33,5 @@ export const navlinks = [
     name: "Notifications",
     href: "/notifications",
     icon: "/src/assets/bell.svg"
-  }
+  },
 ]

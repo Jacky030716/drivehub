@@ -7,6 +7,7 @@ import HubView from "@/views/HubView.vue";
 import SharedResourcesView from "@/views/SharedResourcesView.vue";
 import ShareView from "@/views/ShareView.vue";
 import NotificationsView from "@/views/NotificationsView.vue";
+import SignInView from "@/views/SignInView.vue";
 
 export const routes = [
   {
@@ -43,6 +44,11 @@ export const routes = [
     name: "Notifications",
     path: "/notifications",
     component: NotificationsView,
+  },
+  {
+    name: "Sign In",
+    path: "/sign-in",
+    component: SignInView
   }
 ]
 
