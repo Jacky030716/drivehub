@@ -41,6 +41,11 @@ const searchQuery = ref("")
         />
       </div>
     </div>
+    
+    <h2 class="text-sm font-semibold text-gray-600 mb-2 mt-5 flex items-center">
+      <FileText class="w-4 h-4 mr-2" />
+      Suggested Hubs
+    </h2>
 
     <!-- Suggested Files -->
      <div class="w-full px-4">

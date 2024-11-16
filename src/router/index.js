@@ -8,6 +8,7 @@ import SharedResourcesView from "@/views/SharedResourcesView.vue";
 import ShareView from "@/views/ShareView.vue";
 import NotificationsView from "@/views/NotificationsView.vue";
 import SignInView from "@/views/SignInView.vue";
+import NotFoundView from '@/views/NotFoundView.vue'
 
 export const routes = [
   {
@@ -49,6 +50,12 @@ export const routes = [
     name: "Sign In",
     path: "/sign-in",
     component: SignInView
+  },
+  {
+    path: '/:catchAll(.*)',
+    // name: not-found-view,
+    name: 'not-found-view',
+    component: NotFoundView
   }
 ]
 
