@@ -1,4 +1,3 @@
-
 <script setup>
 import { RouterLink } from "vue-router"
 import { Calendar, Folder, Mail, ChevronRight } from 'lucide-vue-next';
@@ -40,7 +39,7 @@ const truncateText = (text, limit = 80) => {
         <!-- Session/Semester -->
         <div class="flex items-center text-xs text-gray-500">
           <Calendar class="w-3 h-3 mr-1" />
-          <span>{{ resource.session_semester }}</span>
+          <span>{{ resource.session }}/{{ resource.semester }}</span>
         </div>
 
         <!-- Description -->
