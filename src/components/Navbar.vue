@@ -9,7 +9,7 @@ const resourcesLinks = navlinks.slice(3)
 </script>
 
 <template>
-  <nav class="px-5 py-8 md:flex hidden flex-col justify-between gap-10 min-w-[250px] border min-h-screen shadow-secondary-600 shadow-lg">
+  <nav class="px-5 py-8 md:flex hidden flex-col justify-between gap-10 min-w-[250px] border min-h-screen shadow-lg">
     <!-- Welcome Text -->
     <div>
       <h1 class="text-2xl text-primary font-bold">DriveHub</h1>
