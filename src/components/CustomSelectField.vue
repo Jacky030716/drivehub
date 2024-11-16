@@ -13,7 +13,7 @@ defineProps({
 
 <template>
   <FormField v-slot="{ componentField }" :name="name">
-    <FormItem :class="`col-span-${span}`">
+    <FormItem :class="['col-span-4', `md:col-span-${span}`]">
       <SelectLabel class="text-primary font-bold text-left">{{ label }}</SelectLabel>
       <FormControl>
         <Select v-bind="componentField">

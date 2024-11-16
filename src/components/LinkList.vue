@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue';
+import { reactive, onMounted } from 'vue';
 import { Calendar, Folder, Mail, FileText, ChevronRight } from 'lucide-vue-next';
 import axios from 'axios'
 
@@ -13,7 +14,7 @@ onMounted(async() => {
       url: "http://localhost:8000/resources",
     })).data
 
-    log(state.resources)
+    console.log(state.resources)
   } catch (error) {
     console.log("Error fetching data ", error);
   } finally {
