@@ -1,13 +1,7 @@
 <script setup>
 import Navbar from "@/components/Navbar.vue"
 import SelectList from "@/components/SelectList.vue";
-import LinkList from "@/components/LinkList.vue";
-import PulseLoader from "vue-spinner/src/PulseLoader.vue"
-
-/* <!-- show loading spinner while loading is true -->
-       <div v-if="state.isLoading" class="text-center text-gray-500 py-6 ">
-        <PulseLoader />
-       </div> */
+import LinkLists from "@/components/LinkLists.vue";
 </script>
 
 <template>
@@ -31,10 +25,15 @@ import PulseLoader from "vue-spinner/src/PulseLoader.vue"
         <SelectList :buttonName="'emails'"/>
       </div>
     </div>
+    
+    <h2 class="text-sm font-semibold text-gray-600 mb-2 mt-5 flex items-center">
+      <FileText class="w-4 h-4 mr-2" />
+      Suggested Links
+    </h2>
 
     <!-- Suggested Files -->
      <div class="w-full px-4">
-       <LinkList />
+       <LinkLists :limit="3" showButton="true"/>
      </div>
   </div>
 </template>
