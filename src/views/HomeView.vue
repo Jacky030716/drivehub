@@ -1,16 +1,7 @@
 <script setup>
-import Navbar from "@/components/Navbar.vue"
-import SelectList from "@/components/SelectHub.vue";
+import HomePageSelect from "@/components/HomePageSelect.vue";
 import HubLists from "@/components/HubLists.vue";
 import { ref } from "vue";
-import SelectList from "@/components/SelectList.vue";
-import LinkList from "@/components/LinkList.vue";
-import PulseLoader from "vue-spinner/src/PulseLoader.vue"
-
-/* <!-- show loading spinner while loading is true -->
-       <div v-if="state.isLoading" class="text-center text-gray-500 py-6 ">
-        <PulseLoader />
-       </div> */
 
 const searchQuery = ref("")
 
@@ -33,13 +24,13 @@ const searchQuery = ref("")
       </div>
     </div>
       <div class="flex justify-center mt-3 space-x-2">
-        <SelectList 
+        <HomePageSelect 
           :buttonName="'categories'" 
           />
-        <SelectList 
+        <HomePageSelect 
           :buttonName="'sessions_semesters'" 
         />
-        <SelectList 
+        <HomePageSelect 
           :buttonName="'emails'"
         />
       </div>
@@ -52,13 +43,7 @@ const searchQuery = ref("")
 
     <!-- Suggested Files -->
      <div class="w-full px-4">
-<<<<<<< HEAD
        <HubLists :limit="3" showButton="true"/>
-=======
-       <LinkList 
-        :query="searchQuery"
-       />
->>>>>>> 04ee104dd37a5e31a9c05de2e1606205bb96a43b
      </div>
   </div>
 </template>

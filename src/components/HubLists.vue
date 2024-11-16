@@ -85,7 +85,7 @@ const getCategoryColor = (category) => {
 
       <!-- View More Link -->
       <div v-if="showButton" class="text-center mt-4">
-        <RouterLink to="/"
+        <RouterLink to="/hub"
           class="text-blue-500 text-sm hover:text-blue-600 hover:underline transition-colors duration-200 flex items-center justify-center">
           <span>View more</span>
           <ChevronRight class="w-4 h-4 ml-1" />
