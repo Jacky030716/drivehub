@@ -20,22 +20,23 @@ const props = defineProps({
 import axios from "axios"
 
 const state = reactive({
-    sessions_semesters: ['2024/2025-2', '2024/2025-1', '2023/2024-2', '2023/2024-1', 
-                        '2022/2023-2', '2022/2023-1', '2021/2022-2', '2021/2022-1', 
-                        '2020/2021-2', '2020/2021-1'],
+    sessions_semesters: ['2024/2025-2', '2024/2025-1', '2023/2024-2', '2023/2024-1',
+                         '2022/2023-2', '2022/2023-1', '2021/2022-2', '2021/2022-1',
+                         '2020/2021-2', '2020/2021-1'],
     categories: [],
     emails: [],
     isLoading: true
 })
 
-// Combine both API calls into one
 onMounted(async() => {
   try {
     const response = await axios({
       url: "/api/resources",
     });
-    state.categories = response.data.map(item => item.category);
-    state.emails = response.data.map(item => item.email);
+    
+    // 使用 Set 去重后转回数组
+    state.categories = [...new Set(response.data.map(item => item.category))].sort();
+    state.emails = [...new Set(response.data.map(item => item.email))].sort();
   } catch (error) {
     console.log("Error fetching data ", error);
   } finally {
@@ -43,7 +44,6 @@ onMounted(async() => {
   }
 });
 
-// Computed property to get the appropriate label based on buttonName
 const getLabel = computed(() => {
   switch(props.buttonName) {
     case 'categories':
@@ -57,7 +57,6 @@ const getLabel = computed(() => {
   }
 });
 
-// Computed property to get the appropriate items array based on buttonName
 const getItems = computed(() => {
   switch(props.buttonName) {
     case 'categories':
@@ -80,12 +79,11 @@ const getItems = computed(() => {
     <SelectContent>
       <SelectGroup>
         <template v-if="!state.isLoading">
-          <!-- "reset" is used to allow user to make error -->
           <SelectItem key="reset" value="reset" class="font-bold">{{ buttonName }}</SelectItem>
-          <SelectItem 
-            v-for="item in getItems" 
-            :key="item" 
-            :value="item"
+          <SelectItem
+             v-for="item in getItems"
+             :key="item"
+             :value="item"
           >
             {{ item }}
           </SelectItem>
