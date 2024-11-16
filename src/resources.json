@@ -1,0 +1,55 @@
+{
+  "resources": [
+    {
+      "category": "Course Files",
+      "name": "SECJ3104-01",
+      "session": "2023/2024",
+      "semester": 1,
+      "description": "Course files submission for AD Course (J) Section 01",
+      "email": "professorAli@fc.edu.my",
+      "link": "https://drive.google.com/drive/folders/ABC123",
+      "feedback": []
+    },
+    {
+      "category": "Course Coordination",
+      "name": "SECJ2013-09",
+      "session": "2022/2023",
+      "semester": 2,
+      "description": "Course files submission for DSA Course Section 09",
+      "email": "admin@utm.edu.my",
+      "link": "https://docs.google.com/spreadsheets/d/XYZ456",
+      "feedback": []
+    },
+    {
+      "category": "Research",
+      "name": "UTMFR",
+      "session": "2024/2025",
+      "semester": 1,
+      "description": "UTMFR Slides for the research seminar",
+      "email": "researcher@utm.edu.my",
+      "link": "https://drive.google.com/drive/folders/DEF789",
+      "feedback": []
+    },
+    {
+      "category": "Meeting",
+      "name": "SE Department Meeting",
+      "session": "2023/2024",
+      "semester": 1,
+      "description": "Mesyuarat Jabatan SE Bil. 1 2023/2024",
+      "email": "hod@se.utm.edu.my",
+      "link": "https://bit.ly/202320241",
+      "feedback": []
+    },
+    {
+      "category": "Timetable",
+      "name": "Undergraduate",
+      "session": "2024/2025",
+      "semester": 1,
+      "description": "Undergraduate course timetable for 2024/2025",
+      "email": "utmtimetable@utm.edu.my",
+      "link": "https://bit.ly/Timetable202420251",
+      "feedback": []
+    }
+  ]
+  
+}
