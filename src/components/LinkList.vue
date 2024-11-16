@@ -2,6 +2,7 @@
 import { computed, reactive, onMounted, ref } from 'vue';
 import { Calendar, Folder, Mail, FileText, ChevronRight } from 'lucide-vue-next';
 import axios from 'axios';
+import PulseLoader from "vue-spinner/src/PulseLoader.vue"
 
 // predefined color template
 const colorPalette = [

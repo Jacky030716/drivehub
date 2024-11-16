@@ -2,12 +2,6 @@
 import Navbar from "@/components/Navbar.vue"
 import SelectList from "@/components/SelectList.vue";
 import LinkList from "@/components/LinkList.vue";
-import PulseLoader from "vue-spinner/src/PulseLoader.vue"
-
-/* <!-- show loading spinner while loading is true -->
-       <div v-if="state.isLoading" class="text-center text-gray-500 py-6 ">
-        <PulseLoader />
-       </div> */
 </script>
 
 <template>
