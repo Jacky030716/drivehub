@@ -121,7 +121,7 @@ const getCategoryColor = (category) => {
 
       <!-- View More Link -->
       <div class="text-center mt-4">
-        <a href="#" class="text-blue-500 text-sm hover:text-blue-600 transition-colors duration-200 flex items-center justify-center">
+        <a href="#" class="text-blue-500 text-sm hover:text-blue-600 hover:underline transition-colors duration-200 flex items-center justify-center">
           <span>View more</span>
           <ChevronRight class="w-4 h-4 ml-1" />
         </a>
@@ -137,5 +137,6 @@ const getCategoryColor = (category) => {
 
 .cursor-pointer:hover .text-sm {
   color: #4F46E5;
+  text-decoration: underline;
 }
 </style>
