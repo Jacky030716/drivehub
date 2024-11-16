@@ -1,14 +1,16 @@
 <script setup>
-import { RouterView } from 'vue-router';
+import { RouterView, useRoute } from 'vue-router';
 import Navbar from "./components/Navbar.vue"
 import Header from './components/Header.vue';
+
+const route = useRoute()
 </script>
 
 <template>
   <div class="w-full flex">
-    <Navbar />
+    <Navbar v-if="route.path !== '/sign-in'"/>
     <div class="w-full">
-      <Header />
+      <Header v-if="route.path !== '/sign-in'"/>
       <RouterView />
     </div>
   </div>

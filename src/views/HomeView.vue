@@ -1,5 +1,5 @@
 <script setup>
-import Navbar from "@/components/Navbar.vue"
+import { ref } from "vue";
 import SelectList from "@/components/SelectList.vue";
 import LinkList from "@/components/LinkList.vue";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue"
@@ -8,6 +8,12 @@ import PulseLoader from "vue-spinner/src/PulseLoader.vue"
        <div v-if="state.isLoading" class="text-center text-gray-500 py-6 ">
         <PulseLoader />
        </div> */
+
+const searchQuery = ref("")
+const selectedCategory = ref("")
+const selectedSession = ref("")
+const selectedEmail = ref("")
+
 </script>
 
 <template>
@@ -20,21 +26,30 @@ import PulseLoader from "vue-spinner/src/PulseLoader.vue"
         <i class="pi pi-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
         <input 
           type="text" 
+          v-model="searchQuery"
           placeholder="Search in DriveHub" 
           class="w-full p-2 pl-10 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
       </div>
     </div>
       <div class="flex justify-center mt-3 space-x-2">
-        <SelectList :buttonName="'categories'"/>
-        <SelectList :buttonName="'sessions_semesters'"/>
-        <SelectList :buttonName="'emails'"/>
+        <SelectList 
+          :buttonName="'categories'" 
+          />
+        <SelectList 
+          :buttonName="'sessions_semesters'" 
+        />
+        <SelectList 
+          :buttonName="'emails'"
+        />
       </div>
     </div>
 
     <!-- Suggested Files -->
      <div class="w-full px-4">
-       <LinkList />
+       <LinkList 
+        :query="searchQuery"
+       />
      </div>
   </div>
 </template>
