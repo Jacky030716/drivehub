@@ -5,28 +5,7 @@ import * as z from 'zod'
 
 import { sessionOptions, semesterOptions, userOptions, categoryOptions, ownerOptions } from '@/constant/options'
 
-import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form'
-
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-
 import { Button } from './ui/button'
-import { Input } from './ui/input'
-
 import CustomInputField from './CustomInputField.vue'
 import CustomSelectField from './CustomSelectField.vue'
 
@@ -50,10 +29,7 @@ const onSubmit = form.handleSubmit((values) => {
 </script>
 
 <template>
-  <form @submit="onSubmit" class="min-w-full grid grid-cols-4 gap-5">
-    <div>
-      
-    </div>
+  <form @submit="onSubmit" class="w-full grid grid-cols-4 gap-5">
     <!-- File Url -->
     <CustomInputField 
       :label="'File Url'" 
@@ -84,8 +60,7 @@ const onSubmit = form.handleSubmit((values) => {
       :label="'Semester'"
       :options="semesterOptions"
       :placeholder="'Select your semester'"
-      :span="1"
-      name="semester"
+      :name="'semester'"
      />
 
     <!-- Session -->
@@ -93,8 +68,7 @@ const onSubmit = form.handleSubmit((values) => {
       :label="'Session'"
       :options="sessionOptions"
       :placeholder="'Select your session'"
-      :span="1"
-      name="session"
+      :name="'session'"
      />
 
     <!-- Shared With -->
