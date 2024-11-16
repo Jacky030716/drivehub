@@ -6,8 +6,6 @@ import Navbar from "@/components/Navbar.vue"
 
 <template>
 
-<Navbar />
-
 <div class="p-6 bg-gray-50 min-h-screen">
 <div class="flex justify-between items-center mb-6">
 <h1 class="text-xl font-bold text-gray-800">Notifications</h1>
