@@ -1,60 +1,58 @@
 <script setup>
-import { RouterLink } from "vue-router"
-import { Calendar, Folder, Mail, ChevronRight } from 'lucide-vue-next';
+import { RouterLink } from "vue-router";
+import { User, Folder, CalendarDays, FileText, Mail } from "lucide-vue-next";
 
 const props = defineProps({
-  resource: {
+  hub: {
     type: Object,
-    required: true
+    required: true,
   },
   categoryColor: {
     type: String,
-    default: 'text-gray-500'
-  }
-})
-
-const truncateText = (text, limit = 80) => {
-  if (text.length <= limit) return text;
-  return text.slice(0, limit) + '...';
-}
+    default: "text-gray-500",
+  },
+});
 </script>
 
 <template>
-  <div class="bg-white p-4 mb-2 rounded-lg shadow hover:shadow-md transition-shadow duration-200 cursor-pointer hover:bg-gray-300">
-    <div class="flex-1">
-      <!-- Title with icon based on category -->
-      <div class="flex items-center mb-2">
-        <Folder :class="[categoryColor, 'w-4 h-4 mr-2']" />
-        <p class="text-sm font-semibold">{{ resource.name }}</p>
-      </div>
-
-      <!-- Details section -->
-      <div class="space-y-1">
-        <!-- Category -->
-        <div class="flex items-center text-xs text-gray-500">
-          <ChevronRight class="w-3 h-3 mr-1" />
-          <span>{{ resource.category }}</span>
+  <RouterLink :to="`/hub/${hub.categoryId}`">
+    <div class="bg-white p-4 mb-2 rounded-lg shadow hover:shadow-md transition-shadow duration-200 cursor-pointer hover:bg-gray-300 hover:border-5">
+      <div class="flex-1">
+        <!-- Title with category icon -->
+        <div class="flex items-center mb-2">
+          <Folder :class="[categoryColor, 'w-4 h-4 mr-2']" />
+          <p class="text-sm font-semibold">{{ hub.categoryName }}</p>
         </div>
 
-        <!-- Session/Semester -->
-        <div class="flex items-center text-xs text-gray-500">
-          <Calendar class="w-3 h-3 mr-1" />
-          <span>{{ resource.session }}/{{ resource.semester }}</span>
-        </div>
+        <!-- Details section -->
+        <div class="space-y-1">
+          <!-- Creator -->
+          <div class="flex items-center text-xs text-gray-500">
+            <User class="w-3 h-3 mr-1" />
+            <span>{{ hub.categoryCreator }}</span>
+          </div>
 
-        <!-- Description -->
-        <p class="text-xs text-gray-600 mt-1">
-          {{ truncateText(resource.description) }}
-        </p>
+          <!-- Session/Semester -->
+          <div class="flex items-center text-xs text-gray-500">
+            <CalendarDays class="w-3 h-3 mr-1" />
+            <span>{{ hub.categoryCreatedSession }}-{{ hub.categoryCreatedSemester }}</span>
+          </div>
 
-        <!-- Email -->
-        <div class="flex items-center text-xs text-gray-500">
-          <Mail class="w-3 h-3 mr-1" />
-          <span>{{ resource.email }}</span>
+          <!-- Description -->
+          <div class="flex items-center text-xs text-gray-500">
+            <FileText class="w-3 h-3 mr-1" />
+            <span>{{ hub.categoryDescription }}</span>
+          </div>
+
+          <!-- Email -->
+          <div class="flex items-center text-xs text-gray-500">
+            <Mail class="w-3 h-3 mr-1" />
+            <span>{{ hub.categoryCreatorEmail }}</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </RouterLink>
 </template>
 
 <style scoped>

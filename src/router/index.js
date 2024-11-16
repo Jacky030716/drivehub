@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
 import ProfileView from "@/views/ProfileView.vue";
 import BookmarkView from "@/views/BookmarkView.vue";
+import HubsView from "@/views/HubsView.vue";
 import HubView from "@/views/HubView.vue";
 import SharedResourcesView from "@/views/SharedResourcesView.vue";
 import ShareView from "@/views/ShareView.vue";
@@ -27,8 +28,13 @@ export const routes = [
     component: BookmarkView
   },
   {
-    name: "Hub",
+    name: "Hubs",
     path: "/hub",
+    component: HubsView,
+  },
+  {
+    name: "Hub",
+    path: "/hub/:categoryId",
     component: HubView,
   },
   {

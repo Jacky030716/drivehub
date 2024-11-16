@@ -24,18 +24,16 @@ const state = reactive({
                          '2022/2023-2', '2022/2023-1', '2021/2022-2', '2021/2022-1',
                          '2020/2021-2', '2020/2021-1'],
     categories: [],
-    emails: [],
     isLoading: true
 })
 
 onMounted(async() => {
   try {
     const response = await axios({
-      url: "/api/links",
+      url: "/api/hubs",
     });
     
-    state.categories = Array.from(new Set(response.data.map(item => item.category))).sort();
-    state.emails = Array.from(new Set(response.data.map(item => item.email))).sort();
+    state.categories = Array.from(new Set(response.data.map(item => item.categoryName))).sort();
   } catch (error) {
     console.log("Error fetching data ", error);
   } finally {
@@ -49,8 +47,6 @@ const getLabel = computed(() => {
       return 'Categories';
     case 'sessions_semesters':
       return 'Academic Sessions';
-    case 'emails':
-      return 'Email Lists';
     default:
       return 'Select Option';
   }
@@ -62,8 +58,6 @@ const getItems = computed(() => {
       return state.categories;
     case 'sessions_semesters':
       return state.sessions_semesters;
-    case 'emails':
-      return state.emails;
     default:
       return [];
   }

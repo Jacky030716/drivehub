@@ -4,7 +4,10 @@
       "categoryId": "1",
       "categoryName": "Course Files",
       "categoryCreator": "Muhammad Ali",
+      "categoryCreatorEmail": "professorAli@fc.edu.my",
       "categoryDescription": "Central repository for academic materials including lecture slides, tutorial worksheets, lab exercises, past year examination papers, and course assessments. Organized by course codes and academic sessions for easy access and reference.",
+      "categoryCreatedSession": "2023/2024",
+      "categoryCreatedSemester": "1",
       "links": [
         {
           "category": "Course Files",
@@ -16,6 +19,28 @@
           "link": "https://drive.google.com/drive/folders/ABC123",
           "feedback": [],
           "id": "1"
+        },
+        {
+          "category": "Course Files",
+          "name": "SECJ2104-02",
+          "session": "2023/2024",
+          "semester": 2,
+          "description": "Course materials for Object-Oriented Programming (Section 02)",
+          "email": "professorAli@fc.edu.my",
+          "link": "https://drive.google.com/drive/folders/XYZ001",
+          "feedback": [],
+          "id": "2"
+        },
+        {
+          "category": "Course Files",
+          "name": "SECJ2204-03",
+          "session": "2022/2023",
+          "semester": 1,
+          "description": "Archived past year papers for Data Structures and Algorithms",
+          "email": "professorAli@fc.edu.my",
+          "link": "https://drive.google.com/drive/folders/PQR002",
+          "feedback": [],
+          "id": "3"
         }
       ]
     },
@@ -23,7 +48,10 @@
       "categoryId": "2",
       "categoryName": "Course Coordination",
       "categoryCreator": "Johanna",
+      "categoryCreatorEmail": "admin@utm.edu.my",
       "categoryDescription": "Administrative hub for course coordinators containing standardized course materials, assessment guidelines, marking schemes, and moderation reports. Facilitates collaboration between different sections of the same course to maintain teaching consistency.",
+      "categoryCreatedSession": "2022/2023",
+      "categoryCreatedSemester": "2",
       "links": [
         {
           "category": "Course Coordination",
@@ -34,7 +62,29 @@
           "email": "admin@utm.edu.my",
           "link": "https://docs.google.com/spreadsheets/d/XYZ456",
           "feedback": [],
+          "id": "1"
+        },
+        {
+          "category": "Course Coordination",
+          "name": "SECJ2013 Moderation Report",
+          "session": "2022/2023",
+          "semester": 2,
+          "description": "Moderation report for SECJ2013, including assessment feedback.",
+          "email": "admin@utm.edu.my",
+          "link": "https://drive.google.com/drive/folders/MOD001",
+          "feedback": [],
           "id": "2"
+        },
+        {
+          "category": "Course Coordination",
+          "name": "SECJ3104-Coordination Materials",
+          "session": "2023/2024",
+          "semester": 1,
+          "description": "Standardized materials for SECJ3104 coordination.",
+          "email": "admin@utm.edu.my",
+          "link": "https://drive.google.com/drive/folders/MOD002",
+          "feedback": [],
+          "id": "3"
         }
       ]
     },
@@ -42,7 +92,10 @@
       "categoryId": "3",
       "categoryName": "Training",
       "categoryCreator": "Mohd Razak",
+      "categoryCreatorEmail": "researcher@utm.edu.my",
       "categoryDescription": "Comprehensive collection of professional development resources including workshop materials, training modules, seminar presentations, and research methodology guides. Features both technical and pedagogical training materials for faculty enhancement.",
+      "categoryCreatedSession": "2024/2025",
+      "categoryCreatedSemester": "1",
       "links": [
         {
           "category": "Training",
@@ -53,6 +106,28 @@
           "email": "researcher@utm.edu.my",
           "link": "https://drive.google.com/drive/folders/DEF789",
           "feedback": [],
+          "id": "1"
+        },
+        {
+          "category": "Training",
+          "name": "Teaching Pedagogy Workshop",
+          "session": "2023/2024",
+          "semester": 2,
+          "description": "Slides and videos from the Teaching Pedagogy Workshop.",
+          "email": "researcher@utm.edu.my",
+          "link": "https://drive.google.com/drive/folders/TRAIN001",
+          "feedback": [],
+          "id": "2"
+        },
+        {
+          "category": "Training",
+          "name": "Machine Learning Seminar Materials",
+          "session": "2023/2024",
+          "semester": 1,
+          "description": "Research and training slides from the Machine Learning Seminar.",
+          "email": "researcher@utm.edu.my",
+          "link": "https://drive.google.com/drive/folders/TRAIN002",
+          "feedback": [],
           "id": "3"
         }
       ]
@@ -61,7 +136,10 @@
       "categoryId": "4",
       "categoryName": "Meeting",
       "categoryCreator": "Mohd Razak",
+      "categoryCreatorEmail": "Muhammad Ali",
       "categoryDescription": "Archive of departmental meetings including video recordings, minutes, action items, and follow-up reports. Contains both regular faculty meetings and special committee sessions, organized chronologically with searchable agenda topics.",
+      "categoryCreatedSession": "2023/2024",
+      "categoryCreatedSemester": "1",
       "links": [
         {
           "category": "Meeting",
@@ -72,7 +150,29 @@
           "email": "hod@se.utm.edu.my",
           "link": "https://bit.ly/202320241",
           "feedback": [],
-          "id": "4"
+          "id": "1"
+        },
+        {
+          "category": "Meeting",
+          "name": "Postgrad Coordination Meeting",
+          "session": "2023/2024",
+          "semester": 1,
+          "description": "Coordination meeting minutes for postgraduate programs.",
+          "email": "hod@se.utm.edu.my",
+          "link": "https://bit.ly/PGMeeting2024",
+          "feedback": [],
+          "id": "2"
+        },
+        {
+          "category": "Meeting",
+          "name": "Research Review Meeting",
+          "session": "2023/2024",
+          "semester": 2,
+          "description": "Summary of research proposal discussions and approvals.",
+          "email": "hod@se.utm.edu.my",
+          "link": "https://bit.ly/ResearchMeeting2024",
+          "feedback": [],
+          "id": "3"
         }
       ]
     },
@@ -80,7 +180,10 @@
       "categoryId": "5",
       "categoryName": "Timetable",
       "categoryCreator": "Hanie Zain",
+      "categoryCreatorEmail": "utmtimetable@utm.edu.my",
       "categoryDescription": "Semester-wise scheduling information including lecture halls, lab allocations, and tutorial room assignments. Features both undergraduate and postgraduate timetables with real-time updates for venue changes and special arrangements.",
+      "categoryCreatedSession": "2024/2025",
+      "categoryCreatedSemester": "1",
       "links": [
         {
           "category": "Timetable",
@@ -91,10 +194,31 @@
           "email": "utmtimetable@utm.edu.my",
           "link": "https://bit.ly/Timetable202420251",
           "feedback": [],
-          "id": "5"
+          "id": "1"
+        },
+        {
+          "category": "Timetable",
+          "name": "Postgraduate",
+          "session": "2024/2025",
+          "semester": 1,
+          "description": "Postgraduate timetable for the semester 2024/2025",
+          "email": "utmtimetable@utm.edu.my",
+          "link": "https://bit.ly/PostgradTimetable2025",
+          "feedback": [],
+          "id": "2"
+        },
+        {
+          "category": "Timetable",
+          "name": "Lab Schedules",
+          "session": "2023/2024",
+          "semester": 2,
+          "description": "Lab allocations for undergraduate and postgraduate courses.",
+          "email": "utmtimetable@utm.edu.my",
+          "link": "https://bit.ly/LabSchedule2024",
+          "feedback": [],
+          "id": "3"
         }
       ]
     }
   ]
 }
-
