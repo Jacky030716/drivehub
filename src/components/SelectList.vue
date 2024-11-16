@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import {
   Select,
   SelectContent,
@@ -34,9 +34,8 @@ onMounted(async() => {
       url: "/api/resources",
     });
     
-    // 使用 Set 去重后转回数组
-    state.categories = [...new Set(response.data.map(item => item.category))].sort();
-    state.emails = [...new Set(response.data.map(item => item.email))].sort();
+    state.categories = Array.from(new Set(response.data.map(item => item.category))).sort();
+    state.emails = Array.from(new Set(response.data.map(item => item.email))).sort();
   } catch (error) {
     console.log("Error fetching data ", error);
   } finally {
