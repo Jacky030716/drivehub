@@ -1,10 +1,13 @@
 <script setup>
+import * as z from 'zod'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
-import * as z from 'zod'
+import { useRouter } from 'vue-router';
 
 import CustomInputField from '@/components/CustomInputField.vue';
 import CustomSelectField from '@/components/CustomSelectField.vue';
+
+const router = useRouter()
 
 const roleOptions = [
   { value: 'staff', label: 'Staff' },
@@ -24,6 +27,7 @@ const form = useForm({
 
 const onSubmit = form.handleSubmit((values) => {
   console.log('Form submitted!', values)
+  router.push('/')
 })
 
 </script>

@@ -2,6 +2,18 @@
 import Navbar from "@/components/Navbar.vue"
 import SelectList from "@/components/SelectHub.vue";
 import HubLists from "@/components/HubLists.vue";
+import { ref } from "vue";
+import SelectList from "@/components/SelectList.vue";
+import LinkList from "@/components/LinkList.vue";
+import PulseLoader from "vue-spinner/src/PulseLoader.vue"
+
+/* <!-- show loading spinner while loading is true -->
+       <div v-if="state.isLoading" class="text-center text-gray-500 py-6 ">
+        <PulseLoader />
+       </div> */
+
+const searchQuery = ref("")
+
 </script>
 
 <template>
@@ -14,15 +26,22 @@ import HubLists from "@/components/HubLists.vue";
         <i class="pi pi-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
         <input 
           type="text" 
+          v-model="searchQuery"
           placeholder="Search in DriveHub" 
           class="w-full p-2 pl-10 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
       </div>
     </div>
       <div class="flex justify-center mt-3 space-x-2">
-        <SelectList :buttonName="'categories'"/>
-        <SelectList :buttonName="'sessions_semesters'"/>
-        <SelectList :buttonName="'emails'"/>
+        <SelectList 
+          :buttonName="'categories'" 
+          />
+        <SelectList 
+          :buttonName="'sessions_semesters'" 
+        />
+        <SelectList 
+          :buttonName="'emails'"
+        />
       </div>
     </div>
     
@@ -33,7 +52,13 @@ import HubLists from "@/components/HubLists.vue";
 
     <!-- Suggested Files -->
      <div class="w-full px-4">
+<<<<<<< HEAD
        <HubLists :limit="3" showButton="true"/>
+=======
+       <LinkList 
+        :query="searchQuery"
+       />
+>>>>>>> 04ee104dd37a5e31a9c05de2e1606205bb96a43b
      </div>
   </div>
 </template>
