@@ -22,7 +22,6 @@ const searchQuery = ref("")
       <div class="flex justify-center mt-3 space-x-2">
         <HomePageSelect :buttonName="'categories'" />
         <HomePageSelect :buttonName="'sessions_semesters'" />
-        <HomePageSelect :buttonName="'emails'" />
       </div>
     </div>
 

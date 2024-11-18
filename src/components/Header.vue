@@ -1,6 +1,13 @@
 <script setup>
+import { useRoute } from 'vue-router';
+import { computed } from 'vue';
 import MobileNav from './MobileNav.vue';
 
+// Get the current route
+const route = useRoute();
+
+// Compute the page title reactively
+const pageTitle = computed(() => route.meta.title || 'Page');
 </script>
 
 <template>
@@ -8,8 +15,9 @@ import MobileNav from './MobileNav.vue';
     <nav class="w-full mx-auto px-6 flex items-center justify-between h-full text-white">
       <MobileNav />
 
+      <!-- Dynamic Page Title -->
       <h2 class="text-xl font-semibold">
-        My Resources
+        {{ pageTitle }}
       </h2>
 
       <!-- Avatar -->

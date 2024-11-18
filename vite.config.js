@@ -16,15 +16,10 @@ export default defineConfig({
   plugins: [
     vue(),
   ],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
-  },
   server: {
     proxy: {
       '/api': {
-        target: "http://localhost:8000",
+        target: "http://localhost:8001",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }
@@ -32,5 +27,10 @@ export default defineConfig({
   },
   build: {
     target: 'es2015'  // or higher
+  },
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
   }
 })

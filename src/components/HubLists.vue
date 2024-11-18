@@ -15,7 +15,7 @@ defineProps({
 })
 
 const state = reactive({
-  links: [],
+  hubs: [],
   isLoading: true
 });
 
@@ -45,12 +45,12 @@ const shuffleArray = (array) => {
 
 onMounted(async () => {
   try {
-    state.links = (await axios({
-      url: "/api/links",
+    state.hubs = (await axios({
+      url: "/api/hubs",
     })).data;
 
-    // Set up category colors after loading links
-    const uniqueCategories = [...new Set(state.links.map(item => item.category))];
+    // Set up category colors after loading hubs
+    const uniqueCategories = [...new Set(state.hubs.map(item => item.categoryName))];
     const shuffledColors = shuffleArray([...colorPalette]);
 
     uniqueCategories.forEach((category, index) => {
@@ -80,8 +80,8 @@ const getCategoryColor = (category) => {
     <template v-else>
 
       <!-- Link List Items -->
-      <HubList v-for="resource in state.links.slice(0, limit || state.links.length)" :key="resource.id"
-        :resource="resource" :categoryColor="getCategoryColor(resource.category)" />
+      <HubList v-for="hub in state.hubs.slice(0, limit || state.hubs.length)" :key="hub.id"
+        :hub="hub" :categoryColor="getCategoryColor(hub.categoryName)" />
 
       <!-- View More Link -->
       <div v-if="showButton" class="text-center mt-4">
