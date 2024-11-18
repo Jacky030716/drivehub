@@ -17,7 +17,7 @@ const formSchema = toTypedSchema(z.object({
   semester: z.string(),
   session: z.string(),
   sharedwith: z.string(),
-  category: z.string(),
+  category: z.string(), 
 }))
 
 const form = useForm({

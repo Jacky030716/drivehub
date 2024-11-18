@@ -33,7 +33,7 @@ const searchQuery = ref("")
     <!-- Suggested Files -->
     <div class="max-h-[440px] overflow-y-scroll">
       <div class="w-full px-4  overflow-y-auto">
-        <HubLists :limit="3" showButton="true" />
+        <HubLists :limit="3" :showButton="true" />
       </div>
     </div>
   </div>

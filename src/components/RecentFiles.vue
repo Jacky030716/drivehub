@@ -22,7 +22,7 @@ const handleClick = (link) => {
 <template>
   <div 
     class="md:w-[240px] w-full h-[160px] flex flex-col items-center justify-center gap-2.5 bg-neutral-300/20 hover:bg-neutral-300/40 rounded-xl p-6 cursor-pointer transition-colors ease-in-out"
-    v-for="file in files.slice(0, 5)"
+    v-for="file in files.slice(0, 4)"
     :key="file.id"
     @click="file.link && handleClick(file.link)"
   >

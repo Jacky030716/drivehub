@@ -6,6 +6,9 @@ import { RouterLink, useRoute } from 'vue-router'
 
 const overviewLinks = navlinks.slice(0, 3)
 const resourcesLinks = navlinks.slice(3)
+
+const route = useRoute()
+const isActive = (link) => route.path === link.href
 </script>
 
 <template>
@@ -22,12 +25,9 @@ const resourcesLinks = navlinks.slice(3)
       <div class="flex flex-col gap-y-3.5">
         <h4 class="text-secondary-600 font-bold text-xl">Overview</h4>
         <div class="flex flex-col items-start gap-2.5 text-secondary-500">
-          <RouterLink 
-            v-for="(link, index) in overviewLinks" 
-            :key="index" 
-            :to="link.href"
-            class="flex items-center gap-3 text-secondary-500 hover:font-medium transition-colors ease-in-out hover:text-primary-500 cursor-pointer"
-          > 
+          <RouterLink v-for="(link, index) in overviewLinks" :key="index" :to="link.href"
+            class="flex w-full items-center gap-3 text-secondary-500 hover:font-medium transition-colors ease-in-out hover:text-primary-500 cursor-pointer p-2"
+            :class="{ 'font-medium bg-secondary-300/20 rounded-md': isActive(link) }">
             <img :src="link.icon" :alt="link.name" class="w-5 h-5" />
             {{ link.name }}
           </RouterLink>
@@ -35,18 +35,15 @@ const resourcesLinks = navlinks.slice(3)
       </div>
 
       <!-- Separator -->
-       <Separator />
+      <Separator />
 
       <!-- Resources Section -->
       <div class="flex flex-col gap-3.5">
         <h4 class="text-secondary-600 font-bold text-xl">Resources</h4>
         <div class="flex flex-col items-start gap-2.5 text-secondary-500">
-          <RouterLink 
-            v-for="(link, index) in resourcesLinks" 
-            :key="index" 
-            :to="link.href"
-            class="flex items-center gap-3 text-secondary-500 hover:font-medium transition-colors ease-in-out hover:text-primary-500 cursor-pointer"
-          > 
+          <RouterLink v-for="(link, index) in resourcesLinks" :key="index" :to="link.href"
+            class="flex w-full items-center gap-3 text-secondary-500 hover:font-medium transition-colors ease-in-out hover:text-primary-500 cursor-pointer p-2"
+            :class="{ 'font-medium bg-secondary-300/20 rounded-md': isActive(link) }">
             <img :src="link.icon" :alt="link.name" class="w-5 h-5" />
             {{ link.name }}
           </RouterLink>
