@@ -32,7 +32,7 @@ const onSubmit = form.handleSubmit((values) => {
 </script>
 
 <template>
-  <form @submit="onSubmit" class="w-full grid grid-cols-4 gap-5">
+  <form @submit="onSubmit" class="w-full grid md:grid-cols-4 grid-cols-1 gap-5">
     <!-- File Url -->
     <CustomInputField 
       :label="'File Url'" 
@@ -54,8 +54,8 @@ const onSubmit = form.handleSubmit((values) => {
       :label="'Owner'" 
       :options="ownerOptions"
       :placeholder="'Owner name'" 
-      :span="2"
       :name="'owner'"
+      :span="2"
     />
 
     <!-- Semester -->
@@ -64,6 +64,7 @@ const onSubmit = form.handleSubmit((values) => {
       :options="semesterOptions"
       :placeholder="'Select your semester'"
       :name="'semester'"
+      :span="1"
      />
 
     <!-- Session -->
@@ -72,6 +73,7 @@ const onSubmit = form.handleSubmit((values) => {
       :options="sessionOptions"
       :placeholder="'Select your session'"
       :name="'session'"
+      :span="1"
      />
 
     <!-- Shared With -->
