@@ -1,16 +1,20 @@
 <script setup>
-import { reactive, onMounted, ref } from 'vue';
+import { reactive, onMounted, ref, computed } from 'vue';
 import { ChevronRight } from 'lucide-vue-next';
 import { RouterLink } from 'vue-router';
 import axios from 'axios';
 import PulseLoader from "vue-spinner/src/PulseLoader.vue"
 import HubList from './HubList.vue';
 
-defineProps({
+const props = defineProps({
   limit: Number,
   showButton: {
     type: Boolean,
     default: false
+  },
+  query: {
+    type: String,
+    default: ""
   }
 })
 
@@ -67,6 +71,15 @@ onMounted(async () => {
 const getCategoryColor = (category) => {
   return categoryColorMap.value.get(category) || 'text-gray-500';
 }
+
+// Computed property to filter hubs based on query
+const filteredHubs = computed(() => {
+  if (!props.query) return state.hubs;
+  const searchTerm = props.query.toLowerCase().trim();
+  return state.hubs.filter(hub => 
+    hub.categoryName.toLowerCase().includes(searchTerm)
+  );
+});
 </script>
 
 <template>
@@ -80,7 +93,7 @@ const getCategoryColor = (category) => {
     <template v-else>
 
       <!-- Link List Items -->
-      <HubList v-for="hub in state.hubs.slice(0, limit || state.hubs.length)" :key="hub.id"
+      <HubList v-for="hub in filteredHubs" :key="hub.id"
         :hub="hub" :categoryColor="getCategoryColor(hub.categoryName)" />
 
       <!-- View More Link -->
