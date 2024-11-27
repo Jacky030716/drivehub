@@ -1,3 +1,0 @@
-<template>
-  Profile View
-</template>
