@@ -1,50 +1,32 @@
 <script setup>
 import { reactive, onMounted, ref, defineProps } from 'vue';
 import axios from 'axios';
-import PulseLoader from "vue-spinner/src/PulseLoader.vue"
+import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import LinkList from './LinkList.vue';
+import { generateCategoryColorMap } from '@/lib/colorUtils';
 
 const props = defineProps({
   categoryId: String
-})
+});
 
 const state = reactive({
   links: [],
   isLoading: true
 });
 
-// Color mapping logic
-const colorPalette = [
-  'text-blue-500',
-  'text-purple-500',
-  'text-green-500',
-  'text-red-500',
-  'text-yellow-500',
-  'text-indigo-500',
-  'text-pink-500',
-  'text-teal-500',
-  'text-orange-500',
-  'text-cyan-500'
-];
-
-const categoryColorMap = ref(new Map());
-
-const shuffleArray = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
-
+const categoryColorMap = ref(null);
 const result = ref(null);
 
 onMounted(async () => {
   try {
+    // Fetch links
     state.links = (await axios({
       url: "/api/hubs",
     })).data;
     
+    // Generate a color map for categories
+    categoryColorMap.value = generateCategoryColorMap(state.links);
+
     // Find the category that matches the categoryId
     const foundCategory = state.links.find(item => item.categoryId === props.categoryId);
     if (foundCategory) {

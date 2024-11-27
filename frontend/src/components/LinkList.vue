@@ -1,57 +1,67 @@
 <script setup>
-import { CalendarDays, Link2, Mail, User, FileText, Folder } from "lucide-vue-next";
+import { CalendarDays, Link2, Mail, FileText } from "lucide-vue-next";
 
 const props = defineProps({
   link: {
     type: Object,
     required: true,
-  }
+  },
 });
+
+const handleEdit = () => {
+  alert("Edit functionality triggered for: " + props.link.name);
+};
+
+const handleDelete = () => {
+  alert("Delete functionality triggered for: " + props.link.name);
+};
 </script>
 
 <template>
-  <div class="bg-white p-4 mb-2 rounded-lg shadow hover:shadow-md transition-shadow duration-200 cursor-pointer hover:bg-gray-300 hover:border-5">
-    <div class="flex-1">
+  <div class="bg-white p-4 mb-2 rounded-lg shadow hover:shadow-md transition-shadow duration-200 cursor-pointer hover:bg-gray-300 relative">
+    <!-- Content -->
+    <div>
       <!-- Title with link icon -->
-      <a :href="link.link">
+      <a :href="link.link" target="_blank" class="block">
         <div class="flex items-center mb-2">
-        <Link2 :class="['text-blue-500', 'w-4 h-4 mr-2']" />
-        <a
-          :href="link.link"
-          target="_blank"
-          class="text-blue-500 hover:underline text-sm font-semibold"
-        >
-          {{ link.link }}
-        </a>
-      </div>
+          <Link2 class="text-blue-500 w-4 h-4 mr-2" />
+          <span class="text-blue-500 hover:underline text-sm font-semibold">
+            {{ link.link }}
+          </span>
+        </div>
+      </a>
 
-      <!-- Details section -->
+      <!-- Details -->
       <div class="space-y-1">
-        <!-- Name -->
-        <div class="flex items-center text-xs text-gray-500">
-          <i class="pi pi-info-circle w-3 h-3 mr-1" />
-          <span>{{ link.name }}</span>
-        </div>
-
-        <!-- Session/Semester -->
-        <div class="flex items-center text-xs text-gray-500">
-          <CalendarDays class="w-3 h-3 mr-1" />
-          <span>{{ link.session }}-{{ link.semester }}</span>
-        </div>
-
-        <!-- Description -->
         <div class="flex items-center text-xs text-gray-500">
           <FileText class="w-3 h-3 mr-1" />
           <span>{{ link.description }}</span>
         </div>
-
-        <!-- Email -->
+        <div class="flex items-center text-xs text-gray-500">
+          <CalendarDays class="w-3 h-3 mr-1" />
+          <span>{{ link.session }}-{{ link.semester }}</span>
+        </div>
         <div class="flex items-center text-xs text-gray-500">
           <Mail class="w-3 h-3 mr-1" />
           <span>{{ link.email }}</span>
         </div>
       </div>
-      </a>
+    </div>
+
+    <!-- Edit and Delete Buttons -->
+    <div class="absolute bottom-2 right-2 flex space-x-2">
+      <button
+        class="px-3 py-1 text-xs text-white bg-blue-500 rounded hover:bg-blue-600"
+        @click="handleEdit"
+      >
+        Edit
+      </button>
+      <button
+        class="px-3 py-1 text-xs text-white bg-red-500 rounded hover:bg-red-600"
+        @click="handleDelete"
+      >
+        Delete
+      </button>
     </div>
   </div>
 </template>
@@ -59,10 +69,5 @@ const props = defineProps({
 <style scoped>
 .hover\:shadow-md:hover {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
-.cursor-pointer:hover .text-sm {
-  color: #4F46E5;
-  text-decoration: underline;
 }
 </style>
