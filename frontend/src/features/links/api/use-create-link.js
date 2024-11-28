@@ -1,5 +1,5 @@
 import { toast } from "@/components/ui/toast";
-import { QueryClient, useMutation, useQueryClient } from "@tanstack/vue-query";
+import { useMutation, useQueryClient } from "@tanstack/vue-query";
 import axios from "axios";
 
 export const useCreateLink = () => {
@@ -18,6 +18,7 @@ export const useCreateLink = () => {
     onSuccess: () => {
       toast({
         title: "Link created!",
+        variant: 'success'
       })
       queryClient.invalidateQueries(["links"])
     },

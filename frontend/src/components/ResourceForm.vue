@@ -12,13 +12,17 @@ import CustomSelectField from './CustomSelectField.vue'
 import { useCreateLink } from '@/features/links/api/use-create-link'
 import CustomTextareaField from './CustomTextareaField.vue'
 
+defineProps({
+  hubs: Array,
+})
+
 const formSchema = toTypedSchema(z.object({
   url: z.string().url({ message: "Invalid URL" }),
-  name: z.string().min(3, { message: "Name must be at least 3 characters" }),
   description: z.string().min(10, { message: "Description must be at least 10 characters" }),
   semester: z.string().min(1, { message: "Semester is required" }),
   session: z.string().min(1, { message: "Session is required" }),
-  category: z.string().min(1, { message: "Category is required" }), 
+  category: z.string().min(1, { message: "Category is required" }),
+  hub_name: z.string().min(1, { message: "Hub name is required" }),
 }))
 
 const { handleSubmit, resetForm, isSubmitting } = useForm({
@@ -28,64 +32,40 @@ const { handleSubmit, resetForm, isSubmitting } = useForm({
 const mutation = useCreateLink()
 
 const onSubmit = handleSubmit((values) => {
-  mutation.mutate(values, {
-    onSuccess: () => {
-      resetForm()
-    },
-  })
+  // mutation.mutate(values, {
+  //   onSuccess: () => {
+  //     resetForm()
+  //   },
+  // })
+  console.log(values)
 })
 </script>
 
 <template>
   <form @submit="onSubmit" class="w-full grid grid-cols-4 gap-5">
     <!-- File Url -->
-    <CustomInputField 
-      :label="'File Url'" 
-      :placeholder="'Paste drive url'" 
-      :name="'url'"
-    />
-
-    <!-- File Name -->
-    <CustomInputField 
-      :label="'File Name'" 
-      :placeholder="'Enter file name'" 
-      :name="'name'"
-    />
+    <CustomInputField :label="'Link Url'" :placeholder="'Paste drive url'" :name="'url'" />
 
     <!-- Description -->
-    <CustomTextareaField 
-      :label="'Description'" 
-      :placeholder="'Enter description'" 
-      :name="'description'"
-      :span="4"
-    />
+    <CustomTextareaField :label="'Link Description'" :placeholder="'Give a brief description to your link'"
+      :name="'description'" :span="4" />
 
-    <!-- Owner -->
-    <!-- <CustomSelectField 
-      :label="'Owner'" 
-      :options="ownerOptions"
-      :placeholder="'Owner name'" 
-      :name="'owner'"
-      :span="2"
-    /> -->
+    <!-- Category -->
+    <CustomSelectField :label="'Link Category'" :options="categoryOptions" :placeholder="'Select category'" :span="2"
+      :name="'category'" />
 
     <!-- Semester -->
-     <CustomSelectField 
-      :label="'Semester'"
-      :options="semesterOptions"
-      :placeholder="'Select your semester'"
-      :name="'semester'"
-      :span="1"
-     />
+    <CustomSelectField :label="'Semester'" :options="semesterOptions" :placeholder="'Select your semester'"
+      :name="'semester'" :span="1" />
 
     <!-- Session -->
-    <CustomSelectField 
-      :label="'Session'"
-      :options="sessionOptions"
-      :placeholder="'Select your session'"
-      :name="'session'"
-      :span="1"
-     />
+    <CustomSelectField :label="'Session'" :options="sessionOptions" :placeholder="'Select your session'"
+      :name="'session'" :span="1" />
+
+      
+    <!-- Hub Name -->
+    <CustomSelectField :label="'Hub Name'" :placeholder="'Select hub'"
+      :options="hubs.map(hub => ({ label: hub.name, value: hub.id }))" :name="'hub_id'" :span="4" />
 
     <!-- Shared With -->
     <!-- <CustomSelectField 
@@ -96,20 +76,7 @@ const onSubmit = handleSubmit((values) => {
       :name="'sharedwith'"
     /> -->
 
-    <!-- Category -->
-    <CustomSelectField 
-      :label="'Category'" 
-      :options="categoryOptions"
-      :placeholder="'Select category'" 
-      :span="4"
-      :name="'category'"
-    />
-
-    <Button 
-      type="submit" 
-      class="col-span-4 bg-primary text-white rounded-full mt-6"
-      :disabled="isSubmitting"
-    >
+    <Button type="submit" class="col-span-4 bg-primary text-white rounded-full mt-6" :disabled="isSubmitting">
       Submit
     </Button>
   </form>
