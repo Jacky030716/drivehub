@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { db } from "../drizzle/drizzle.js";
-import { hubs, users } from "../drizzle/schema.js";
+import { hubs, users, links } from "../drizzle/schema.js";
 
 const hubsController = {
   getHubs: async (req, res) => {
@@ -49,13 +49,28 @@ const hubsController = {
       .select()
       .from(hubs)
       .innerJoin(users, eq(hubs.userId, users.id))
-      .where(eq(hubs.id, hubId));
+      .innerJoin(links, eq(links.hubId, hubs.id))
+      .where(
+        eq(hubs.id, hubId),
+        eq(users.id, hubs.userId),
+        eq(links.hubId, hubs.id)
+      );
 
     if (!data) {
       return res.status(404).json({
         message: "No hub found",
       });
     }
+
+    const hubLinks = data.map((row) => ({
+      id: row.links.id,
+      url: row.links.url,
+      name: row.links.name,
+      description: row.links.description,
+      semester: row.links.semester,
+      session: row.links.session,
+      category: row.links.category
+    }));
 
     const [normalizedData] = data.map((row) => ({
       id: row.hubs.id,
@@ -66,7 +81,8 @@ const hubsController = {
       session: row.hubs.session,
       userId: row.hubs.userId,
       email: row.user.email,
-      username: row.user.name
+      username: row.user.name,
+      links: hubLinks
     }));
 
     res.json({

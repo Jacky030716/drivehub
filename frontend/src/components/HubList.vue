@@ -29,7 +29,7 @@ const handleDelete = () => {
       <div>
         <div class="flex items-center mb-2">
           <Folder :class="[categoryColor, 'w-4 h-4 mr-2']" />
-          <p class="text-sm font-semibold">{{ hub.category }}</p>
+          <p class="text-sm font-semibold">{{ hub.name }}</p>
         </div>
 
         <div class="space-y-1">

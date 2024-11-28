@@ -8,7 +8,7 @@ const overviewLinks = navlinks.slice(0, 3)
 const resourcesLinks = navlinks.slice(3)
 
 const route = useRoute()
-const isActive = (link) => route.path === link.href
+const isActive = (link) => route.path === link.href && route.path.includes(link.href)
 </script>
 
 <template>

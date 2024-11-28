@@ -6,6 +6,10 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  email: {
+    type: String,
+    required: true,
+  },
 });
 
 const handleEdit = () => {
@@ -32,11 +36,20 @@ const handleDelete = () => {
         </div>
       </a>
 
-      <!-- Details -->
-      <div class="space-y-1">
-        <div class="flex items-center text-xs text-gray-500">
-          <FileText class="w-3 h-3 mr-1" />
-          <span>{{ link.description }}</span>
+        <!-- Details -->
+        <div class="space-y-1">
+          <div class="flex items-center text-xs text-gray-500">
+            <FileText class="w-3 h-3 mr-1" />
+            <span>{{ link.description }}</span>
+          </div>
+          <div class="flex items-center text-xs text-gray-500">
+            <CalendarDays class="w-3 h-3 mr-1" />
+            <span>{{ link.session }}-{{ link.semester }}</span>
+          </div>
+          <div class="flex items-center text-xs text-gray-500">
+            <Mail class="w-3 h-3 mr-1" />
+            <span>{{ email || link.email }} </span>
+          </div>
         </div>
         <div class="flex items-center text-xs text-gray-500">
           <CalendarDays class="w-3 h-3 mr-1" />
