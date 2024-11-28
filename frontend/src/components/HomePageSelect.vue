@@ -34,17 +34,17 @@ const state = reactive({
 });
 
 onMounted(async() => {
-  try {
-    const response = await axios({
-      url: "/api/hubs",
-    });
+  // try {
+  //   const response = await axios({
+  //     url: "/api/hubs",
+  //   });
     
-    state.categories = Array.from(new Set(response.data.map(item => item.categoryName))).sort();
-  } catch (error) {
-    console.log("Error fetching data ", error);
-  } finally {
-    state.isLoading = false;
-  }
+  //   state.categories = Array.from(new Set(response.data.map(item => item.categoryName))).sort();
+  // } catch (error) {
+  //   console.log("Error fetching data ", error);
+  // } finally {
+  //   state.isLoading = false;
+  // }
 });
 
 const getLabel = computed(() => {

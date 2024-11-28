@@ -26,8 +26,7 @@ const mutation = useDeleteLink(props.link.id)
 const handleDelete = async () => {
   const confirm = window.confirm("Do you really want to delete this link?")
   if (confirm) {
-    // mutation.mutate()
-    console.log(props.link.id);
+    mutation.mutate()
   }
 };
 
@@ -63,19 +62,11 @@ const handleDelete = async () => {
             <span>{{ email || link.email }} </span>
           </div>
         </div>
-        <div class="flex items-center text-xs text-gray-500">
-          <CalendarDays class="w-3 h-3 mr-1" />
-          <span>{{ link.session }}-{{ link.semester }}</span>
-        </div>
-        <div class="flex items-center text-xs text-gray-500">
-          <Mail class="w-3 h-3 mr-1" />
-          <span>{{ link.email }} </span>
-        </div>
       </div>
 
     <!-- Edit and Delete Buttons -->
     <div class="absolute bottom-2 right-2 flex space-x-2">
-      <RouterLink :to="`/share/edit/${link.linkId}`" class="px-3 py-1 text-xs text-white bg-blue-500 rounded hover:bg-blue-600">
+      <RouterLink :to="`/share/edit/${link.id}`" class="px-3 py-1 text-xs text-white bg-blue-500 rounded hover:bg-blue-600">
         Edit
       </RouterLink>
       <button class="px-3 py-1 text-xs text-white bg-red-500 rounded hover:bg-red-600" @click="handleDelete">

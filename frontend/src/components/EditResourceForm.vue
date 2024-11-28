@@ -9,7 +9,6 @@ import { sessionOptions, semesterOptions, userOptions, categoryOptions, ownerOpt
 import { Button } from './ui/button'
 import CustomInputField from './CustomInputField.vue'
 import CustomSelectField from './CustomSelectField.vue'
-import { useCreateLink } from '@/features/links/api/use-create-link'
 import CustomTextareaField from './CustomTextareaField.vue'
 
 defineProps({
@@ -30,8 +29,6 @@ const { handleSubmit, resetForm, isSubmitting } = useForm({
   validationSchema: formSchema,
 })
 
-const mutation = useCreateLink()
-
 const onSubmit = handleSubmit((values) => {
   // mutation.mutate(values, {
   //   onSuccess: () => {
@@ -44,6 +41,7 @@ const onSubmit = handleSubmit((values) => {
 
 <template>
   <form @submit="onSubmit" class="w-full grid grid-cols-4 gap-5">
+    {{ link }}
     <!-- File Url -->
     <CustomInputField :label="'Link Url'" :placeholder="'Paste drive url'" :name="'url'" />
 
