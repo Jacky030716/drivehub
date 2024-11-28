@@ -14,6 +14,7 @@ import CustomTextareaField from './CustomTextareaField.vue'
 
 defineProps({
   hubs: Array,
+  link: Object
 })
 
 const formSchema = toTypedSchema(z.object({
@@ -77,7 +78,7 @@ const onSubmit = handleSubmit((values) => {
     /> -->
 
     <Button type="submit" class="col-span-4 bg-primary text-white rounded-full mt-6" :disabled="isSubmitting">
-      Submit link
+      Update link
     </Button>
   </form>
 </template>

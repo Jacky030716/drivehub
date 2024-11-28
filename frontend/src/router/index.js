@@ -7,6 +7,7 @@ import HubsView from "@/views/HubsView.vue";
 import HubView from "@/views/HubView.vue";
 import SharedResourcesView from "@/views/SharedResourcesView.vue";
 import ShareView from "@/views/ShareView.vue";
+import EditShareView from "@/views/EditShareView.vue"
 import NotificationsView from "@/views/NotificationsView.vue";
 import SignInView from "@/views/SignInView.vue";
 import NotFoundView from '@/views/NotFoundView.vue'
@@ -53,6 +54,12 @@ export const routes = [
     path: "/share",
     component: ShareView,
     meta: { title: 'Upload Link' },
+  },
+  {
+    name: "Upload Link",
+    path: "/share/edit/:linkId",
+    component: EditShareView,
+    meta: { title: 'Edit Upload Link' },
   },
   {
     name: "Notifications",

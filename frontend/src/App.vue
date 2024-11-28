@@ -1,6 +1,7 @@
 <script setup>
 import { RouterView, useRoute } from 'vue-router';
 import Toaster from './components/ui/toast/Toaster.vue';
+// import { useToast } from 'vue-toastification';
 import Navbar from "./components/Navbar.vue"
 import Header from './components/Header.vue';
 
