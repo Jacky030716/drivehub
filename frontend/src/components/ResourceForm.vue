@@ -1,33 +1,38 @@
 <script setup>
+import * as z from 'zod'
+import axios from 'axios'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
-import * as z from 'zod'
-import { v4 as uuidv4 } from 'uuid'
 
 import { sessionOptions, semesterOptions, userOptions, categoryOptions, ownerOptions } from '@/constant/options'
 
 import { Button } from './ui/button'
 import CustomInputField from './CustomInputField.vue'
 import CustomSelectField from './CustomSelectField.vue'
+import { useCreateLink } from '@/features/links/api/use-create-link'
+import CustomTextareaField from './CustomTextareaField.vue'
 
 const formSchema = toTypedSchema(z.object({
-  fileurl: z.string(),
-  filename: z.string(),
-  owner: z.string().email(),
-  semester: z.string(),
-  session: z.string(),
-  sharedwith: z.string(),
-  category: z.string(), 
+  url: z.string().url({ message: "Invalid URL" }),
+  name: z.string().min(3, { message: "Name must be at least 3 characters" }),
+  description: z.string().min(10, { message: "Description must be at least 10 characters" }),
+  semester: z.string().min(1, { message: "Semester is required" }),
+  session: z.string().min(1, { message: "Session is required" }),
+  category: z.string().min(1, { message: "Category is required" }), 
 }))
 
-const form = useForm({
+const { handleSubmit, resetForm, isSubmitting } = useForm({
   validationSchema: formSchema,
 })
 
-const onSubmit = form.handleSubmit((values) => {
-  const fileId = uuidv4()
-  const formData = { ...values, fileId }
-  console.log('Form submitted!', formData)
+const mutation = useCreateLink()
+
+const onSubmit = handleSubmit((values) => {
+  mutation.mutate(values, {
+    onSuccess: () => {
+      resetForm()
+    },
+  })
 })
 </script>
 
@@ -37,24 +42,32 @@ const onSubmit = form.handleSubmit((values) => {
     <CustomInputField 
       :label="'File Url'" 
       :placeholder="'Paste drive url'" 
-      :name="'fileurl'"
+      :name="'url'"
     />
 
     <!-- File Name -->
     <CustomInputField 
       :label="'File Name'" 
       :placeholder="'Enter file name'" 
-      :name="'filename'"
+      :name="'name'"
+    />
+
+    <!-- Description -->
+    <CustomTextareaField 
+      :label="'Description'" 
+      :placeholder="'Enter description'" 
+      :name="'description'"
+      :span="4"
     />
 
     <!-- Owner -->
-    <CustomSelectField 
+    <!-- <CustomSelectField 
       :label="'Owner'" 
       :options="ownerOptions"
       :placeholder="'Owner name'" 
       :name="'owner'"
       :span="2"
-    />
+    /> -->
 
     <!-- Semester -->
      <CustomSelectField 
@@ -75,13 +88,13 @@ const onSubmit = form.handleSubmit((values) => {
      />
 
     <!-- Shared With -->
-    <CustomSelectField 
+    <!-- <CustomSelectField 
       :label="'Shared With'" 
       :options="userOptions"
       :placeholder="'Who do you want to share with?'" 
       :span="4"
       :name="'sharedwith'"
-    />
+    /> -->
 
     <!-- Category -->
     <CustomSelectField 
@@ -95,7 +108,7 @@ const onSubmit = form.handleSubmit((values) => {
     <Button 
       type="submit" 
       class="col-span-4 bg-primary text-white rounded-full mt-6"
-      :disabled="!form.isSubmitting"
+      :disabled="isSubmitting"
     >
       Submit
     </Button>

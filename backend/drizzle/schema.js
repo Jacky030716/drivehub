@@ -12,7 +12,7 @@ export const userRelations = relations(users, ({ many }) => ({
   hubs: many(hubs),
   links: many(links),
   feedbacks: many(feedbacks),
-  notifications: many(notifications),
+  // notifications: many(notifications),
 }))
 
 export const hubs = pgTable("hubs", {
@@ -32,32 +32,42 @@ export const hubRelations = relations(hubs, ({ one, many }) => ({
     fields: [hubs.userId],
     references: [users.id],
   }),
-  participants: many(hubParticipants),
-  links: many(links, "hubId"),
+  links: many(links),
 }))
 
-export const hubParticipants = pgTable("hub_participants", {
-  hubId: uuid("hub_id").references(() => hubs.id, { onDelete: "CASCADE" }),
-  userId: uuid("user_id").references(() => users.id, { onDelete: "CASCADE" }),
-});
+// export const hubParticipants = pgTable("hub_participants", {
+//   hubId: uuid("hub_id").references(() => hubs.id, { onDelete: "CASCADE" }).notNull(),
+//   userId: uuid("user_id").references(() => users.id, { onDelete: "CASCADE" }).notNull(),
+// });
+
+// export const hubParticipantRelations = relations(hubParticipants, ({ one }) => ({
+//   hub: one(hubs, {
+//     fields: [hubParticipants.hubId],
+//     references: [hubs.id],
+//   }),
+//   user: one(users, {
+//     fields: [hubParticipants.userId],
+//     references: [users.id],
+//   }),
+// }));
 
 export const links = pgTable("links", {
   id: uuid("id").primaryKey().defaultRandom(),
-  category: text("category").notNull(),
+  url: text("url").notNull(),
   name: text("name").notNull(),
   description: text("description").notNull(),
-  session: text("session").notNull(),
   semester: text("semester").notNull(),
-  url: text("url").notNull(),
+  session: text("session").notNull(),
+  category: text("category").notNull(),
   userId: uuid("user_id").references(() => users.id, {
     onDelete: "CASCADE",
   }).notNull(), // fk for owner
   hubId: uuid("hub_id").references(() => hubs.id, {
     onDelete: "CASCADE",
-  }).notNull(), // fk for hub
+  }), // fk for hub
 })
 
-export const linkRelations = relations(links, ({ one }) => ({
+export const linkRelations = relations(links, ({ one, many }) => ({
   owner: one(users, {
     fields: [links.userId],
     references: [users.id],
@@ -66,7 +76,7 @@ export const linkRelations = relations(links, ({ one }) => ({
     fields: [links.hubId],
     references: [hubs.id],
   }),
-  feedbacks: many(feedbacks, "linkId"),
+  feedbacks: many(feedbacks),
 }))
 
 export const feedbacks = pgTable("feedback", {

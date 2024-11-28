@@ -22,15 +22,16 @@ const handleClick = (link) => {
 <template>
   <div 
     class="md:w-[240px] w-full h-[160px] flex flex-col items-center justify-center gap-2.5 bg-neutral-300/20 hover:bg-neutral-300/40 rounded-xl p-6 cursor-pointer transition-colors ease-in-out"
-    v-for="file in files.slice(0, 4)"
+    v-if="files.length"
+    v-for="file in files.slice(0, Math.min(files.length, 4))"
     :key="file.id"
-    @click="file.link && handleClick(file.link)"
+    @click="file.url && handleClick(file.url)"
   >
     <img :src="drivehub" alt="Drive Logo" class="w-14"/>
     <div class="w-full flex flex-col items-center text-center">
       <h4 class="line-clamp-3 w-full font-medium leading-tight">{{ file.name }}</h4>
-      <div class="w-full line-clamp-5">
-        <p class="text-sm text-sky-700">{{ file.link }}</p>
+      <div class="w-full line-clamp-1">
+        <p class="text-sm text-sky-700">{{ file.url }}</p>
       </div>
     </div>
   </div>  

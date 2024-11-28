@@ -13,15 +13,15 @@ const props = defineProps({
   <div class="bg-white p-4 mb-2 rounded-lg shadow hover:shadow-md transition-shadow duration-200 cursor-pointer hover:bg-gray-300 hover:border-5">
     <div class="flex-1">
       <!-- Title with link icon -->
-      <a :href="link.link">
+      <a :href="link.url">
         <div class="flex items-center mb-2">
         <Link2 :class="['text-blue-500', 'w-4 h-4 mr-2']" />
         <a
-          :href="link.link"
+          :href="link.url"
           target="_blank"
           class="text-blue-500 hover:underline text-sm font-semibold"
         >
-          {{ link.link }}
+          {{ link.url }}
         </a>
       </div>
 
@@ -48,7 +48,7 @@ const props = defineProps({
         <!-- Email -->
         <div class="flex items-center text-xs text-gray-500">
           <Mail class="w-3 h-3 mr-1" />
-          <span>{{ link.email }}</span>
+          <span>{{ link.email }} fixed this</span>
         </div>
       </div>
       </a>

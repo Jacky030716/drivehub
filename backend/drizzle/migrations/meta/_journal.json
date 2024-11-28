@@ -22,6 +22,27 @@
       "when": 1732550717258,
       "tag": "0002_perpetual_martin_li",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1732689787602,
+      "tag": "0003_stormy_morph",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1732690779744,
+      "tag": "0004_true_hex",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1732691712745,
+      "tag": "0005_pale_shinko_yamashiro",
+      "breakpoints": true
     }
   ]
 }
