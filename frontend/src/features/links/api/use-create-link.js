@@ -17,7 +17,7 @@ export const useCreateLink = () => {
     },
     onSuccess: () => {
       toast({
-        title: "Link created!",
+        title: "Link created successfully!",
         variant: 'success'
       })
       queryClient.invalidateQueries(["links"])
