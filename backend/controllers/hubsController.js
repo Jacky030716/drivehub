@@ -88,6 +88,35 @@ const hubsController = {
     res.json({
       data: normalizedData
     });
+  },
+  createHub: async (req, res) => {
+    const { userId, hub } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ message: "Missing userId" });
+    }
+
+    if (!hub) {
+      return res.status(400).json({ message: "Missing hub" });
+    }
+
+    const [data] = await db
+      .insert(hubs)
+      .values({
+        userId,
+        ...hub
+      })
+      .returning();
+
+    if (!data) {
+      return res.status(500).json({
+        message: "Error creating hub"
+      });
+    }
+
+    res.json({
+      data
+    });
   }
 };
 

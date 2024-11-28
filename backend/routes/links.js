@@ -5,5 +5,7 @@ const router = express.Router();
 
 router.get('/', linkController.getLinks)
 router.post('/', linkController.addLink);
+router.delete('/:linkId', linkController.deleteLink); // http://localhost:3000/api/links/{linkId}
+router.put('/:linkId', linkController.updateLink); // http://localhost:3000/api/links/{linkId}
 
 export default router;

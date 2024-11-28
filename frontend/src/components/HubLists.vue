@@ -8,6 +8,8 @@ import PulseLoader from "vue-spinner/src/PulseLoader.vue"
 import { shuffleArray } from '@/lib/utils';
 import { colorPalette } from '@/constant';
 import { useGetHubs } from '@/features/hubs/api/use-get-hubs';
+import { useHubForm } from '@/hooks/useHubForm';
+import HubForm from './HubForm.vue';
 
 const props = defineProps({
   limit: Number,
@@ -28,6 +30,9 @@ const props = defineProps({
     default: "reset"
   }
 });
+
+// Hooks to open the dialog
+const { open } = useHubForm()
 
 // Fetch hubs using Vue Query
 const hubsQuery = useGetHubs();
@@ -113,6 +118,8 @@ const filteredHubs = computed(() => {
         :hub="hub" 
         :categoryColor="getCategoryColor(hub.categoryName)" 
       />
+
+      <HubForm />
 
       <!-- View More Link -->
       <div v-if="showButton" class="text-center mt-4">

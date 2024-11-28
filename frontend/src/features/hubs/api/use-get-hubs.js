@@ -11,8 +11,6 @@ export const useGetHubs = () => {
         throw new Error("No hubs found")
       }
 
-      console.log(response.data)
-
       return response.data
     },
   })

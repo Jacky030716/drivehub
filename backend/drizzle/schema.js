@@ -18,7 +18,6 @@ export const userRelations = relations(users, ({ many }) => ({
 export const hubs = pgTable("hubs", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
-  category: text("category").notNull(),
   description: text("description").notNull(),
   session: text("session").notNull(),
   semester: text("semester").notNull(),

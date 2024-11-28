@@ -3,6 +3,46 @@ import { db } from "../drizzle/drizzle.js";
 import { links, users } from "../drizzle/schema.js";
 
 const linkController = {
+  getLink: async (req, res) => {
+    const { userId, linkId } = req.query;
+
+    if (!userId || !linkId) {
+      return res.status(400).json({
+        message: "Bad request"
+      });
+    }
+
+    const data = await db
+      .select()
+      .from(links)
+      .innerJoin(users, eq(links.userId, users.id))
+      .where(
+        eq(links.userId, userId),
+        eq(links.id, linkId)
+      )
+
+    if (!data) {
+      return res.status(404).json({
+        message: "No link found"
+      });
+    }
+
+    const normalizedData = data.map((row) => ({
+      id: row.links.id,
+      url: row.links.url,
+      title: row.links.title,
+      description: row.links.description,
+      session: row.links.session,
+      semester: row.links.semester,
+      userId: row.links.userId,
+      email: row.user.email,
+      username: row.user.name
+    }));
+
+    res.json({
+      data: normalizedData
+    });
+  },
   getLinks: async (req, res) => {
     const { userId } = req.query;
 
@@ -57,6 +97,66 @@ const linkController = {
         userId,
         ...link
       })
+      .returning()
+
+    res.json({
+      data
+    });
+  },
+  deleteLink: async (req, res) => {
+    const { userId } = req.body;
+    const { linkId } = req.params;
+
+    if (!userId){
+      return res.status(401).json({
+        message: "Unauthorized"
+      });
+    }
+
+    if (!linkId){
+      return res.status(400).json({
+        message: "Bad request"
+      });
+    }
+
+    const data = await db
+      .delete()
+      .from(links)
+      .where(
+        eq(links.userId, userId),
+        eq(links.id, linkId)
+      )
+      .returning()
+
+    res.json({
+      data
+    });
+  },
+  updateLink: async (req, res) => {
+    const { userId, link } = req.body;
+    const { linkId } = req.params;
+
+    if (!userId){
+      return res.status(401).json({
+        message: "Unauthorized"
+      });
+    }
+
+    if (!linkId){
+      return res.status(400).json({
+        message: "Bad request"
+      });
+    }
+
+    const data = await db
+      .update(links)
+      .set({
+        ...link
+      })
+      .where(
+        eq(links.userId, userId),
+        eq(links.id, linkId)
+      )
       .returning()
 
     res.json({

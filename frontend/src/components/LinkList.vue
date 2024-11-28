@@ -13,7 +13,7 @@ const props = defineProps({
 });
 
 const handleEdit = () => {
-  alert("Edit functionality triggered for: " + props.link.name);
+  alert("Edit functionality triggered for: " + props.link.id);
 };
 
 const handleDelete = () => {
