@@ -3,6 +3,7 @@ import LinkLists from '@/components/LinkLists.vue';
 import { reactive, onMounted, watch, computed } from 'vue'
 import { useRoute, RouterLink, useRouter } from 'vue-router'
 import { useGetHub } from '@/features/hubs/api/use-get-hub';
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 
 const route = useRoute()
 
@@ -22,20 +23,9 @@ const hub = computed(() => hubQuery.data?.value?.data || []);
 let categoryName = ""
 
 onMounted(async () => {
-  // try {
     if (!hubQuery.data.value) {
       hubQuery.refetch();
     }
-
-    // [state.hub] = state.hub.filter(item => item.categoryId === categoryId)
-    // categoryName = state.hub.categoryName
-
-
-  // } catch (error) {
-  //   console.log("Error fetching data:", error);
-  // } finally {
-  //   state.isLoading = false;
-  // }
 });
 
 watch(() => hubQuery.data, (newData) => {
@@ -54,7 +44,7 @@ watch(() => hubQuery.data, (newData) => {
   <div v-else class="bg-gray-100 shadow p-4 w-full flex flex-col ">
     <h1 class="text-lg font-semibold text-center">{{ categoryName }} Lists</h1>
     <div class="mt-2 max-h-[580px] overflow-y-auto">
-      <LinkLists :categoryId="`${categoryId}`" />
+      <LinkLists :hub="hub" :isLoading="isDisabled"/>
     </div>
   </div>
 </template>

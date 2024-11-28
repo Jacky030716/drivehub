@@ -6,6 +6,10 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  email: {
+    type: String,
+    required: true,
+  },
 });
 
 const handleEdit = () => {
@@ -44,7 +48,7 @@ const handleDelete = () => {
           </div>
           <div class="flex items-center text-xs text-gray-500">
             <Mail class="w-3 h-3 mr-1" />
-            <span>{{ link.email }} </span>
+            <span>{{ email || link.email }} </span>
           </div>
         </div>
     </div>

@@ -2,8 +2,6 @@ import { useQuery } from "@tanstack/vue-query"
 import axios from "axios"
 
 export const useGetHub = (hubId) => {
-  console.log(hubId)
-
   const query = useQuery({
     queryKey: ["hub"],
     queryFn: async () => {
@@ -12,8 +10,6 @@ export const useGetHub = (hubId) => {
       if(!response.data) {
         throw new Error("No Hub found")
       }
-
-      console.log(response.data)
 
       return response.data
     },
