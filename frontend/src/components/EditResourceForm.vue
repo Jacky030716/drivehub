@@ -10,10 +10,11 @@ import { Button } from './ui/button'
 import CustomInputField from './CustomInputField.vue'
 import CustomSelectField from './CustomSelectField.vue'
 import CustomTextareaField from './CustomTextareaField.vue'
+import { useEditLink } from '@/features/links/api/use-edit-link'
 
-defineProps({
+const props = defineProps({
   hubs: Array,
-  link: Object
+  link: Object,
 })
 
 const formSchema = toTypedSchema(z.object({
@@ -22,26 +23,32 @@ const formSchema = toTypedSchema(z.object({
   semester: z.string().min(1, { message: "Semester is required" }),
   session: z.string().min(1, { message: "Session is required" }),
   category: z.string().min(1, { message: "Category is required" }),
-  hub_name: z.string().min(1, { message: "Hub name is required" }),
+  hub_id: z.string().min(1, { message: "Hub name is required" }),
 }))
 
 const { handleSubmit, resetForm, isSubmitting } = useForm({
   validationSchema: formSchema,
+  initialValues: {
+    url: props.link.url,
+    description: props.link.description,
+    semester: props.link.semester,
+    session: props.link.session,
+    category: props.link.category, 
+    hub_id: props.link.hub_id,
+  },
 })
 
+const editMutation = useEditLink(props.link.id)
+
 const onSubmit = handleSubmit((values) => {
-  // mutation.mutate(values, {
-  //   onSuccess: () => {
-  //     resetForm()
-  //   },
-  // })
+  editMutation.mutate(values)
+
   console.log(values)
 })
 </script>
 
 <template>
   <form @submit="onSubmit" class="w-full grid grid-cols-4 gap-5">
-    {{ link }}
     <!-- File Url -->
     <CustomInputField :label="'Link Url'" :placeholder="'Paste drive url'" :name="'url'" />
 
@@ -51,7 +58,7 @@ const onSubmit = handleSubmit((values) => {
 
     <!-- Category -->
     <CustomSelectField :label="'Link Category'" :options="categoryOptions" :placeholder="'Select category'" :span="2"
-      :name="'category'" />
+      :name="'category'"/>
 
     <!-- Semester -->
     <CustomSelectField :label="'Semester'" :options="semesterOptions" :placeholder="'Select your semester'"
@@ -59,21 +66,11 @@ const onSubmit = handleSubmit((values) => {
 
     <!-- Session -->
     <CustomSelectField :label="'Session'" :options="sessionOptions" :placeholder="'Select your session'"
-      :name="'session'" :span="1" />
+      :name="'session'" :span="1"  />
 
-      
     <!-- Hub Name -->
     <CustomSelectField :label="'Hub Name'" :placeholder="'Select hub'"
       :options="hubs.map(hub => ({ label: hub.name, value: hub.id }))" :name="'hub_id'" :span="4" />
-
-    <!-- Shared With -->
-    <!-- <CustomSelectField 
-      :label="'Shared With'" 
-      :options="userOptions"
-      :placeholder="'Who do you want to share with?'" 
-      :span="4"
-      :name="'sharedwith'"
-    /> -->
 
     <Button type="submit" class="col-span-4 bg-primary text-white rounded-full mt-6" :disabled="isSubmitting">
       Update link

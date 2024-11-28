@@ -1,6 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "../drizzle/drizzle.js";
-import { links, users } from "../drizzle/schema.js";
+import { hubs, links, users } from "../drizzle/schema.js";
 
 const linkController = {
   getLink: async (req, res) => {
@@ -23,10 +23,12 @@ const linkController = {
       .select()
       .from(links)
       .innerJoin(users, eq(links.userId, users.id))
+      .innerJoin(hubs, eq(links.hubId, hubs.id))
       .where(
         and(
           eq(links.userId, userId),
-          eq(links.id, linkId)
+          eq(links.id, linkId),
+          eq(hubs.userId, userId)
         )
       )
     
@@ -40,12 +42,15 @@ const linkController = {
       id: row.links.id,
       url: row.links.url,
       title: row.links.title,
+      category: row.links.category,
       description: row.links.description,
       session: row.links.session,
       semester: row.links.semester,
       userId: row.links.userId,
       email: row.user.email,
-      username: row.user.name
+      username: row.user.name,
+      hub_name: row.hubs.name,
+      hub_id: row.hubs.id
     }));
 
     res.json({
@@ -166,10 +171,18 @@ const linkController = {
         ...link
       })
       .where(
-        eq(links.userId, userId),
-        eq(links.id, linkId)
+        and(
+          eq(links.userId, userId),
+          eq(links.id, linkId)
+        )
       )
       .returning()
+
+    if (!data || data.length === 0) {
+      return res.status(404).json({
+        message: "No link found"
+      });
+    }
 
     res.json({
       data

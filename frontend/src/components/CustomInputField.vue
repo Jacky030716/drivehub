@@ -20,11 +20,11 @@ defineProps({
 
 <template>
   <div class="col-span-full">
-    <FormField v-slot="{ componentField }" :name="name">
+    <FormField v-slot="{ field, componentField }" :name="name">
       <FormItem >
         <FormLabel class="text-primary font-bold">{{ label }}</FormLabel>
         <FormControl>
-          <Input :type="type" :placeholder="placeholder" v-bind="componentField" class="focus:border-primary"/>
+          <Input :type="type" :placeholder="placeholder" v-model="field.value" v-bind="componentField" class="focus:border-primary"/>
         </FormControl>
         <FormMessage class="text-xs" />
       </FormItem>
