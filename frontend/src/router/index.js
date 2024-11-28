@@ -56,7 +56,7 @@ export const routes = [
     meta: { title: 'Upload Link' },
   },
   {
-    name: "Upload Link",
+    name: "Edit Link",
     path: "/share/edit/:linkId",
     component: EditShareView,
     meta: { title: 'Edit Upload Link' },
