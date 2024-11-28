@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, onMounted, ref, computed, watchEffect } from 'vue';
+import { reactive, onMounted, ref, computed, watch } from 'vue';
 import HubList from './HubList.vue';
 import { ChevronRight } from 'lucide-vue-next';
 import { RouterLink } from 'vue-router';
@@ -7,7 +7,7 @@ import PulseLoader from "vue-spinner/src/PulseLoader.vue"
 
 import { shuffleArray } from '@/lib/utils';
 import { colorPalette } from '@/constant';
-import { useFetchData } from '@/hooks/useFetchData';
+import { useGetHubs } from '@/features/hubs/api/use-get-hubs';
 
 const props = defineProps({
   limit: Number,
@@ -29,31 +29,40 @@ const props = defineProps({
   }
 });
 
-const categoryColorMap = ref(new Map());
-const { data, isLoading, error } = useFetchData('/api/hubs');
+// Fetch hubs using Vue Query
+const hubsQuery = useGetHubs();
 
-// Watch for changes in the fetched data and update state accordingly
-watchEffect(() => {
-  if (data.value) {
-    // Normalize the data, combine the session and semester
-    const normalizedHubs = data.value.map(hub => ({
-      ...hub,
-      categoryCreatedSessem: `${hub.categoryCreatedSession}-${hub.categoryCreatedSemester}`
-    }));
+// Computed properties for reactivity
+const isDisabled = computed(() => hubsQuery.isLoading.value);
+const hubs = computed(() => hubsQuery.data?.value?.data || []);
 
-    // Set up category colors
-    const uniqueCategories = [...new Set(normalizedHubs.map(item => item.categoryName))];
-    const shuffledColors = shuffleArray([...colorPalette]);
-
-    uniqueCategories.forEach((category, index) => {
-      const colorIndex = index % shuffledColors.length;
-      categoryColorMap.value.set(category, shuffledColors[colorIndex]);
-    });
-
-    // Update the data
-    data.value = normalizedHubs;
+// Ensure data is refetched on mount if not already present
+onMounted(() => {
+  if (!hubsQuery.data.value) {
+    hubsQuery.refetch();
   }
 });
+
+// Watch for changes in hubsQuery.data and update hubs accordingly
+watch(() => hubsQuery.data, (newData) => {
+  if (newData) {
+    hubs.value = newData.data;
+    setupCategoryColors(newData.data);
+  }
+});
+
+// Set up category colors
+const categoryColorMap = ref(new Map());
+
+const setupCategoryColors = (hubs) => {
+  const uniqueCategories = [...new Set(hubs.map(item => item.categoryName))];
+  const shuffledColors = shuffleArray([...colorPalette]);
+
+  uniqueCategories.forEach((category, index) => {
+    const colorIndex = index % shuffledColors.length;
+    categoryColorMap.value.set(category, shuffledColors[colorIndex]);
+  });
+};
 
 const getCategoryColor = (category) => {
   return categoryColorMap.value.get(category) || 'text-gray-500';
@@ -61,9 +70,9 @@ const getCategoryColor = (category) => {
 
 // Computed property to filter hubs based on query
 const filteredHubs = computed(() => {
-  if (!data.value) return [];
+  if (!hubs.value) return [];
   if (!props.query && props.selectedCategory === "reset" && props.selectedSession === "reset") 
-    return data.value;
+    return hubs.value;
 
   // Filter by search query
   const searchTerm = props.query.toLowerCase().trim();
@@ -75,7 +84,7 @@ const filteredHubs = computed(() => {
   const selectedSession = props.selectedSession === "reset" ? "" : props.selectedSession.toLowerCase().trim();
 
   // Filter by all three conditions
-  return data.value.filter(hub => 
+  return hubs.value.filter(hub => 
     hub.categoryName.toLowerCase().includes(selectedCategory) &&
     hub.categoryCreatedSessem.toLowerCase().includes(selectedSession) && 
     hub.categoryName.toLowerCase().includes(searchTerm)
@@ -86,14 +95,14 @@ const filteredHubs = computed(() => {
 <template>
   <div class="mt-4 p-2 w-full">
     <!-- Loading state -->
-    <div v-if="isLoading" class="text-center py-4">
+    <div v-if="isDisabled" class="text-center py-4">
       <PulseLoader />
     </div>
 
     <!-- Error state -->
-    <div v-else-if="error" class="text-center py-4 text-red-500">
+    <!-- <div v-else-if="error" class="text-center py-4 text-red-500">
       Failed to load hubs. Please try again later.
-    </div>
+    </div> -->
 
     <!-- Content -->
     <template v-else>

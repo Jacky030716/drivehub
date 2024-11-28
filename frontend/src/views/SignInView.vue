@@ -33,7 +33,7 @@ const onSubmit = form.handleSubmit((values) => {
 </script>
 
 <template>
-  <main class="max-w-7xl mx-auto flex flex-col justify-center items-center max-h-screen overflow-hidden">
+  <main class="max-w-7xl mx-auto flex flex-col justify-center items-center min-h-screen overflow-hidden">
     <div class="min-w-[550px] p-16 flex flex-col justify-center items-center gap-16 bg-neutral-100/10 shadow-xl rounded-xl">
       <div class="flex flex-col items-center space-y-2">
         <img src="../assets/logo.png" alt="logo" class="w-[350px] object-cover inline-block" />

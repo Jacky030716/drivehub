@@ -23,31 +23,31 @@ const handleDelete = () => {
 </script>
 
 <template>
-  <RouterLink :to="`/hub/${hub.categoryId}`" class="block">
+  <RouterLink :to="`/hub/${hub.id}`" class="block">
     <div class="bg-white p-4 mb-2 rounded-lg shadow hover:shadow-md transition-shadow duration-200 cursor-pointer hover:bg-gray-300 relative">
       <!-- Content -->
       <div>
         <div class="flex items-center mb-2">
           <Folder :class="[categoryColor, 'w-4 h-4 mr-2']" />
-          <p class="text-sm font-semibold">{{ hub.categoryName }}</p>
+          <p class="text-sm font-semibold">{{ hub.category }}</p>
         </div>
 
         <div class="space-y-1">
           <div class="flex items-center text-xs text-gray-500">
             <User class="w-3 h-3 mr-1" />
-            <span>{{ hub.categoryCreator }}</span>
+            <span>{{ hub.username }}</span>
           </div>
           <div class="flex items-center text-xs text-gray-500">
             <CalendarDays class="w-3 h-3 mr-1" />
-            <span>{{ hub.categoryCreatedSession }}-{{ hub.categoryCreatedSemester }}</span>
+            <span>{{ hub.session }}-{{ hub.semester }}</span>
           </div>
           <div class="flex items-center text-xs text-gray-500">
             <FileText class="w-3 h-3 mr-1" />
-            <span>{{ hub.categoryDescription }}</span>
+            <span>{{ hub.description }}</span>
           </div>
           <div class="flex items-center text-xs text-gray-500">
             <Mail class="w-3 h-3 mr-1" />
-            <span>{{ hub.categoryCreatorEmail }}</span>
+            <span>{{ hub.email }}</span>
           </div>
         </div>
       </div>

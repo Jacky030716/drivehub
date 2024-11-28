@@ -38,7 +38,7 @@ export const routes = [
   },
   {
     name: "Hub",
-    path: "/hub/:categoryId",
+    path: "/hub/:hubId",
     component: HubView,
     meta: { title: 'Hub' },
   },
@@ -49,10 +49,10 @@ export const routes = [
     meta: { title: 'Shared Resources' },
   },
   {
-    name: "Share",
+    name: "Upload Link",
     path: "/share",
     component: ShareView,
-    meta: { title: 'Share' },
+    meta: { title: 'Upload Link' },
   },
   {
     name: "Notifications",

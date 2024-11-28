@@ -2,6 +2,7 @@
 import RecentFiles from './RecentFiles.vue';
 import LinkList from './LinkList.vue';
 
+import PulseLoader from "vue-spinner/src/PulseLoader.vue"
 import { computed, onMounted, ref, watch } from 'vue';
 import { useGetLinks } from '@/features/links/api/use-get-links';
 
@@ -31,8 +32,8 @@ watch(() => linksQuery.data, (newData) => {
 <template>
   <div>
     <!-- Loading State -->
-    <div v-if="isDisabled">
-      {{ links }}
+    <div v-if="isDisabled" class="text-center py-4">
+      <PulseLoader />
     </div>
 
     <!-- Data Render -->

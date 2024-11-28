@@ -44,7 +44,7 @@ const handleDelete = () => {
           </div>
           <div class="flex items-center text-xs text-gray-500">
             <Mail class="w-3 h-3 mr-1" />
-            <span>{{ link.email }} fixed this</span>
+            <span>{{ link.email }} </span>
           </div>
         </div>
     </div>

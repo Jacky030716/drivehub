@@ -25,7 +25,7 @@ export const navlinks = [
     icon: "/src/assets/shared.svg"
   },
   {
-    name: "Share",
+    name: "Upload Link",
     href: "/share",
     icon: "/src/assets/share.svg"
   },

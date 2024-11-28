@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { db } from "../drizzle/drizzle.js";
-import { links } from "../drizzle/schema.js";
+import { links, users } from "../drizzle/schema.js";
 
 const linkController = {
   getLinks: async (req, res) => {
@@ -9,6 +9,7 @@ const linkController = {
     const data = await db
       .select()
       .from(links)
+      .innerJoin(users, eq(links.userId, users.id))
       .where(
         eq(links.userId, userId)
       )
@@ -18,9 +19,21 @@ const linkController = {
         message: "No links found"
       });
     }
+
+    const normalizedData = data.map((row) => ({
+      id: row.links.id,
+      url: row.links.url,
+      title: row.links.title,
+      description: row.links.description,
+      session: row.links.session,
+      semester: row.links.semester,
+      userId: row.links.userId,
+      email: row.user.email,
+      username: row.user.name
+    }));
     
     res.json({
-      data
+      data: normalizedData
     });
   },
   addLink: async (req, res) => {
