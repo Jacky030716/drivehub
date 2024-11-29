@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { db } from "../drizzle/drizzle.js";
 import { hubs, users, links } from "../drizzle/schema.js";
 
@@ -111,6 +111,74 @@ const hubsController = {
     if (!data) {
       return res.status(500).json({
         message: "Error creating hub"
+      });
+    }
+
+    res.json({
+      data
+    });
+  },
+  deleteHub: async (req, res) => {
+    const { userId } = req.query;
+    const { hubId } = req.params;
+
+    if (!userId) {
+      return res.status(400).json({ message: "Missing userId" });
+    }
+
+    if (!hubId) {
+      return res.status(400).json({ message: "Missing hubId" });
+    }
+
+    const data = await db
+      .delete(hubs)
+      .where(eq(hubs.id, hubId), eq(hubs.userId, userId))
+      .returning({
+        id: hubs.id
+      });
+
+    if (!data) {
+      return res.status(500).json({
+        message: "Error deleting hub"
+      });
+    }
+
+    res.json({
+      data
+    });
+  },
+  editHub: async (req, res) => {
+    const { userId, hub } = req.body;
+    const { hubId } = req.params;
+
+    if (!userId) {
+      return res.status(400).json({ message: "Missing userId" });
+    }
+
+    if (!hubId) {
+      return res.status(400).json({ message: "Missing hubId" });
+    }
+
+    if (!hub) {
+      return res.status(400).json({ message: "Missing hub" });
+    }
+
+    const data = await db
+      .update(hubs)
+      .set({
+        ...hub
+      })
+      .where(
+        and(
+          eq(hubs.userId, userId),
+          eq(hubs.id, hubId), 
+        ) 
+      )
+      .returning();
+
+    if (!data || !data.length) {
+      return res.status(500).json({
+        message: "Error editing hub"
       });
     }
 

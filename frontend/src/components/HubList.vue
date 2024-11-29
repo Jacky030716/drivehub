@@ -1,6 +1,11 @@
 <script setup>
 import { RouterLink } from "vue-router";
 import { User, Folder, CalendarDays, FileText, Mail } from "lucide-vue-next";
+import { useDeleteHub } from "@/features/hubs/api/use-delete-hub";
+import { useHubForm } from "@/hooks/useHubForm";
+import EditHubForm from "@/features/hubs/components/EditHubForm.vue";
+import useEditHubForm from "@/composables/useEditHubForm";
+import Button from "./ui/button/Button.vue";
 
 const props = defineProps({
   hub: {
@@ -13,18 +18,23 @@ const props = defineProps({
   },
 });
 
-const handleEdit = () => {
-  alert("Edit functionality triggered for: " + props.hub.id);
-};
+const { isOpen } = useEditHubForm();
+const deleteMutation = useDeleteHub(props.hub.id)
+
+// const handleEdit = () => {
+//   onOpen(props.hub.id)
+// };
 
 const handleDelete = () => {
-  alert("Delete functionality triggered for: " + props.hub.categoryName);
+  if (confirm('Are you sure you want to delete this hub?')) {
+    deleteMutation.mutate();
+  }
 };
 </script>
 
 <template>
   <RouterLink :to="`/hub/${hub.id}`" class="block">
-    <div class="bg-white p-4 mb-2 rounded-lg shadow hover:shadow-md transition-shadow duration-200 cursor-pointer hover:bg-gray-300 relative">
+    <div class="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow duration-200 cursor-pointer hover:bg-slate-50 relative">
       <!-- Content -->
       <div>
         <div class="flex items-center mb-2">
@@ -54,18 +64,16 @@ const handleDelete = () => {
 
       <!-- Edit and Delete Buttons -->
       <div class="absolute bottom-2 right-2 flex space-x-2">
-        <button
-          class="px-3 py-1 text-xs text-white bg-blue-500 rounded hover:bg-blue-600"
-          @click.prevent="handleEdit"
-        >
-          Edit
-        </button>
-        <button
-          class="px-3 py-1 text-xs text-white bg-red-500 rounded hover:bg-red-600"
+        <EditHubForm 
+          :hub="hub"
+        />
+        <Button
+          variant="destructive"
           @click.prevent="handleDelete"
+          :disabled="deleteMutation.isLoading"
         >
-          Delete
-        </button>
+          {{ deleteMutation.isLoading ? "Deleting..." : "Delete Hub" }}
+        </Button>
       </div>
     </div>
   </RouterLink>

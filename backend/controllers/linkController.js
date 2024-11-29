@@ -109,7 +109,8 @@ const linkController = {
       .insert(links)
       .values({
         userId,
-        ...link
+        ...link,
+        hubId: link.hub_id
       })
       .returning()
 
