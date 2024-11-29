@@ -8,7 +8,18 @@ const overviewLinks = navlinks.slice(0, 3)
 const resourcesLinks = navlinks.slice(3)
 
 const route = useRoute()
-const isActive = (link) => route.path === link.href && route.path.includes(link.href)
+const isActive = (link) => {
+  const linkPath = link.href;
+  const currentPath = route.path;
+
+  if (linkPath === "/") {
+    return currentPath === linkPath;
+  }
+
+  const regex = new RegExp(`^${linkPath}(/|$)`);
+  return regex.test(currentPath);
+}
+
 </script>
 
 <template>

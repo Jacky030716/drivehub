@@ -10,12 +10,14 @@ import {
   DialogDescription,
   DialogContent,
   DialogTrigger,
+  DialogHeader,
+  DialogFooter,
 } from "@/components/ui/dialog"
 
-import { Button } from './ui/button'
-import CustomInputField from './CustomInputField.vue'
-import CustomSelectField from './CustomSelectField.vue'
-import CustomTextareaField from './CustomTextareaField.vue'
+import CustomInputField from '@/components/CustomInputField.vue'
+import CustomTextareaField from '@/components/CustomTextareaField.vue'
+import CustomSelectField from '@/components/CustomSelectField.vue'
+import Button from '@/components/ui/button/Button.vue'
 
 defineProps({
   hubs: Array,
@@ -41,18 +43,23 @@ const onSubmit = handleSubmit((values) => {
     },
   })
 })
+
 </script>
 
 <template>
   <Dialog>
-    <DialogTrigger>
-      Add New Hub
+    <DialogTrigger as-child>
+      <Button class="rounded-full">
+        Add New Hub
+      </Button>
     </DialogTrigger>
     <DialogContent>
-      <DialogTitle>Create a new Hub</DialogTitle>
-      <DialogDescription>
-        Fill in the form below to create a new hub
-      </DialogDescription>
+      <DialogHeader>
+        <DialogTitle>Create a new Hub</DialogTitle>
+        <DialogDescription>
+          Fill in the form below to create a new hub
+        </DialogDescription>
+      </DialogHeader>
       <form @submit="onSubmit" class="w-full grid grid-cols-4 gap-5">
         <!-- Hub Name -->
         <CustomInputField :label="'Hub Name'" :placeholder="'Give your hub a name!'" :name="'name'" />
@@ -69,9 +76,11 @@ const onSubmit = handleSubmit((values) => {
         <CustomSelectField :label="'Session'" :options="sessionOptions" :placeholder="'Select your session'"
           :name="'session'" :span="1" />
 
-        <Button type="submit" class="col-span-4 bg-primary text-white rounded-full mt-6" :disabled="isSubmitting">
-          Submit
-        </Button>
+        <DialogFooter class="w-full col-span-full">
+          <Button type="submit" class="w-full bg-primary text-white rounded-full mt-6" :disabled="isSubmitting">
+            Submit
+          </Button>
+        </DialogFooter>
       </form>
     </DialogContent>
   </Dialog>

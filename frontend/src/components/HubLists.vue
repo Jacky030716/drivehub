@@ -8,8 +8,8 @@ import PulseLoader from "vue-spinner/src/PulseLoader.vue"
 import { shuffleArray } from '@/lib/utils';
 import { colorPalette } from '@/constant';
 import { useGetHubs } from '@/features/hubs/api/use-get-hubs';
-import { useHubForm } from '@/hooks/useHubForm';
-import HubForm from './HubForm.vue';
+import HubForm from '../features/hubs/components/HubForm.vue';
+import EditHubForm from '@/features/hubs/components/EditHubForm.vue';
 
 const props = defineProps({
   limit: Number,
@@ -30,9 +30,6 @@ const props = defineProps({
     default: "reset"
   }
 });
-
-// Hooks to open the dialog
-const { open } = useHubForm()
 
 // Fetch hubs using Vue Query
 const hubsQuery = useGetHubs();
@@ -98,37 +95,32 @@ const filteredHubs = computed(() => {
 </script>
 
 <template>
-  <div class="mt-4 p-2 w-full">
-    <!-- Loading state -->
-    <div v-if="isDisabled" class="text-center py-4">
-      <PulseLoader />
+  <div class="w-full flex flex-col h-full space-y-4">
+    <!-- Loading State -->
+    <div v-if="isDisabled" class="text-center py-8">
+      <PulseLoader color="#4A90E2" size="12px" />
     </div>
-
-    <!-- Error state -->
-    <!-- <div v-else-if="error" class="text-center py-4 text-red-500">
-      Failed to load hubs. Please try again later.
-    </div> -->
 
     <!-- Content -->
     <template v-else>
-      <!-- Link List Items -->
-      <HubList 
-        v-for="hub in filteredHubs" 
-        :key="hub.id"
-        :hub="hub" 
-        :categoryColor="getCategoryColor(hub.categoryName)" 
-      />
-
-      <HubForm />
+      <!-- Hubs List -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        <HubList 
+          v-for="hub in filteredHubs.slice(0, Math.min(limit, filteredHubs.length))" 
+          :key="hub.id"
+          :hub="hub" 
+          :categoryColor="getCategoryColor(hub.categoryName)" 
+        />
+      </div>
 
       <!-- View More Link -->
-      <div v-if="showButton" class="text-center mt-4">
+      <div v-if="showButton" class="text-center mt-6">
         <RouterLink 
           to="/hub"
-          class="text-blue-500 text-sm hover:text-blue-600 hover:underline transition-colors duration-200 flex items-center justify-center"
+          class="inline-flex items-center justify-center text-blue-600 text-sm font-medium hover:text-blue-800 hover:underline transition-colors duration-200"
         >
-          <span>View more</span>
-          <ChevronRight class="w-4 h-4 ml-1" />
+          <span>View More</span>
+          <ChevronRight class="w-5 h-5 ml-1" />
         </RouterLink>
       </div>
     </template>

@@ -1,23 +1,25 @@
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 
 export const useHubForm = () => {
-  const isOpen = ref(false);
-  const selectedHub = ref(null);
+  const state = reactive({
+    id: undefined,
+    isOpen: false,
+  });
 
-  function open(hub = null) {
-    selectedHub.value = hub;
-    isOpen.value = true;
+  function onOpen(id) {
+    state.isOpen = true;
+    state.id = id;
+    console.log('useHubForm: onOpen', state.isOpen);
   }
 
-  function close() {
-    isOpen.value = false;
-    selectedHub.value = null;
+  function onClose() {
+    state.isOpen = false;
+    state.id = undefined;
   }
 
   return {
-    isOpen,
-    selectedHub,
-    open,
-    close,
+    state,
+    onOpen,
+    onClose,
   };
 };
