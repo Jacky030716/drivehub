@@ -8,8 +8,7 @@ import PulseLoader from "vue-spinner/src/PulseLoader.vue"
 import { shuffleArray } from '@/lib/utils';
 import { colorPalette } from '@/constant';
 import { useGetHubs } from '@/features/hubs/api/use-get-hubs';
-import HubForm from '../features/hubs/components/HubForm.vue';
-import EditHubForm from '@/features/hubs/components/EditHubForm.vue';
+
 
 const props = defineProps({
   limit: Number,
@@ -74,7 +73,7 @@ const getCategoryColor = (category) => {
 const filteredHubs = computed(() => {
   if (!hubs.value) return [];
   if (!props.query && props.selectedCategory === "reset" && props.selectedSession === "reset") 
-    return hubs.value;
+    return props.limit ? hubs.value.slice(0, props.limit) : hubs.value;
 
   // Filter by search query
   const searchTerm = props.query.toLowerCase().trim();
@@ -86,11 +85,14 @@ const filteredHubs = computed(() => {
   const selectedSession = props.selectedSession === "reset" ? "" : props.selectedSession.toLowerCase().trim();
 
   // Filter by all three conditions
-  return hubs.value.filter(hub => 
+  const filtered = hubs.value.filter(hub => 
     hub.categoryName.toLowerCase().includes(selectedCategory) &&
     hub.categoryCreatedSessem.toLowerCase().includes(selectedSession) && 
     hub.categoryName.toLowerCase().includes(searchTerm)
   );
+
+  // Apply limit if passed
+  return props.limit ? filtered.slice(0, props.limit) : filtered;
 });
 </script>
 
@@ -106,7 +108,7 @@ const filteredHubs = computed(() => {
       <!-- Hubs List -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         <HubList 
-          v-for="hub in filteredHubs.slice(0, Math.min(limit, filteredHubs.length))" 
+          v-for="hub in filteredHubs" 
           :key="hub.id"
           :hub="hub" 
           :categoryColor="getCategoryColor(hub.categoryName)" 

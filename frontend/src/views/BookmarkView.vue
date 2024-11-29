@@ -343,7 +343,7 @@ const truncateDescription = (description, limit = 80) => {
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
     >
       <div class="bg-white p-6 rounded-lg shadow-xl w-96 text-center">
-        <h2 class="text-xl font-semibold mb-4">Confirm Unbookmark</h2>
+        <h2 class="text-xl font-semibold mb-4">Remove Bookmark</h2>
         <p class="text-gray-600 mb-6">Are you sure you want to remove this bookmark?</p>
         <div class="flex justify-center space-x-4">
           <button

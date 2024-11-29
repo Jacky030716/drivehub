@@ -10,7 +10,7 @@ export const useGetHub = (hubId) => {
       if(!response.data) {
         throw new Error("No Hub found")
       }
-
+      
       return response.data
     },
   })

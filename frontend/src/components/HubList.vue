@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink } from "vue-router";
-import { User, Folder, CalendarDays, FileText, Mail } from "lucide-vue-next";
+import { User, Folder, CalendarDays, FileText, Mail, Trash } from "lucide-vue-next";
 import { useDeleteHub } from "@/features/hubs/api/use-delete-hub";
 import { useHubForm } from "@/hooks/useHubForm";
 import EditHubForm from "@/features/hubs/components/EditHubForm.vue";
@@ -68,10 +68,12 @@ const handleDelete = () => {
           :hub="hub"
         />
         <Button
+          size="sm"
           variant="destructive"
           @click.prevent="handleDelete"
           :disabled="deleteMutation.isLoading"
         >
+          <Trash />
           {{ deleteMutation.isLoading ? "Deleting..." : "Delete Hub" }}
         </Button>
       </div>

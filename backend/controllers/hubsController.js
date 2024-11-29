@@ -40,54 +40,59 @@ const hubsController = {
   },
   getHubDetail: async (req, res) => {
     const { hubId } = req.params;
-
+  
     if (!hubId) {
       return res.status(400).json({ message: "Missing hubId" });
     }
-
-    const data = await db
-      .select()
-      .from(hubs)
-      .innerJoin(users, eq(hubs.userId, users.id))
-      .innerJoin(links, eq(links.hubId, hubs.id))
-      .where(
-        eq(hubs.id, hubId),
-        eq(users.id, hubs.userId),
-        eq(links.hubId, hubs.id)
-      );
-
-    if (!data) {
-      return res.status(404).json({
-        message: "No hub found",
-      });
+  
+    try {
+      const data = await db
+        .select()
+        .from(hubs)
+        .innerJoin(users, eq(hubs.userId, users.id))
+        .leftJoin(links, eq(links.hubId, hubs.id))
+        .where(eq(hubs.id, hubId));
+  
+      if (!data || data.length === 0) {
+        return res.status(404).json({ message: "No hub found" });
+      }
+  
+      // Group links associated with the hub
+      const hubLinks = data
+        .filter(row => row.links?.id)
+        .map(row => ({
+          id: row.links.id,
+          url: row.links.url,
+          name: row.links.name,
+          description: row.links.description,
+          semester: row.links.semester,
+          session: row.links.session,
+          category: row.links.category
+        }));
+  
+      // Normalize hub details (taking the first row as reference)
+      const {
+        hubs: { id, name, description, semester, session, userId },
+        user: { email, name: username },
+      } = data[0];
+  
+      const normalizedData = {
+        id,
+        name,
+        description,
+        semester,
+        session,
+        userId,
+        email,
+        username,
+        links: hubLinks
+      };
+  
+      return res.json({ data: normalizedData });
+    } catch (error) {
+      console.error("Error fetching hub details:", error);
+      return res.status(500).json({ message: "Internal Server Error" });
     }
-
-    const hubLinks = data.map((row) => ({
-      id: row.links.id,
-      url: row.links.url,
-      name: row.links.name,
-      description: row.links.description,
-      semester: row.links.semester,
-      session: row.links.session,
-      category: row.links.category
-    }));
-
-    const [normalizedData] = data.map((row) => ({
-      id: row.hubs.id,
-      name: row.hubs.name,
-      category: row.hubs.category,
-      description: row.hubs.description,
-      semester: row.hubs.semester,
-      session: row.hubs.session,
-      userId: row.hubs.userId,
-      email: row.user.email,
-      username: row.user.name,
-      links: hubLinks
-    }));
-
-    res.json({
-      data: normalizedData
-    });
   },
   createHub: async (req, res) => {
     const { userId, hub } = req.body;

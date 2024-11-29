@@ -22,6 +22,7 @@ import { useGetHub } from '../api/use-get-hub'
 import { computed, watch } from 'vue'
 import useEditHubForm from '@/composables/useEditHubForm'
 import { useEditHub } from '../api/use-edit-hub'
+import { EditIcon } from 'lucide-vue-next'
 
 const { isOpen } = useEditHubForm()
 
@@ -92,7 +93,10 @@ watch(isOpen, (open) => {
   </div>
   <Dialog v-else :open="isOpen" @update:open="isOpen = $event">
     <DialogTrigger as-child>
-      <Button variant="outline" @click.prevent="isOpen = true">Edit Hub</Button>
+      <Button size="sm" variant="outline" @click.prevent="isOpen = true" class="flex items-center gap-2">
+        <EditIcon />
+        Edit Hub
+      </Button>
     </DialogTrigger>
     <DialogContent>
       <DialogHeader>
