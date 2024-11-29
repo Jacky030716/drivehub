@@ -1,18 +1,11 @@
 <script setup>
 import { useDeleteLink } from "@/features/links/api/use-delete-link";
 import { CalendarDays, Link2, Mail, FileText, Folder } from "lucide-vue-next";
-import { RouterLink, useRoute, useRouter } from 'vue-router'
-
-const route = useRoute()
-const router = useRouter()
+import { RouterLink } from 'vue-router'
 
 const props = defineProps({
   link: {
     type: Object,
-    required: true,
-  },
-  email: {
-    type: String,
     required: true,
   },
 });
@@ -59,11 +52,11 @@ const handleDelete = async () => {
           </div>
           <div class="flex items-center text-xs text-gray-500">
             <Mail class="w-3 h-3 mr-1" />
-            <span>{{ email || link.email }} </span>
+            <span>{{ link.email }} </span>
           </div>
           <div class="flex items-center text-xs text-gray-500">
             <Folder class="w-3 h-3 mr-1" />
-            <span>{{ category || link.category }} </span>
+            <span>{{ link.category }} </span>
           </div>
         </div>
       </div>

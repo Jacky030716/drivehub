@@ -23,7 +23,10 @@ export const useEditLink = (linkId) => {
         title: "Link edited successfully!",
         variant: 'success'
       })
-      queryClient.invalidateQueries(["links"])
+
+      queryClient.invalidateQueries({ queryKey: ["link", { linkId }]})
+      queryClient.invalidateQueries({ queryKey: ["links"]})
+      queryClient.invalidateQueries({ queryKey: ["hubs"]})
     },
     onError: () => {
       toast({

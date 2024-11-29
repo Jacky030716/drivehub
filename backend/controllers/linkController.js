@@ -79,6 +79,7 @@ const linkController = {
       url: row.links.url,
       title: row.links.title,
       description: row.links.description,
+      category: row.links.category,
       session: row.links.session,
       semester: row.links.semester,
       userId: row.links.userId,

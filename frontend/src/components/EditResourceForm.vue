@@ -11,11 +11,14 @@ import CustomInputField from './CustomInputField.vue'
 import CustomSelectField from './CustomSelectField.vue'
 import CustomTextareaField from './CustomTextareaField.vue'
 import { useEditLink } from '@/features/links/api/use-edit-link'
+import { useRouter } from 'vue-router'
 
 const props = defineProps({
   hubs: Array,
   link: Object,
 })
+
+const router = useRouter()
 
 const formSchema = toTypedSchema(z.object({
   url: z.string().url({ message: "Invalid URL" }),
@@ -41,7 +44,11 @@ const { handleSubmit, resetForm, isSubmitting } = useForm({
 const editMutation = useEditLink(props.link.id)
 
 const onSubmit = handleSubmit((values) => {
-  editMutation.mutate(values)
+  editMutation.mutate(values, {
+    onSuccess: () => {
+      router.push('/shared')
+    }
+  })
 
   console.log(values)
 })
