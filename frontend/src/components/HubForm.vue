@@ -16,7 +16,6 @@ import { Button } from './ui/button'
 import CustomInputField from './CustomInputField.vue'
 import CustomSelectField from './CustomSelectField.vue'
 import CustomTextareaField from './CustomTextareaField.vue'
-import { useHubForm } from '@/hooks/useHubForm'
 
 defineProps({
   hubs: Array,

@@ -14,7 +14,7 @@ const props = defineProps({
 });
 
 const handleEdit = () => {
-  alert("Edit functionality triggered for: " + props.hub.categoryName);
+  alert("Edit functionality triggered for: " + props.hub.id);
 };
 
 const handleDelete = () => {

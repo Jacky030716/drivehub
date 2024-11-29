@@ -53,7 +53,6 @@ export const hubRelations = relations(hubs, ({ one, many }) => ({
 export const links = pgTable("links", {
   id: uuid("id").primaryKey().defaultRandom(),
   url: text("url").notNull(),
-  name: text("name").notNull(),
   description: text("description").notNull(),
   semester: text("semester").notNull(),
   session: text("session").notNull(),

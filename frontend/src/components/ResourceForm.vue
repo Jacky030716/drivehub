@@ -22,7 +22,7 @@ const formSchema = toTypedSchema(z.object({
   semester: z.string().min(1, { message: "Semester is required" }),
   session: z.string().min(1, { message: "Session is required" }),
   category: z.string().min(1, { message: "Category is required" }),
-  hub_name: z.string().min(1, { message: "Hub name is required" }),
+  hub_id: z.string().min(1, { message: "Hub name is required" }),
 }))
 
 const { handleSubmit, resetForm, isSubmitting } = useForm({
@@ -32,11 +32,11 @@ const { handleSubmit, resetForm, isSubmitting } = useForm({
 const mutation = useCreateLink()
 
 const onSubmit = handleSubmit((values) => {
-  // mutation.mutate(values, {
-  //   onSuccess: () => {
-  //     resetForm()
-  //   },
-  // })
+  mutation.mutate(values, {
+    onSuccess: () => {
+      resetForm()
+    },
+  })
   console.log(values)
 })
 </script>
