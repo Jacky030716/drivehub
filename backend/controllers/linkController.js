@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { db } from "../drizzle/drizzle.js";
 import { hubs, links, users } from "../drizzle/schema.js";
 
@@ -64,6 +64,7 @@ const linkController = {
       .select()
       .from(links)
       .innerJoin(users, eq(links.userId, users.id))
+      .orderBy(desc(links.url))
       .where(
         eq(links.userId, userId)
       )
