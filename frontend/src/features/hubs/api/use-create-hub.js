@@ -4,12 +4,13 @@ import axios from "axios";
 
 export const useCreateHub = () => {
   const queryClient = useQueryClient();
+  const userEmail = localStorage.getItem("email")
 
   const mutation = useMutation({
     mutationFn: async (newHub) => {
       const response = await axios.post("/api/hubs", 
         {
-          userId: "2fecdb26-503c-408c-a978-1550073cdc85",
+          owner_email: userEmail,
           hub: newHub
         }
       )

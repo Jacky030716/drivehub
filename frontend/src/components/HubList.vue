@@ -34,7 +34,7 @@ const handleDelete = () => {
 
 <template>
   <RouterLink :to="`/hub/${hub.id}`" class="block">
-    <div class="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow duration-200 cursor-pointer hover:bg-slate-50 relative">
+    <div class="h-full py-8 px-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow duration-200 cursor-pointer hover:bg-slate-50">
       <!-- Content -->
       <div>
         <div class="flex items-center mb-2">
@@ -42,41 +42,44 @@ const handleDelete = () => {
           <p class="text-sm font-semibold">{{ hub.name }}</p>
         </div>
 
-        <div class="space-y-1">
-          <div class="flex items-center text-xs text-gray-500">
-            <User class="w-3 h-3 mr-1" />
-            <span>{{ hub.username }}</span>
+        <div class="w-full flex xl:flex-row flex-col gap-6 justify-between">
+          <div class="space-y-1">
+            <div class="flex items-center text-xs text-gray-500">
+              <User class="w-3 h-3 mr-1" />
+              <span>{{ hub.username }}</span>
+            </div>
+            <div class="flex items-center text-xs text-gray-500">
+              <CalendarDays class="w-3 h-3 mr-1" />
+              <span>{{ hub.session }}-{{ hub.semester }}</span>
+            </div>
+            <div class="flex items-center text-xs text-gray-500">
+              <FileText class="w-3 h-3 mr-1" />
+              <span>{{ hub.description }}</span>
+            </div>
+            <div class="flex items-center text-xs text-gray-500">
+              <Mail class="w-3 h-3 mr-1" />
+              <span>{{ hub.email }}</span>
+            </div>
           </div>
-          <div class="flex items-center text-xs text-gray-500">
-            <CalendarDays class="w-3 h-3 mr-1" />
-            <span>{{ hub.session }}-{{ hub.semester }}</span>
-          </div>
-          <div class="flex items-center text-xs text-gray-500">
-            <FileText class="w-3 h-3 mr-1" />
-            <span>{{ hub.description }}</span>
-          </div>
-          <div class="flex items-center text-xs text-gray-500">
-            <Mail class="w-3 h-3 mr-1" />
-            <span>{{ hub.email }}</span>
-          </div>
+
+            <!-- Edit and Delete Buttons -->
+            <div class="flex items-end space-x-2">
+              <EditHubForm 
+                :hub="hub"
+              />
+              <Button
+                size="sm"
+                variant="destructive"
+                @click.prevent="handleDelete"
+                :disabled="deleteMutation.isLoading"
+              >
+                <Trash />
+                {{ deleteMutation.isLoading ? "Deleting..." : "Delete Hub" }}
+              </Button>
+            </div>
         </div>
       </div>
 
-      <!-- Edit and Delete Buttons -->
-      <div class="absolute bottom-2 right-2 flex space-x-2">
-        <EditHubForm 
-          :hub="hub"
-        />
-        <Button
-          size="sm"
-          variant="destructive"
-          @click.prevent="handleDelete"
-          :disabled="deleteMutation.isLoading"
-        >
-          <Trash />
-          {{ deleteMutation.isLoading ? "Deleting..." : "Delete Hub" }}
-        </Button>
-      </div>
     </div>
   </RouterLink>
 </template>

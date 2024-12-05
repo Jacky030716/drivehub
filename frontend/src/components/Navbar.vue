@@ -20,22 +20,24 @@ const isActive = (link) => {
   return regex.test(currentPath);
 }
 
+const name = localStorage.getItem('name')
+
 </script>
 
 <template>
   <nav class="px-5 py-8 md:flex hidden flex-col justify-between gap-10 min-w-[250px] border min-h-screen shadow-lg">
     <!-- Welcome Text -->
-    <div>
-      <h1 class="text-2xl text-primary font-bold">DriveHub</h1>
-      <p class="text-lg">Welcome Back, <span class="font-semibold">Teong Lee</span></p>
+    <div class="space-y-2">
+      <h1 class="text-3xl text-primary font-bold">DriveHub</h1>
+      <p class="text-lg">Welcome Back, <span class="font-semibold">{{ name }}</span></p>
     </div>
 
     <!-- Navbar Body -->
     <div class="flex flex-col h-full w-full gap-6">
       <!-- Overview Section -->
-      <div class="flex flex-col gap-y-3.5">
+      <div class="flex flex-col gap-2.5">
         <h4 class="text-secondary-600 font-bold text-xl">Overview</h4>
-        <div class="flex flex-col items-start gap-2.5 text-secondary-500">
+        <div class="flex flex-col items-start gap-1.5 text-secondary-500">
           <RouterLink v-for="(link, index) in overviewLinks" :key="index" :to="link.href"
             class="flex w-full items-center gap-3 text-secondary-500 hover:font-medium transition-colors ease-in-out hover:text-primary-500 cursor-pointer p-2"
             :class="{ 'font-medium bg-secondary-300/20 rounded-md': isActive(link) }">
@@ -49,9 +51,9 @@ const isActive = (link) => {
       <Separator />
 
       <!-- Resources Section -->
-      <div class="flex flex-col gap-3.5">
+      <div class="flex flex-col gap-2.5">
         <h4 class="text-secondary-600 font-bold text-xl">Resources</h4>
-        <div class="flex flex-col items-start gap-2.5 text-secondary-500">
+        <div class="flex flex-col items-start gap-1.5 text-secondary-500">
           <RouterLink v-for="(link, index) in resourcesLinks" :key="index" :to="link.href"
             class="flex w-full items-center gap-3 text-secondary-500 hover:font-medium transition-colors ease-in-out hover:text-primary-500 cursor-pointer p-2"
             :class="{ 'font-medium bg-secondary-300/20 rounded-md': isActive(link) }">
@@ -62,7 +64,9 @@ const isActive = (link) => {
       </div>
     </div>
 
-    <Button>
+    <Button
+      onclick="localStorage.clear(); window.location.href = '/sign-in'"
+    >
       Logout
     </Button>
   </nav>

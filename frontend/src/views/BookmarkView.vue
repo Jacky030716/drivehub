@@ -244,7 +244,7 @@ const truncateDescription = (description, limit = 130) => {
         <a :href="link.url" target="_blank" class="block mb-2 hover:underline text-blue-500">
           <div class="flex items-center">
             <Link2 class="text-blue-500 w-4 h-4 mr-2" />
-            <span class="text-sm font-semibold">
+            <span class="text-sm font-semibold line-clamp-1">
               {{ link.url }}
             </span>
           </div>

@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body {
+  overflow: hidden;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -73,6 +77,9 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground p-0 m-0 antialiased;
+  }
+  .sec-container {
+    @apply bg-gray-100 shadow h-full w-full flex flex-col py-6 px-4 gap-6
   }
 }

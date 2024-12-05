@@ -1,11 +1,9 @@
-import { pgTable, text, uuid } from "drizzle-orm/pg-core";
+import { pgTable, text, uuid, timestamp } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
-import { timestamp } from "drizzle-orm/mysql-core";
 
 export const users = pgTable("user", {
-  id: uuid("id").primaryKey().defaultRandom(),
+  email: text("email").unique().primaryKey(),
   matricNumber: text("matric_number").notNull().unique(),
-  email: text("email").notNull().unique(),
   name: text("name").notNull(),
 })
 
@@ -13,7 +11,6 @@ export const userRelations = relations(users, ({ many }) => ({
   hubs: many(hubs),
   links: many(links),
   feedbacks: many(feedbacks),
-  // notifications: many(notifications),
 }))
 
 export const hubs = pgTable("hubs", {
@@ -22,45 +19,31 @@ export const hubs = pgTable("hubs", {
   description: text("description").notNull(),
   session: text("session").notNull(),
   semester: text("semester").notNull(),
-  userId: uuid("user_id").references(() => users.id, {
+  owner_email: text("owner_email").references(() => users.email, {
     onDelete: "CASCADE",
   }).notNull(),
 })
 
 export const hubRelations = relations(hubs, ({ one, many }) => ({
   owner: one(users, {
-    fields: [hubs.userId],
-    references: [users.id],
+    fields: [hubs.owner_email],
+    references: [users.email],
   }),
   links: many(links),
 }))
 
-// export const hubParticipants = pgTable("hub_participants", {
-//   hubId: uuid("hub_id").references(() => hubs.id, { onDelete: "CASCADE" }).notNull(),
-//   userId: uuid("user_id").references(() => users.id, { onDelete: "CASCADE" }).notNull(),
-// });
-
-// export const hubParticipantRelations = relations(hubParticipants, ({ one }) => ({
-//   hub: one(hubs, {
-//     fields: [hubParticipants.hubId],
-//     references: [hubs.id],
-//   }),
-//   user: one(users, {
-//     fields: [hubParticipants.userId],
-//     references: [users.id],
-//   }),
-// }));
-
 export const links = pgTable("links", {
   id: uuid("id").primaryKey().defaultRandom(),
-  url: text("url").notNull(),
+  url: text("url").notNull().unique(),
+  ref_name: text("ref_name").notNull(),
   description: text("description").notNull(),
   semester: text("semester").notNull(),
   session: text("session").notNull(),
   category: text("category").notNull(),
-  userId: uuid("user_id").references(() => users.id, {
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  owner_email: text("owner_email").references(() => users.email, {
     onDelete: "CASCADE",
-  }).notNull(), // fk for owner
+  }), // fk for owner
   hubId: uuid("hub_id").references(() => hubs.id, {
     onDelete: "CASCADE",
   }), // fk for hub
@@ -68,8 +51,8 @@ export const links = pgTable("links", {
 
 export const linkRelations = relations(links, ({ one, many }) => ({
   owner: one(users, {
-    fields: [links.userId],
-    references: [users.id],
+    fields: [links.owner_email],
+    references: [users.email],
   }),
   hub: one(hubs, {
     fields: [links.hubId],
@@ -84,7 +67,7 @@ export const feedbacks = pgTable("feedback", {
   linkId: uuid("link_id").references(() => links.id, {
     onDelete: "CASCADE",
   }).notNull(),
-  userId: uuid("user_id").references(() => users.id, {
+  owner_email: text("owner_email").references(() => users.email, {
     onDelete: "CASCADE",
   }).notNull(),
 })
@@ -95,13 +78,12 @@ export const feedbackRelations = relations(feedbacks, ({ one }) => ({
     references: [links.id],
   }),
   user: one(users, {
-    fields: [feedbacks.userId],
-    references: [users.id],
+    fields: [feedbacks.owner_email],
+    references: [users.email],
   }),
 }))
 
-// export const notifications = pgTable("notifications", {
-//   id: uuid("id").primaryKey().defaultRandom(),
-//   message: text("message").notNull(),
-//   userId: uuid("user_id").notNull(),
-// })
+export const category = pgTable("category", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: text("name").notNull().unique(),
+})

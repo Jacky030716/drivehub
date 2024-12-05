@@ -3,11 +3,21 @@ import { useMutation, useQueryClient } from "@tanstack/vue-query"
 import axios from "axios"
 
 export const useDeleteLink = (linkId) => {
+  const userEmail = localStorage.getItem("email")
+
+  if(!userEmail) {
+    throw new Error("No user email found")
+  }
+
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const response = await axios.delete(`http://localhost:3000/api/links/${linkId}?userId=2fecdb26-503c-408c-a978-1550073cdc85`)
+      const response = await axios.delete(`http://localhost:3000/api/links/${linkId}`, {
+        params: {
+          userEmail
+        }
+      })
     
       if(!response.data) {
         throw new Error("No Link found")

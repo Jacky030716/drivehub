@@ -1,25 +1,24 @@
-import { and, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { db } from "../drizzle/drizzle.js";
 import { hubs, users, links } from "../drizzle/schema.js";
 
 const hubsController = {
   getHubs: async (req, res) => {
-    const { userId } = req.query;
+    const { userEmail } = req.query;
 
-    if (!userId) {
-      return res.status(400).json({ message: "Missing userId" });
+    if (!userEmail) {
+      return res.status(400).json({ message: "Missing email!" });
     }
 
     const data = await db
       .select()
       .from(hubs)
-      .innerJoin(users, eq(hubs.userId, users.id))
-      .where(eq(users.id, userId));
+      .innerJoin(users, eq(hubs.owner_email, users.email))
+      .where(eq(users.email, userEmail))
+      .orderBy(desc(hubs.name))
 
-    if (!data) {
-      return res.status(404).json({
-        message: "No hubs found",
-      });
+    if (data.length === 0) {
+      return res.json({ data: [] });
     }
   
     const normalizedData = data.map((row) => ({
@@ -49,7 +48,7 @@ const hubsController = {
       const data = await db
         .select()
         .from(hubs)
-        .innerJoin(users, eq(hubs.userId, users.id))
+        .innerJoin(users, eq(hubs.owner_email, users.email))
         .leftJoin(links, eq(links.hubId, hubs.id))
         .where(eq(hubs.id, hubId));
   
@@ -63,7 +62,7 @@ const hubsController = {
         .map(row => ({
           id: row.links.id,
           url: row.links.url,
-          name: row.links.name,
+          name: row.links.ref_name,
           description: row.links.description,
           semester: row.links.semester,
           session: row.links.session,
@@ -87,6 +86,8 @@ const hubsController = {
         username,
         links: hubLinks
       };
+
+      console.log(normalizedData);
   
       return res.json({ data: normalizedData });
     } catch (error) {
@@ -95,23 +96,25 @@ const hubsController = {
     }
   },
   createHub: async (req, res) => {
-    const { userId, hub } = req.body;
+    const { owner_email, hub } = req.body;
 
-    if (!userId) {
-      return res.status(400).json({ message: "Missing userId" });
+    if (!owner_email) {
+      return res.status(400).json({ message: "Missing email" });
     }
 
-    if (!hub) {
+    if (!owner_email) {
       return res.status(400).json({ message: "Missing hub" });
     }
 
     const [data] = await db
       .insert(hubs)
       .values({
-        userId,
+        owner_email,
         ...hub
       })
       .returning();
+
+    console.log(data);
 
     if (!data) {
       return res.status(500).json({
@@ -124,11 +127,11 @@ const hubsController = {
     });
   },
   deleteHub: async (req, res) => {
-    const { userId } = req.query;
+    const { userEmail } = req.query;
     const { hubId } = req.params;
 
-    if (!userId) {
-      return res.status(400).json({ message: "Missing userId" });
+    if (!userEmail) {
+      return res.status(400).json({ message: "Missing email" });
     }
 
     if (!hubId) {
@@ -137,10 +140,8 @@ const hubsController = {
 
     const data = await db
       .delete(hubs)
-      .where(eq(hubs.id, hubId), eq(hubs.userId, userId))
-      .returning({
-        id: hubs.id
-      });
+      .where(eq(hubs.id, hubId), eq(hubs.owner_email, userEmail))
+      .returning();
 
     if (!data) {
       return res.status(500).json({
@@ -153,11 +154,11 @@ const hubsController = {
     });
   },
   editHub: async (req, res) => {
-    const { userId, hub } = req.body;
+    const { userEmail, hub } = req.body;
     const { hubId } = req.params;
 
-    if (!userId) {
-      return res.status(400).json({ message: "Missing userId" });
+    if (!userEmail) {
+      return res.status(400).json({ message: "Missing email" });
     }
 
     if (!hubId) {
@@ -175,7 +176,7 @@ const hubsController = {
       })
       .where(
         and(
-          eq(hubs.userId, userId),
+          eq(hubs.owner_email, userEmail),
           eq(hubs.id, hubId), 
         ) 
       )

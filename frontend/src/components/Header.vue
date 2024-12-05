@@ -5,6 +5,8 @@ import MobileNav from './MobileNav.vue';
 
 // Get the current route
 const route = useRoute();
+const email = localStorage.getItem('email');
+const formattedUsername = localStorage.getItem('name')?.split(' ').slice(1, 3).map((name) => name.slice(0, 1)).join('');
 
 // Compute the page title reactively
 const pageTitle = computed(() => route.meta.title || 'Page');
@@ -20,9 +22,13 @@ const pageTitle = computed(() => route.meta.title || 'Page');
         {{ pageTitle }}
       </h2>
 
-      <!-- Avatar -->
-      <div class="w-10 h-10 bg-white rounded-full flex justify-center items-center">
-        <span class="text-black">Hi</span>
+
+      <div class="flex gap-2 items-center">
+        <p>{{ email }}</p>
+        <!-- Avatar -->
+        <div class="w-10 h-10 bg-white rounded-full flex justify-center items-center">
+          <span class="text-black font-medium">{{ formattedUsername }}</span>
+        </div>
       </div>
     </nav>
   </header>

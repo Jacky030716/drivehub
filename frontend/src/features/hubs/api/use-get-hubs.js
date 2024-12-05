@@ -2,10 +2,20 @@ import { useQuery } from "@tanstack/vue-query"
 import axios from "axios"
 
 export const useGetHubs = () => {
+  const userEmail = localStorage.getItem("email")
+
+  if (!userEmail) {
+    throw new Error("No user email found")
+  }
+
   const query = useQuery({
     queryKey: ["hubs"],
     queryFn: async () => {
-      const response = await axios.get(`/api/hubs?userId=2fecdb26-503c-408c-a978-1550073cdc85`)
+      const response = await axios.get(`/api/hubs`, {
+        params: {
+          userEmail,
+        }
+      })
 
       if(!response.data) {
         throw new Error("No hubs found")

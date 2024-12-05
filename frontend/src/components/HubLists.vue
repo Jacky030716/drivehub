@@ -8,6 +8,7 @@ import PulseLoader from "vue-spinner/src/PulseLoader.vue"
 import { shuffleArray } from '@/lib/utils';
 import { colorPalette } from '@/constant';
 import { useGetHubs } from '@/features/hubs/api/use-get-hubs';
+import NotFound from './NotFound.vue';
 
 
 const props = defineProps({
@@ -20,7 +21,7 @@ const props = defineProps({
     type: String,
     default: ""
   },
-  selectedCategory: {
+  selectedSemester: {
     type: String,
     default: "reset"
   },
@@ -78,35 +79,44 @@ const filteredHubs = computed(() => {
   // Filter by search query
   const searchTerm = props.query.toLowerCase().trim();
 
-  // Filter by selected category
-  const selectedCategory = props.selectedCategory === "reset" ? "" : props.selectedCategory.toLowerCase().trim();
-
   // Filter by selected session
   const selectedSession = props.selectedSession === "reset" ? "" : props.selectedSession.toLowerCase().trim();
 
+  // Filter by selected semester
+  const selectedSemester = props.selectedSemester === "reset" ? "" : props.selectedSemester.toLowerCase().trim();
+
   // Filter by all three conditions
   const filtered = hubs.value.filter(hub => 
-    hub.categoryName.toLowerCase().includes(selectedCategory) &&
-    hub.categoryCreatedSessem.toLowerCase().includes(selectedSession) && 
-    hub.categoryName.toLowerCase().includes(searchTerm)
+  //   hub.categoryName.toLowerCase().includes(selectedCategory) &&
+    hub.session.includes(selectedSession) && 
+    hub.semester.includes(selectedSemester) &&
+    hub.name.toLowerCase().includes(searchTerm)
   );
 
   // Apply limit if passed
   return props.limit ? filtered.slice(0, props.limit) : filtered;
+
+  // return props.limit ? hubs.value.slice(0, props.limit) : hubs.value;
 });
 </script>
 
 <template>
-  <div class="w-full flex flex-col h-full space-y-4">
+  <div class="h-full w-full flex flex-col space-y-4">
     <!-- Loading State -->
     <div v-if="isDisabled" class="text-center py-8">
       <PulseLoader color="#4A90E2" size="12px" />
     </div>
 
+    <div class="h-screen flex justify-center items-center overflow-hidden" v-else-if="hubs.length === 0">
+      <NotFound 
+        message="No hub found for this hub!" 
+      />
+    </div>
+
     <!-- Content -->
     <template v-else>
       <!-- Hubs List -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+      <div class="grid grid-cols-1 lg:grid-cols-2 auto-rows-auto gap-3 overflow-y-auto">
         <HubList 
           v-for="hub in filteredHubs" 
           :key="hub.id"

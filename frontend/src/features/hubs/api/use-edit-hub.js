@@ -3,13 +3,19 @@ import { useMutation, useQueryClient } from "@tanstack/vue-query"
 import axios from "axios"
 
 export const useEditHub = (hubId) => {
+  const userEmail = localStorage.getItem("email")
+
+  if(!userEmail) {
+    throw new Error("No user email found")
+  }
+
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: async (hub) => {
       const response = await axios.put(`http://localhost:3000/api/hubs/${hubId}`, {  
         hub,
-        userId: '2fecdb26-503c-408c-a978-1550073cdc85'
+        userEmail
       })
     
       if(!response.data) {

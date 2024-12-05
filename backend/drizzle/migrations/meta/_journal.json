@@ -5,57 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1732546651836,
-      "tag": "0000_demonic_mister_sinister",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1732550384629,
-      "tag": "0001_pale_eternity",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1732550717258,
-      "tag": "0002_perpetual_martin_li",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1732689787602,
-      "tag": "0003_stormy_morph",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1732690779744,
-      "tag": "0004_true_hex",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1732691712745,
-      "tag": "0005_pale_shinko_yamashiro",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1732800120734,
-      "tag": "0006_yummy_puma",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "7",
-      "when": 1732811398133,
-      "tag": "0007_clever_madelyne_pryor",
+      "when": 1733412671603,
+      "tag": "0000_eager_omega_flight",
       "breakpoints": true
     }
   ]

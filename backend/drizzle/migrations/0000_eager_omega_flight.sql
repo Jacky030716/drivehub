@@ -1,35 +1,47 @@
+CREATE TABLE IF NOT EXISTS "category" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"name" text NOT NULL,
+	CONSTRAINT "category_name_unique" UNIQUE("name")
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "feedback" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"comment" text NOT NULL,
 	"link_id" uuid NOT NULL,
-	"user_id" uuid NOT NULL
+	"owner_email" text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "hubs" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text NOT NULL,
-	"category" text NOT NULL,
 	"description" text NOT NULL,
 	"session" text NOT NULL,
 	"semester" text NOT NULL,
-	"user_id" uuid NOT NULL,
-	"participants" uuid[] DEFAULT '{}'
+	"owner_email" text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "links" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"category" text NOT NULL,
-	"name" text NOT NULL,
-	"description" text NOT NULL,
-	"session" text NOT NULL,
-	"semester" text NOT NULL,
 	"url" text NOT NULL,
-	"user_id" uuid NOT NULL,
-	"hub_id" uuid NOT NULL
+	"ref_name" text NOT NULL,
+	"description" text NOT NULL,
+	"semester" text NOT NULL,
+	"session" text NOT NULL,
+	"category" text NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"owner_email" text,
+	"hub_id" uuid,
+	CONSTRAINT "links_url_unique" UNIQUE("url")
 );
 --> statement-breakpoint
-ALTER TABLE "user" ADD COLUMN "matric_number" text NOT NULL;--> statement-breakpoint
-ALTER TABLE "user" ADD COLUMN "email" text NOT NULL;--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "user" (
+	"email" text PRIMARY KEY NOT NULL,
+	"matric_number" text NOT NULL,
+	"name" text NOT NULL,
+	CONSTRAINT "user_email_unique" UNIQUE("email"),
+	CONSTRAINT "user_matric_number_unique" UNIQUE("matric_number")
+);
+--> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "feedback" ADD CONSTRAINT "feedback_link_id_links_id_fk" FOREIGN KEY ("link_id") REFERENCES "public"."links"("id") ON DELETE CASCADE ON UPDATE no action;
 EXCEPTION
@@ -37,19 +49,19 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "feedback" ADD CONSTRAINT "feedback_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE CASCADE ON UPDATE no action;
+ ALTER TABLE "feedback" ADD CONSTRAINT "feedback_owner_email_user_email_fk" FOREIGN KEY ("owner_email") REFERENCES "public"."user"("email") ON DELETE CASCADE ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "hubs" ADD CONSTRAINT "hubs_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE CASCADE ON UPDATE no action;
+ ALTER TABLE "hubs" ADD CONSTRAINT "hubs_owner_email_user_email_fk" FOREIGN KEY ("owner_email") REFERENCES "public"."user"("email") ON DELETE CASCADE ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "links" ADD CONSTRAINT "links_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE CASCADE ON UPDATE no action;
+ ALTER TABLE "links" ADD CONSTRAINT "links_owner_email_user_email_fk" FOREIGN KEY ("owner_email") REFERENCES "public"."user"("email") ON DELETE CASCADE ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

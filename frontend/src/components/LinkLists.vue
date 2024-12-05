@@ -6,8 +6,8 @@ import LinkList from './LinkList.vue';
 import { generateCategoryColorMap } from '@/lib/colorUtils';
 
 const props = defineProps({
-  hub: {
-    type: Object,
+  links: {
+    type: Array,
     required: true
   },
   isLoading: {
@@ -31,10 +31,9 @@ const categoryColorMap = ref(null);
     <div v-else>
       <!-- Link List Items -->
       <LinkList 
-        v-for="link in hub.links" 
+        v-for="link in links" 
         :key="link.id" 
         :link="link" 
-        :email="hub.email"
       />
     </div>
   </div>

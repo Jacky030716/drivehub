@@ -1,13 +1,13 @@
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, or } from "drizzle-orm";
 import { db } from "../drizzle/drizzle.js";
 import { hubs, links, users } from "../drizzle/schema.js";
 
 const linkController = {
   getLink: async (req, res) => {
     const { linkId } = req.params;
-    const { userId } = req.query;
+    const { userEmail } = req.query;
 
-    if (!userId) {
+    if (!userEmail) {
       return res.status(401).json({
         message: "Unauthorized"
       });
@@ -22,16 +22,15 @@ const linkController = {
     const data = await db
       .select()
       .from(links)
-      .innerJoin(users, eq(links.userId, users.id))
-      .innerJoin(hubs, eq(links.hubId, hubs.id))
+      .innerJoin(users, eq(links.owner_email, users.email))
+      .leftJoin(hubs, eq(links.hubId, hubs.id))
       .where(
         and(
-          eq(links.userId, userId),
+          eq(links.owner_email, userEmail),
           eq(links.id, linkId),
-          eq(hubs.userId, userId)
-        )
+        ),
       )
-    
+        
     if (!data) {
       return res.status(404).json({
         message: "No link found"
@@ -41,16 +40,16 @@ const linkController = {
     const [normalizedData] = data.map((row) => ({
       id: row.links.id,
       url: row.links.url,
+      ref_name: row.links.ref_name,
       title: row.links.title,
       category: row.links.category,
       description: row.links.description,
       session: row.links.session,
       semester: row.links.semester,
-      userId: row.links.userId,
       email: row.user.email,
       username: row.user.name,
-      hub_name: row.hubs.name,
-      hub_id: row.hubs.id
+      hub_name: row.hubs?.name,
+      hub_id: row.hubs?.id
     }));
 
     res.json({
@@ -58,15 +57,15 @@ const linkController = {
     });
   },
   getLinks: async (req, res) => {
-    const { userId } = req.query;
+    const { userEmail } = req.query;
 
     const data = await db
       .select()
       .from(links)
-      .innerJoin(users, eq(links.userId, users.id))
-      .orderBy(desc(links.url))
+      .innerJoin(users, eq(links.owner_email, users.email))
+      .orderBy(desc(links.createdAt))
       .where(
-        eq(links.userId, userId)
+        eq(links.owner_email, userEmail)
       )
 
     if (!data) {
@@ -78,12 +77,12 @@ const linkController = {
     const normalizedData = data.map((row) => ({
       id: row.links.id,
       url: row.links.url,
+      ref_name: row.links.ref_name,
       title: row.links.title,
       description: row.links.description,
       category: row.links.category,
       session: row.links.session,
       semester: row.links.semester,
-      userId: row.links.userId,
       email: row.user.email,
       username: row.user.name
     }));
@@ -93,9 +92,9 @@ const linkController = {
     });
   },
   addLink: async (req, res) => {
-    const { userId, link } = req.body;
+    const { userEmail, link } = req.body;
 
-    if (!userId){
+    if (!userEmail){
       return res.status(401).json({
         message: "Unauthorized"
       });
@@ -110,7 +109,7 @@ const linkController = {
     const data = await db
       .insert(links)
       .values({
-        userId,
+        owner_email: userEmail,
         ...link,
         hubId: link.hub_id
       })
@@ -121,10 +120,10 @@ const linkController = {
     });
   },
   deleteLink: async (req, res) => {
-    const { userId } = req.query;
+    const { userEmail } = req.query;
     const { linkId } = req.params;
 
-    if (!userId){
+    if (!userEmail){
       return res.status(401).json({
         message: "Unauthorized"
       });
@@ -140,7 +139,7 @@ const linkController = {
       .delete(links)
       .where(
         and(
-          eq(links.userId, userId),
+          eq(links.owner_email, userEmail),
           eq(links.id, linkId)
         )
       )
@@ -153,10 +152,10 @@ const linkController = {
     });
   },
   updateLink: async (req, res) => {
-    const { userId, link } = req.body;
+    const { userEmail, link } = req.body;
     const { linkId } = req.params;
 
-    if (!userId){
+    if (!userEmail){
       return res.status(401).json({
         message: "Unauthorized"
       });
@@ -175,7 +174,7 @@ const linkController = {
       })
       .where(
         and(
-          eq(links.userId, userId),
+          eq(links.owner_email, userEmail),
           eq(links.id, linkId)
         )
       )

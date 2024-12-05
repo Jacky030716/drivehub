@@ -4,12 +4,21 @@ import axios from "axios";
 
 export const useCreateLink = () => {
   const queryClient = useQueryClient();
+  const userEmail = localStorage.getItem("email")
+
+  if (!userEmail) {
+    toast({
+      title: "Please log in to create a link",
+      variant: "destructive",
+    })
+    return
+  }
 
   const mutation = useMutation({
     mutationFn: async (newLink) => {
       const response = await axios.post("/api/links", 
         {
-          userId: "2fecdb26-503c-408c-a978-1550073cdc85",
+          userEmail: userEmail,
           link: newLink
         }
       )

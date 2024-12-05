@@ -1,1 +1,0 @@
-ALTER TABLE "links" ALTER COLUMN "hub_id" DROP NOT NULL;

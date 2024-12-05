@@ -4,17 +4,22 @@ import Toaster from './components/ui/toast/Toaster.vue';
 // import { useToast } from 'vue-toastification';
 import Navbar from "./components/Navbar.vue"
 import Header from './components/Header.vue';
+import { computed } from 'vue';
 
 const route = useRoute()
+const isSignInRoute = computed(() => route.path === '/sign-in')
+
 </script>
 
 <template>
   <Toaster />
-  <div class="w-full flex">
+  <div class="w-full flex max-h-screen overflow-hidden">
     <Navbar v-if="route.path !== '/sign-in'"/>
-    <div class="w-full">
+    <div class="flex flex-col w-full h-full">
       <Header v-if="route.path !== '/sign-in'"/>
-      <RouterView />
+      <div :class="{'h-[calc(100vh-80px)]' : !isSignInRoute}">
+        <RouterView />
+      </div>
     </div>
   </div>
 </template>

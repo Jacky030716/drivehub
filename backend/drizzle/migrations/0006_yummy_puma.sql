@@ -1,1 +1,0 @@
-ALTER TABLE "hubs" DROP COLUMN IF EXISTS "category";

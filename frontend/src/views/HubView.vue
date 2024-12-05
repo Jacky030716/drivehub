@@ -4,6 +4,7 @@ import { reactive, onMounted, watch, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useGetHub } from '@/features/hubs/api/use-get-hub';
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
+import NotFound from '@/components/NotFound.vue';
 
 const route = useRoute();
 
@@ -45,10 +46,17 @@ watch(() => hubQuery.data, (newData) => {
   <div v-if="isDisabled" class="text-center py-4">
     <PulseLoader />
   </div>
+  <div v-else-if="hub.links.length === 0">
+    <NotFound 
+      message="No lists found for this hub!" 
+      redirectUrl="/share"
+      buttonText="Share a list"
+    />
+  </div>
   <div v-else class="bg-gray-100 shadow p-4 w-full flex flex-col">
     <h1 class="text-lg font-semibold text-center">{{ hub.name }} Lists</h1>
     <div class="mt-2 max-h-[580px] overflow-y-auto">
-      <LinkLists :hub="hub" :isLoading="isDisabled" />
+      <LinkLists :links="hub.links" :isLoading="isDisabled" />
     </div>
   </div>
 </template>

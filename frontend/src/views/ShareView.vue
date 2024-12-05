@@ -1,15 +1,18 @@
 <script setup>
 import ResourceForm from '@/components/ResourceForm.vue';
+import { useGetCategories } from '@/features/category/use-get-categories';
 import { useGetHubs } from '@/features/hubs/api/use-get-hubs';
 import { computed } from 'vue';
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 
 // Fetch hubs using Vue Query
 const hubsQuery = useGetHubs();
+const categoriesQuery = useGetCategories()
 
 // Computed properties for reactivity
-const isDisabled = computed(() => hubsQuery.isLoading.value);
+const isDisabled = computed(() => hubsQuery.isLoading.value || categoriesQuery.isLoading.value);
 const hubs = computed(() => hubsQuery.data?.value?.data || []);
+const categories = computed(() => categoriesQuery.data?.value?.data || []);
 
 </script>
 
@@ -18,9 +21,9 @@ const hubs = computed(() => hubsQuery.data?.value?.data || []);
     <PulseLoader />
   </div>
 
-  <div v-else class="max-w-7xl mx-auto justify-center items-center flex flex-col py-12 px-8 gap-8">
-    <div class="w-full flex flex-col items-center text-center space-y-4">
-        <img src="../assets/drive.jpg" alt="Drive Logo" width="60"/>
+  <div v-else class="mx-auto justify-center items-center w-full h-full flex flex-col px-8 py-12 gap-8 overflow-y-auto">
+    <div class="w-full h-full flex flex-col items-center text-center space-y-4 2xl:mt-[120px] mt-[320px]">
+        <img src="../assets/drive.jpg" alt="Drive Logo" class="w-16"/>
         <div>
             <h2 class="text-2xl font-bold">Upload Link</h2>
             <p class="text-muted-foreground leading-tight text-base">Organize, categorize and upload the link by simply fill and click</p>
@@ -29,6 +32,7 @@ const hubs = computed(() => hubsQuery.data?.value?.data || []);
     <!-- Resource Form -->
     <ResourceForm 
       :hubs="hubs"
+      :categories="categories"
     />
   </div>
 </template>
