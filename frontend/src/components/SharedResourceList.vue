@@ -53,7 +53,7 @@ const filteredLinks = computed(() => {
     const matchesSession = selectedSession.value === "reset" || link.session.includes(selectedSession.value.trim());
     const matchesSemester = selectedSemester.value === "reset" || link.semester.includes(selectedSemester.value.trim());
     const matchesCategory = selectedCategory.value === "reset" || link.category.includes(selectedCategory.value.trim());
-    const matchesSearchQuery = link.ref_name.toLowerCase().includes(searchQuery.value.trim().toLowerCase());
+    const matchesSearchQuery = link.category.toLowerCase().includes(searchQuery.value.trim().toLowerCase());
 
     return matchesSession && matchesSemester && matchesCategory && matchesSearchQuery;
   });

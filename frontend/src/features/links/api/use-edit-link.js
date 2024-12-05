@@ -3,13 +3,19 @@ import { useMutation, useQueryClient } from "@tanstack/vue-query"
 import axios from "axios"
 
 export const useEditLink = (linkId) => {
+  const userEmail = localStorage.getItem('email')
+
+  if (!userEmail) {
+    throw new Error("No email found")
+  }
+
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: async (link) => {
       const response = await axios.put(`http://localhost:3000/api/links/${linkId}`, {  
         link,
-        userId: '2fecdb26-503c-408c-a978-1550073cdc85'
+        userEmail
       })
     
       if(!response.data) {
