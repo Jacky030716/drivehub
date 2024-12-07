@@ -1,4 +1,4 @@
-import { toast } from "@/components/ui/toast";
+import { toast } from "vue-sonner";
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
 import axios from "axios";
 
@@ -8,18 +8,12 @@ export const useCreateHub = () => {
   const token = localStorage.getItem("token")
 
   if (!token) {
-    toast({
-      title: "Please log in to create a hub",
-      variant: "destructive",
-    })
+    toast.error('Please log in to create a hub')
     return
   }
 
   if (!userEmail) {
-    toast({
-      title: "Please log in to create a hub",
-      variant: "destructive",
-    })
+    toast.error('No user email found')
     return
   }
 
@@ -39,18 +33,11 @@ export const useCreateHub = () => {
       return response.data
     },
     onSuccess: () => {
-      toast({
-        title: "Hub created!",
-        variant: 'success'
-      })
+      toast.success('Hub created successfully!')
       queryClient.invalidateQueries(["hubs"])
     },
     onError: () => {
-      toast({
-        title: "Error creating hub",
-        description: "Please try again",
-        variant: "destructive",
-      })
+      toast('Error creating hub')
     }
   })
 

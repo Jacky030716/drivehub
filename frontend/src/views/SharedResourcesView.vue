@@ -34,8 +34,8 @@ watch(() => linksQuery.data, (newData) => {
 
   <section v-else class="sec-container">
     <div class="flex flex-col items-center">
-      <h1 class="text-2xl font-bold text-center">Shared Resources Lists</h1>
-      <p class="text-muted-foreground leading-tight text-sm">Here are the list of resources that you've shared with others before</p>
+      <h1 class="text-2xl font-bold text-center">Shared Links List</h1>
+      <p class="text-muted-foreground leading-tight text-sm">Here are the list of links that you've shared with others before</p>
     </div>
     <div class="w-full h-full pb-20">
       <SharedResourceList 

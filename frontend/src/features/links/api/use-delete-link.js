@@ -1,4 +1,4 @@
-import { toast } from "@/components/ui/toast"
+import { toast } from "vue-sonner"
 import { useMutation, useQueryClient } from "@tanstack/vue-query"
 import axios from "axios"
 
@@ -7,11 +7,11 @@ export const useDeleteLink = (linkId) => {
   const token = localStorage.getItem("token")
 
   if(!userEmail) {
-    throw new Error("No user email found")
+    toast.error("No user email found")
   }
 
   if(!token) {
-    throw new Error("No token found")
+    toast.error("Please log in to delete a link")
   }
 
   const queryClient = useQueryClient();
@@ -34,18 +34,11 @@ export const useDeleteLink = (linkId) => {
       return response.data
     },
     onSuccess: () => {
-      toast({
-        title: "Link deleted successfully!",
-        variant: 'success'
-      })
+      toast.success("Link deleted successfully!")
       queryClient.invalidateQueries(["links"])
     },
     onError: () => {
-      toast({
-        title: "Error deleting link",
-        description: "Please try again",
-        variant: "destructive",
-      })
+      toast.error("Error deleting link")
     }
   })
   

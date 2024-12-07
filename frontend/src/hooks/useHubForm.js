@@ -9,7 +9,6 @@ export const useHubForm = () => {
   function onOpen(id) {
     state.isOpen = true;
     state.id = id;
-    console.log('useHubForm: onOpen', state.isOpen);
   }
 
   function onClose() {

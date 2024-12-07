@@ -45,12 +45,12 @@ const onSubmit = form.handleSubmit((values) => {
           <div class="w-full grid grid-cols-1 gap-4">
             <CustomInputField 
               :label="'Username'"
-              :placeholder="'Enter your username'"
+              :placeholder="'Enter your username (matric number or staff ID)'"
               :name="'username'"
             />
             <CustomInputField 
               :label="'Password'"
-              :placeholder="'Enter your password'"
+              :placeholder="'Enter your password (NRIC)'"
               :name="'password'"
               :type="'password'"
             />

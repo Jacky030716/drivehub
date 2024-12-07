@@ -44,10 +44,10 @@ export const routes = [
     meta: { title: 'Hub' },
   },
   {
-    name: "Shared Resources",
+    name: "Shared Links",
     path: "/shared",
     component: SharedResourcesView,
-    meta: { title: 'Shared Resources' },
+    meta: { title: 'Shared Links' },
   },
   {
     name: "Upload Link",

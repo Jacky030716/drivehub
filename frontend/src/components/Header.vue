@@ -24,7 +24,7 @@ const pageTitle = computed(() => route.meta.title || 'Page');
 
 
       <div class="flex gap-2 items-center">
-        <p>{{ email }}</p>
+        <p class="md:block hidden">{{ email }}</p>
         <!-- Avatar -->
         <div class="w-10 h-10 bg-white rounded-full flex justify-center items-center">
           <span class="text-black font-medium">{{ formattedUsername }}</span>

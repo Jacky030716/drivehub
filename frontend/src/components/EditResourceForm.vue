@@ -57,8 +57,6 @@ const onSubmit = handleSubmit((values) => {
       router.push('/shared')
     }
   })
-
-  console.log(values)
 })
 
 </script>

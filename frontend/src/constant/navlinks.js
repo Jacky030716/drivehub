@@ -20,7 +20,7 @@ export const navlinks = [
     icon: "/src/assets/hub.svg"
   },
   {
-    name: "Shared Resources",
+    name: "Shared Links",
     href: "/shared",
     icon: "/src/assets/shared.svg"
   },

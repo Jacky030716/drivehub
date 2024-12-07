@@ -58,7 +58,6 @@ const { handleSubmit, resetForm, isSubmitting, setValues } = useForm({
 
 const onSubmit = handleSubmit((values) => {
   editMutation.mutate(values)
-  console.log(values)
 })
 
 // Watch for data changes and set the form values dynamically

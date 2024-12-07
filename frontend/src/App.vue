@@ -1,7 +1,6 @@
 <script setup>
 import { RouterView, useRoute, useRouter } from 'vue-router';
-import Toaster from './components/ui/toast/Toaster.vue';
-// import { useToast } from 'vue-toastification';
+import { Toaster } from 'vue-sonner'
 import Navbar from "./components/Navbar.vue"
 import Header from './components/Header.vue';
 import { computed } from 'vue';
@@ -22,7 +21,7 @@ if (!isSignInRoute.value){
 </script>
 
 <template>
-  <Toaster />
+  <Toaster rich-colors/>
   <div class="w-full flex max-h-screen overflow-hidden">
     <Navbar v-if="route.path !== '/sign-in'"/>
     <div class="flex flex-col w-full h-full">

@@ -1,4 +1,4 @@
-import { toast } from "@/components/ui/toast";
+import { toast } from "vue-sonner";
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
 import axios from "axios";
 
@@ -63,19 +63,11 @@ export const useLoginUser = () => {
       }
     },
     onSuccess: (userData) => {
-      toast({
-        title: "Login Successful",
-        description: `Welcome, ${userData.full_name}`,
-        variant: 'success'
-      });
+      toast.success("Login successful!");
       queryClient.invalidateQueries(["user", userData.email]);
     },
     onError: (error) => {
-      toast({
-        title: "Login Failed",
-        description: "Please try again",
-        variant: "destructive",
-      });
+      toast.error("Login failed! Please try again.");
     }
   });
 

@@ -1,4 +1,4 @@
-import { toast } from "@/components/ui/toast"
+import { toast } from "vue-sonner"
 import { useMutation, useQueryClient } from "@tanstack/vue-query"
 import axios from "axios"
 
@@ -7,15 +7,13 @@ export const useEditHub = (hubId) => {
   const token = localStorage.getItem("token")
 
   if (!token) {
-    toast({
-      title: "Please log in to edit a hub",
-      variant: "destructive",
-    })
+    toast.error('Please log in to edit a hub')
     return
   }
 
   if(!userEmail) {
-    throw new Error("No user email found")
+    toast.error('No user email found')
+    return
   }
 
   const queryClient = useQueryClient();
@@ -38,18 +36,11 @@ export const useEditHub = (hubId) => {
       return response.data
     },
     onSuccess: () => {
-      toast({
-        title: "Hub edited successfully!",
-        variant: 'success'
-      })
+      toast.success('Hub edited successfully!')
       queryClient.invalidateQueries(["hubs"])
     },
     onError: () => {
-      toast({
-        title: "Error editing hub",
-        description: "Please try again",
-        variant: "destructive",
-      })
+      toast.error('Error editing hub')
     }
   })
   

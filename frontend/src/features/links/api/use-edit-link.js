@@ -1,4 +1,4 @@
-import { toast } from "@/components/ui/toast"
+import { toast } from "vue-sonner"
 import { useMutation, useQueryClient } from "@tanstack/vue-query"
 import axios from "axios"
 
@@ -7,11 +7,11 @@ export const useEditLink = (linkId) => {
   const token = localStorage.getItem('token')
 
   if (!userEmail) {
-    throw new Error("No email found")
+    toast.error('No user email found')
   }
 
   if(!token) {
-    throw new Error("No token found")
+    toast.error('Please log in to edit a link')
   }
 
   const queryClient = useQueryClient();
@@ -34,21 +34,14 @@ export const useEditLink = (linkId) => {
       return response.data
     },
     onSuccess: () => {
-      toast({
-        title: "Link edited successfully!",
-        variant: 'success'
-      })
+      toast.success('Link edited successfully!')
 
       queryClient.invalidateQueries({ queryKey: ["link", { linkId }]})
       queryClient.invalidateQueries({ queryKey: ["links"]})
       queryClient.invalidateQueries({ queryKey: ["hubs"]})
     },
     onError: () => {
-      toast({
-        title: "Error editing link",
-        description: "Please try again",
-        variant: "destructive",
-      })
+      toast.error('Error editing link')
     }
   })
   

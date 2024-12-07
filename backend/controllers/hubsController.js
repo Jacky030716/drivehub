@@ -86,8 +86,6 @@ const hubsController = {
         username,
         links: hubLinks
       };
-
-      console.log(normalizedData);
   
       return res.json({ data: normalizedData });
     } catch (error) {
@@ -113,8 +111,6 @@ const hubsController = {
         ...hub
       })
       .returning();
-
-    console.log(data);
 
     if (!data) {
       return res.status(500).json({

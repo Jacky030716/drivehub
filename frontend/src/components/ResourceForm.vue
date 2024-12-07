@@ -39,7 +39,6 @@ const onSubmit = handleSubmit((values) => {
       resetForm()
     },
   })
-  console.log(values)
 })
 
 const categoryOptions = props.categories.map((category) => ({

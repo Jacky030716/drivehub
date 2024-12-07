@@ -21,18 +21,18 @@ const categories = computed(() => categoriesQuery.data?.value?.data || []);
     <PulseLoader />
   </div>
 
-  <div v-else class="mx-auto justify-center items-center w-full h-full flex flex-col px-8 py-12 gap-8 overflow-y-auto">
-    <div class="w-full h-full flex flex-col items-center text-center space-y-4 2xl:mt-[120px] mt-[320px]">
-        <img src="../assets/drive.jpg" alt="Drive Logo" class="w-16"/>
+  <div v-else class="w-full h-full justify-center items-center flex flex-col pb-12 gap-8 overflow-y-auto">
+    <div class="w-full h-full flex flex-col items-center overflow-y-auto">
+      <div class="w-full h-full flex flex-col items-center text-center space-y-4 mt-12">
+        <img src="../assets/drive.jpg" alt="Drive Logo" class="w-16" />
         <div>
-            <h2 class="text-2xl font-bold">Upload Link</h2>
-            <p class="text-muted-foreground leading-tight text-base">Organize, categorize and upload the link by simply fill and click</p>
+          <h2 class="text-2xl font-bold">Upload Link</h2>
+          <p class="text-muted-foreground leading-tight text-base">Organize, categorize and upload the link by simply
+            fill and click</p>
         </div>
+      </div>
+      <!-- Resource Form -->
+      <ResourceForm :hubs="hubs" :categories="categories" />
     </div>
-    <!-- Resource Form -->
-    <ResourceForm 
-      :hubs="hubs"
-      :categories="categories"
-    />
   </div>
 </template>
