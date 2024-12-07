@@ -4,9 +4,18 @@ import axios from "axios"
 
 export const useDeleteHub = (hubId) => {
   const userEmail = localStorage.getItem("email")
+  const token = localStorage.getItem("token")
 
   if (!userEmail) {
     throw new Error("No user email found")
+  }
+
+  if (!token) {
+    toast({
+      title: "Please log in to delete a hub",
+      variant: "destructive",
+    })
+    return
   }
 
   const queryClient = useQueryClient();
@@ -16,6 +25,9 @@ export const useDeleteHub = (hubId) => {
       const response = await axios.delete(`http://localhost:3000/api/hubs/${hubId}`, {
         params: {
           userEmail
+        },
+        headers: {
+          Authorization: `Bearer ${token}`
         }
       })
     

@@ -1,7 +1,10 @@
 import express from "express";
 import linkController from "../controllers/linkController.js";
+import requireAuth from "../middleware/auth.js";
 
 const router = express.Router();
+
+router.use(requireAuth); // This middleware will be executed for every route defined below
 
 router.get('/', linkController.getLinks)
 router.get('/:linkId', linkController.getLink); // http://localhost:3000/api/links/{linkId}

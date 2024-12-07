@@ -23,7 +23,7 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }
-    }
+    },
   },
   build: {
     target: 'es2015'  // or higher

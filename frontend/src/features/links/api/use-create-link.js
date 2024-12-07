@@ -5,6 +5,15 @@ import axios from "axios";
 export const useCreateLink = () => {
   const queryClient = useQueryClient();
   const userEmail = localStorage.getItem("email")
+  const token = localStorage.getItem("token")
+
+  if (!token) {
+    toast({
+      title: "Please log in to create a link",
+      variant: "destructive",
+    })
+    return
+  }
 
   if (!userEmail) {
     toast({
@@ -20,6 +29,11 @@ export const useCreateLink = () => {
         {
           userEmail: userEmail,
           link: newLink
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
       )
       return response.data

@@ -30,16 +30,22 @@ export const useLoginUser = () => {
 
         // Check user existence
         try {
-          await axios.get(`/api/users/${email}`);
+          const res = await axios.get(`/api/users/${email}`); // Return token
+
+          const { token } = res.data.data;
+          localStorage.setItem("token", token);
+          
         } catch (error) {
           // User not found, create new user
           if (error.response && error.response.status === 404) {
-            console.log('User not exist, creating new user');
-            await axios.post(`/api/users`, {
+            const res = await axios.post(`/api/users`, {
               email,
               matricNumber: login_name,
               name: full_name
             });
+
+            const { token } = res.data.data;
+            localStorage.setItem("token", token);
           } else {
             throw error;
           }

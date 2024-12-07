@@ -1,9 +1,15 @@
+import jwt from "jsonwebtoken";
 import { eq } from "drizzle-orm";
 import { db } from "../drizzle/drizzle.js"; 
 import { users } from "../drizzle/schema.js";
 
+// Create token using email
+const createToken = (email) => {
+  return jwt.sign({ email }, process.env.SECRET, { expiresIn: "24h" });
+}
+
 const userController = {
-  getUser: async (req, res) => {
+  login: async (req, res) => {
     let { email } = req.params;
 
     if (!email) {
@@ -20,9 +26,9 @@ const userController = {
       .from(users)
       .where(
         eq(users.email, email),
-      )
-
-      console.log(data);
+      );
+    
+    const token = createToken(email);
 
     if (data.length === 0) {
       return res.status(404).json({
@@ -31,10 +37,13 @@ const userController = {
     }
 
     res.json({
-      data
+      data: {
+        user: data[0],
+        token
+      }
     });
   },
-  loginUser: async (req, res) => {
+  loginCreateUser: async (req, res) => {
     const { email, matricNumber, name } = req.body;    
 
     if (!email || !matricNumber || !name) {
@@ -50,6 +59,23 @@ const userController = {
       name: name.trim()
     };
 
+    // Check if the user already exists
+    const existingUser = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, user.email))
+
+    if (existingUser) {
+      // User already exists, return the existing user's data and a new token
+      const token = createToken(user.email);
+      return res.json({
+        data: {
+          user: existingUser,
+          token
+        }
+      });
+    }
+
     // Create the new user
     const data = await db
       .insert(users)
@@ -59,6 +85,8 @@ const userController = {
         name: user.name
       })
       .returning();
+
+    const token = createToken(user.email);
     
     if (!data) {
       return res.status(500).json({
@@ -67,7 +95,10 @@ const userController = {
     }
 
     res.json({
-      data
+      data: {
+        user: data[0],
+        token
+      }
     });
   }
 };

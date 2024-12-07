@@ -19,6 +19,7 @@ export const hubs = pgTable("hubs", {
   description: text("description").notNull(),
   session: text("session").notNull(),
   semester: text("semester").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
   owner_email: text("owner_email").references(() => users.email, {
     onDelete: "CASCADE",
   }).notNull(),
@@ -67,6 +68,7 @@ export const feedbacks = pgTable("feedback", {
   linkId: uuid("link_id").references(() => links.id, {
     onDelete: "CASCADE",
   }).notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
   owner_email: text("owner_email").references(() => users.email, {
     onDelete: "CASCADE",
   }).notNull(),

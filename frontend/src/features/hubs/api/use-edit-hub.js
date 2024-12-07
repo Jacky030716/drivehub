@@ -4,6 +4,15 @@ import axios from "axios"
 
 export const useEditHub = (hubId) => {
   const userEmail = localStorage.getItem("email")
+  const token = localStorage.getItem("token")
+
+  if (!token) {
+    toast({
+      title: "Please log in to edit a hub",
+      variant: "destructive",
+    })
+    return
+  }
 
   if(!userEmail) {
     throw new Error("No user email found")
@@ -16,6 +25,10 @@ export const useEditHub = (hubId) => {
       const response = await axios.put(`http://localhost:3000/api/hubs/${hubId}`, {  
         hub,
         userEmail
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       })
     
       if(!response.data) {

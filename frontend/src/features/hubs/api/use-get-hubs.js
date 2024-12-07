@@ -3,6 +3,7 @@ import axios from "axios"
 
 export const useGetHubs = () => {
   const userEmail = localStorage.getItem("email")
+  const token = localStorage.getItem("token")
 
   if (!userEmail) {
     throw new Error("No user email found")
@@ -14,6 +15,9 @@ export const useGetHubs = () => {
       const response = await axios.get(`/api/hubs`, {
         params: {
           userEmail,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
         }
       })
 

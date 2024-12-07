@@ -4,9 +4,14 @@ import axios from "axios"
 
 export const useEditLink = (linkId) => {
   const userEmail = localStorage.getItem('email')
+  const token = localStorage.getItem('token')
 
   if (!userEmail) {
     throw new Error("No email found")
+  }
+
+  if(!token) {
+    throw new Error("No token found")
   }
 
   const queryClient = useQueryClient();
@@ -16,6 +21,10 @@ export const useEditLink = (linkId) => {
       const response = await axios.put(`http://localhost:3000/api/links/${linkId}`, {  
         link,
         userEmail
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       })
     
       if(!response.data) {

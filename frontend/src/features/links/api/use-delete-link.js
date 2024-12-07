@@ -4,9 +4,14 @@ import axios from "axios"
 
 export const useDeleteLink = (linkId) => {
   const userEmail = localStorage.getItem("email")
+  const token = localStorage.getItem("token")
 
   if(!userEmail) {
     throw new Error("No user email found")
+  }
+
+  if(!token) {
+    throw new Error("No token found")
   }
 
   const queryClient = useQueryClient();
@@ -16,6 +21,9 @@ export const useDeleteLink = (linkId) => {
       const response = await axios.delete(`http://localhost:3000/api/links/${linkId}`, {
         params: {
           userEmail
+        },
+        headers: {
+          Authorization: `Bearer ${token}`
         }
       })
     
