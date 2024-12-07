@@ -19,8 +19,8 @@ const categories = computed(() => categoriesQuery.data?.value?.data || []);
 <template>
   <div class="w-full h-full overflow-y-auto">
     <div v-if="isDisabled" class="min-h-screen w-full flex justify-center items-center">
-      <PulseLoader />
-    </div>
+    <PulseLoader color="#882C4C"/>
+  </div>
 
     <div v-else class="mx-auto justify-center items-center flex flex-col px-8 py-12 gap-8">
       <div class="flex flex-col items-center text-center space-y-4 ">

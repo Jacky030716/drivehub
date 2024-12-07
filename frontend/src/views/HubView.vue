@@ -43,8 +43,8 @@ watch(() => hubQuery.data, (newData) => {
 
 <template>
   <!-- Loading state -->
-  <div v-if="isDisabled" class="text-center py-4">
-    <PulseLoader />
+  <div v-if="isDisabled" class="min-h-screen w-full flex justify-center items-center">
+    <PulseLoader color="#882C4C"/>
   </div>
   <div v-else-if="hub.links.length === 0">
     <NotFound 

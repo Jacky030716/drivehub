@@ -7,12 +7,12 @@ defineProps({
   name: { type: String, required: true },
   options: { type: Array, required: true },
   placeholder: { type: String, required: false, default: '' },
-  span: { type: Number, required: false, default: 1 },
+  span: { type: Number, required: false, default: 4 },
 });
 </script>
 
 <template>
-  <div :class="[`md:col-span-${span}`, 'col-span-full']">
+  <div :class="['col-span-full']">
     <!-- Bind the field using FormField -->
     <FormField v-slot="{ field, componentField }" :name="name">
       <FormItem>

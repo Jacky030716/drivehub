@@ -27,9 +27,9 @@ const name = localStorage.getItem('name')
 <template>
   <nav class="px-5 py-8 md:flex hidden flex-col justify-between gap-10 min-w-[250px] border min-h-screen shadow-lg">
     <!-- Welcome Text -->
-    <div class="space-y-2">
+    <div class="space-y-3">
       <h1 class="text-3xl text-primary font-bold">DriveHub</h1>
-      <p class="text-lg">Welcome Back, <span class="font-semibold">{{ name }}</span></p>
+      <p class="text-lg">Welcome Back,<br> <span class="font-semibold">{{ name }}</span></p>
     </div>
 
     <!-- Navbar Body -->

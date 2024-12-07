@@ -3,7 +3,6 @@ import * as z from 'zod'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { sessionOptions, semesterOptions } from '@/constant/options'
-import { useCreateHub } from '@/features/hubs/api/use-create-hub'
 import {
   Dialog,
   DialogTitle,
@@ -58,6 +57,7 @@ const { handleSubmit, resetForm, isSubmitting, setValues } = useForm({
 
 const onSubmit = handleSubmit((values) => {
   editMutation.mutate(values)
+  console.log(values)
 })
 
 // Watch for data changes and set the form values dynamically

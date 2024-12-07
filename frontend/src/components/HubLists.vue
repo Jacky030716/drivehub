@@ -73,7 +73,7 @@ const getCategoryColor = (category) => {
 // Computed property to filter hubs based on query
 const filteredHubs = computed(() => {
   if (!hubs.value) return [];
-  if (!props.query && props.selectedCategory === "reset" && props.selectedSession === "reset") 
+  if (!props.query && props.selectedCategory === "reset" && props.selectedSession === "reset")
     return props.limit ? hubs.value.slice(0, props.limit) : hubs.value;
 
   // Filter by search query
@@ -86,9 +86,9 @@ const filteredHubs = computed(() => {
   const selectedSemester = props.selectedSemester === "reset" ? "" : props.selectedSemester.toLowerCase().trim();
 
   // Filter by all three conditions
-  const filtered = hubs.value.filter(hub => 
-  //   hub.categoryName.toLowerCase().includes(selectedCategory) &&
-    hub.session.includes(selectedSession) && 
+  const filtered = hubs.value.filter(hub =>
+    //   hub.categoryName.toLowerCase().includes(selectedCategory) &&
+    hub.session.includes(selectedSession) &&
     hub.semester.includes(selectedSemester) &&
     hub.name.toLowerCase().includes(searchTerm)
   );
@@ -103,34 +103,26 @@ const filteredHubs = computed(() => {
 <template>
   <div class="h-full w-full flex flex-col space-y-4">
     <!-- Loading State -->
-    <div v-if="isDisabled" class="text-center py-8">
-      <PulseLoader color="#4A90E2" size="12px" />
+    <div v-if="isDisabled" class="min-h-screen w-full flex justify-center items-center">
+      <PulseLoader color="#882C4C" />
     </div>
 
     <div class="h-screen flex justify-center items-center overflow-hidden" v-else-if="hubs.length === 0">
-      <NotFound 
-        message="No hub found for this hub!" 
-      />
+      <NotFound message="No hub found for this hub!" />
     </div>
 
     <!-- Content -->
     <template v-else>
       <!-- Hubs List -->
       <div class="grid grid-cols-1 lg:grid-cols-2 auto-rows-auto gap-3 overflow-y-auto">
-        <HubList 
-          v-for="hub in filteredHubs" 
-          :key="hub.id"
-          :hub="hub" 
-          :categoryColor="getCategoryColor(hub.categoryName)" 
-        />
+        <HubList v-for="hub in filteredHubs" :key="hub.id" :hub="hub"
+          :categoryColor="getCategoryColor(hub.categoryName)" />
       </div>
 
       <!-- View More Link -->
       <div v-if="showButton" class="text-center mt-6">
-        <RouterLink 
-          to="/hub"
-          class="inline-flex items-center justify-center text-blue-600 text-sm font-medium hover:text-blue-800 hover:underline transition-colors duration-200"
-        >
+        <RouterLink to="/hub"
+          class="inline-flex items-center justify-center text-blue-600 text-sm font-medium hover:text-blue-800 hover:underline transition-colors duration-200">
           <span>View More</span>
           <ChevronRight class="w-5 h-5 ml-1" />
         </RouterLink>

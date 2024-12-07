@@ -2,9 +2,7 @@
 import { RouterLink } from "vue-router";
 import { User, Folder, CalendarDays, FileText, Mail, Trash } from "lucide-vue-next";
 import { useDeleteHub } from "@/features/hubs/api/use-delete-hub";
-import { useHubForm } from "@/hooks/useHubForm";
 import EditHubForm from "@/features/hubs/components/EditHubForm.vue";
-import useEditHubForm from "@/composables/useEditHubForm";
 import Button from "./ui/button/Button.vue";
 
 const props = defineProps({
@@ -18,12 +16,8 @@ const props = defineProps({
   },
 });
 
-const { isOpen } = useEditHubForm();
 const deleteMutation = useDeleteHub(props.hub.id)
 
-// const handleEdit = () => {
-//   onOpen(props.hub.id)
-// };
 
 const handleDelete = () => {
   if (confirm('Are you sure you want to delete this hub?')) {

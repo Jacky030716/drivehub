@@ -63,6 +63,7 @@ const hubsController = {
           id: row.links.id,
           url: row.links.url,
           name: row.links.ref_name,
+          email: row.user.email,
           description: row.links.description,
           semester: row.links.semester,
           session: row.links.session,

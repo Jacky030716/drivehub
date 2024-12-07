@@ -13,8 +13,8 @@ const createMutation = useLoginUser()
 
 
 const formSchema = toTypedSchema(z.object({
-  username: z.string().min(5),
-  password: z.string().min(5),
+  username: z.string().min(5, { message: 'Username must be at least 5 characters' }),
+  password: z.string().min(5, { message: 'Password must be at least 5 characters' }),
 }))
 
 const form = useForm({
@@ -34,10 +34,12 @@ const onSubmit = form.handleSubmit((values) => {
 <template>
   <main class="max-w-7xl mx-auto flex flex-col justify-center items-center min-h-screen overflow-y-auto">
     <div class="min-w-[550px] p-16 flex flex-col justify-center items-center gap-16 bg-neutral-100/10 shadow-xl rounded-xl">
-      <div class="flex flex-col items-center space-y-1">
+      <div class="flex flex-col items-center space-y-3.5">
         <img src="../assets/logo.png" alt="logo" class="w-[300px] object-cover inline-block" />
-        <h1 class="text-4xl font-serif text-primary">DriveHub</h1>
-        <p class="text-primary italic text-sm">Empowering Collaboration, Simplifying Sharing.</p>
+        <div class="w-full flex flex-col items-center">
+          <h1 class="text-4xl font-serif text-primary">DriveHub</h1>
+          <p class="text-primary italic text-sm">Empowering Collaboration, Simplifying Sharing.</p>
+        </div>
       </div>
 
         <!-- Login Form -->

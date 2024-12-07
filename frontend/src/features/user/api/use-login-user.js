@@ -26,7 +26,7 @@ export const useLoginUser = () => {
         }
 
         const userData = verificationResponse.data[0];
-        const { email, login_name, full_name } =  userData;
+        const { email, login_name, full_name, description } =  userData;
 
         // Check user existence
         try {
@@ -51,6 +51,12 @@ export const useLoginUser = () => {
           }
         }
 
+        if (description.toLowerCase().includes("pelajar")){
+          localStorage.setItem("role", "Pelajar FC");
+        } else {
+          localStorage.setItem("role", "Pensyarah FC");
+        }
+
         // Set user data in local storage or state management
         localStorage.setItem("email", email.trim());
         localStorage.setItem("matric_number", login_name);
@@ -67,7 +73,7 @@ export const useLoginUser = () => {
       queryClient.invalidateQueries(["user", userData.email]);
     },
     onError: (error) => {
-      toast.error("Login failed! Please try again.");
+      toast.error("Login failed! Check your credentials and try again.");
     }
   });
 

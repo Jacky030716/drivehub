@@ -3,6 +3,7 @@
 import { useGetCategories } from '@/features/category/use-get-categories';
 import { useGetLinks } from '@/features/links/api/use-get-links';
 import { computed, onMounted, watch } from 'vue';
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 
  // Fetch links using Vue Query
 const linksQuery = useGetLinks();
@@ -30,7 +31,9 @@ watch(() => linksQuery.data, (newData) => {
 </script>
 
 <template>
-  <div v-if="isDisabled">loading...</div>
+  <div v-if="isDisabled" class="min-h-screen w-full flex justify-center items-center">
+    <PulseLoader color="#882C4C"/>
+  </div>
 
   <section v-else class="sec-container">
     <div class="flex flex-col items-center">

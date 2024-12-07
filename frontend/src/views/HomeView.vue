@@ -7,6 +7,7 @@ import LinkList from "@/components/LinkList.vue";
 import Button from "@/components/ui/button/Button.vue";
 import { RouterLink } from "vue-router";
 import RecentFiles from "@/components/RecentFiles.vue";
+import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 
 // Fetch the data
 const categoriesQuery = useGetCategories();
@@ -24,8 +25,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-if="isDisabled">
-    Loading...
+  <div v-if="isDisabled" class="min-h-screen w-full flex justify-center items-center">
+    <PulseLoader color="#882C4C"/>
   </div>
 
   <div v-else class="sec-container font-sans px-0 pt-0">
