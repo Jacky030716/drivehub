@@ -17,22 +17,22 @@ const categories = computed(() => categoriesQuery.data?.value?.data || []);
 </script>
 
 <template>
-  <div v-if="isDisabled" class="min-h-screen w-full flex justify-center items-center">
-    <PulseLoader />
-  </div>
-
-  <div v-else class="mx-auto justify-center items-center w-full h-full flex flex-col px-8 py-12 gap-8 overflow-y-auto">
-    <div class="w-full h-full flex flex-col items-center text-center space-y-4 2xl:mt-[120px] mt-[320px]">
-        <img src="../assets/drive.jpg" alt="Drive Logo" class="w-16"/>
-        <div>
-            <h2 class="text-2xl font-bold">Upload Link</h2>
-            <p class="text-muted-foreground leading-tight text-base">Organize, categorize and upload the link by simply fill and click</p>
-        </div>
+  <div class="w-full h-full overflow-y-auto">
+    <div v-if="isDisabled" class="min-h-screen w-full flex justify-center items-center">
+      <PulseLoader />
     </div>
-    <!-- Resource Form -->
-    <ResourceForm 
-      :hubs="hubs"
-      :categories="categories"
-    />
+
+    <div v-else class="mx-auto justify-center items-center flex flex-col px-8 py-12 gap-8">
+      <div class="flex flex-col items-center text-center space-y-4 ">
+        <img src="../assets/drive.jpg" alt="Drive Logo" class="w-16" />
+        <div>
+          <h2 class="text-2xl font-bold">Upload Link</h2>
+          <p class="text-muted-foreground leading-tight text-base">Organize, categorize and upload the link by simply
+            fill and click</p>
+        </div>
+      </div>
+      <!-- Resource Form -->
+      <ResourceForm :hubs="hubs" :categories="categories" />
+    </div>
   </div>
 </template>

@@ -25,23 +25,22 @@ const categories = computed(() => categoriesQuery.data?.value?.data || []);
 </script>
 
 <template>
-  <div v-if="isDisabled" class="min-h-screen w-full flex justify-center items-center">
-    <PulseLoader />
-  </div>
+  <div class="w-full h-full overflow-y-auto">
+    <div v-if="isDisabled" class="min-h-screen w-full flex justify-center items-center">
+      <PulseLoader />
+    </div>
 
-  <div v-else class="w-full h-full mx-auto justify-center items-center flex flex-col py-12 px-8 gap-8 overflow-y-auto">
-    <div class="w-full flex flex-col items-center text-center space-y-4 2xl:mt-[120px] mt-[320px]">
-        <img src="../assets/drive.jpg" alt="Drive Logo" width="60"/>
+    <div v-else class="mx-auto justify-center items-center flex flex-col py-12 px-8 gap-8">
+      <div class="flex flex-col items-center text-center space-y-4">
+        <img src="../assets/drive.jpg" alt="Drive Logo" width="60" />
         <div>
-            <h2 class="text-2xl font-bold">Edit Link</h2>
-            <p class="text-muted-foreground leading-tight text-base">Organize, categorize and upload the link by simply fill and click</p>
+          <h2 class="text-2xl font-bold">Edit Link</h2>
+          <p class="text-muted-foreground leading-tight text-base">Organize, categorize and upload the link by simply
+            fill and click</p>
         </div>
-    </div>  
-    <!-- Resource Form -->
-    <EditResourceForm 
-      :hubs="hubs"
-      :link="link" 
-      :categories="categories"
-    />
+      </div>
+      <!-- Resource Form -->
+      <EditResourceForm :hubs="hubs" :link="link" :categories="categories" />
+    </div>
   </div>
 </template>
