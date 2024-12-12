@@ -4,7 +4,7 @@ import axios from 'axios'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 
-import { sessionOptions, semesterOptions } from '@/constant/options'
+import { sessionOptions, semesterOptions, shareWithOptions } from '@/constant/options'
 
 import { Button } from './ui/button'
 import CustomInputField from './CustomInputField.vue'
@@ -12,6 +12,7 @@ import CustomSelectField from './CustomSelectField.vue'
 import CustomTextareaField from './CustomTextareaField.vue'
 import { useEditLink } from '@/features/links/api/use-edit-link'
 import { useRouter } from 'vue-router'
+import { reactive, ref } from 'vue'
 
 const props = defineProps({
   hubs: Array,
@@ -20,6 +21,17 @@ const props = defineProps({
 })
 
 const router = useRouter()
+
+const sharedWith = ref('reset')
+const othersOption = ref(props.link.sharedEmail.length > 0 ? 'email' : props.link.hub_id ? 'group' : '')
+
+const handleSharedWithChange = (value) => {
+  sharedWith.value = value
+
+  if (value !== 'Others'){
+    othersOption.value = ''
+  }
+}
 
 const categoryOptions = props.categories.map((category) => ({
   label: category.name,
@@ -33,20 +45,30 @@ const formSchema = toTypedSchema(z.object({
   semester: z.string().min(1, { message: "Semester is required" }),
   session: z.string().min(1, { message: "Session is required" }),
   category: z.string().min(1, { message: "Category is required" }),
-  hub_id: z.string().optional(),
+  shared_with: z.string().min(1, { message: "Shared with is required" }),
+  shared_details: z.object({
+    email: z.string().optional(),
+    group: z.string().optional(),
+  }).optional(),
 }))
+
+const formState = reactive({
+  url: props.link.url,
+  ref_name: props.link.ref_name,
+  description: props.link.description,
+  semester: props.link.semester,
+  session: props.link.session,
+  category: props.link.category,
+  shared_with: props.link.sharedWith,
+  shared_details: {
+    email: props.link.sharedEmail.join(', '),
+    group: ''
+  }
+})
 
 const { handleSubmit, resetForm, isSubmitting } = useForm({
   validationSchema: formSchema,
-  initialValues: {
-    url: props.link.url,
-    ref_name: props.link.ref_name,
-    description: props.link.description,
-    semester: props.link.semester,
-    session: props.link.session,
-    category: props.link.category, 
-    hub_id: props.link.hub_id,
-  },
+  initialValues: formState
 })
 
 const editMutation = useEditLink(props.link.id)
@@ -75,19 +97,38 @@ const onSubmit = handleSubmit((values) => {
 
     <!-- Category -->
     <CustomSelectField :label="'Link Category'" :options="categoryOptions" :placeholder="'Select category'" :span="2"
-      :name="'category'"/>
+      :name="'category'" v-model="formState.category"/>
 
     <!-- Session -->
     <CustomSelectField :label="'Session'" :options="sessionOptions" :placeholder="'Select your session'"
-      :name="'session'" :span="1"  />
+      :name="'session'" :span="1" v-model="formState.session"/>
 
     <!-- Semester -->
     <CustomSelectField :label="'Semester'" :options="semesterOptions" :placeholder="'Select your semester'"
-      :name="'semester'" :span="1" />
+      :name="'semester'" :span="1" v-model="formState.semester"/>
 
-    <!-- Hub Name -->
-    <CustomSelectField :label="'Hub Name'" :placeholder="'Select hub (Optional)'"
-      :options="hubs.map(hub => ({ label: hub.name, value: hub.id }))" :name="'hub_id'" :span="4" />
+    <!-- Share With -->
+    <CustomSelectField :label="'Share With'" :options="shareWithOptions" :placeholder="'Select who can view your link'"
+      :name="'shared_with'" v-model="formState.shared_with" @update:modelValue="handleSharedWithChange" />
+
+    <!-- Radio Input When User Select "Others" -->
+    <div v-if="formState.shared_with.toLowerCase() === 'others'" class="w-full flex gap-2 flex-col ">
+      <div class="w-full flex items-center gap-2 text-sm">
+        <input type="radio" v-model="othersOption" value="email" class="mr-2" /> Individual Emails
+      </div>
+      <div class="w-full flex items-center gap-2 text-sm">
+        <input type="radio" v-model="othersOption" value="group" class="mr-2" /> Group
+      </div>
+    </div>
+
+    <!-- Email -->
+    <CustomInputField v-if="othersOption === 'email'" :label="'Individual Emails'"
+      :placeholder="'Type the email of the users, separate with (comma) if more than one'"
+      :name="'shared_details.email'"/>
+
+    <!-- Group Name -->
+    <CustomSelectField v-if="othersOption === 'group'" :label="'Group (Optional)'" :placeholder="'Select Your Group'"
+      :options="hubs.map(hub => ({ label: hub.name, value: hub.id }))" :name="'shared_details.group'" :span="4" />
 
     <Button type="submit" class="col-span-4 bg-primary text-white rounded-full mt-6" :disabled="isSubmitting">
       Update link

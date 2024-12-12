@@ -121,7 +121,7 @@ const filteredHubs = computed(() => {
 
       <!-- View More Link -->
       <div v-if="showButton" class="text-center mt-6">
-        <RouterLink to="/hub"
+        <RouterLink to="/group"
           class="inline-flex items-center justify-center text-blue-600 text-sm font-medium hover:text-blue-800 hover:underline transition-colors duration-200">
           <span>View More</span>
           <ChevronRight class="w-5 h-5 ml-1" />

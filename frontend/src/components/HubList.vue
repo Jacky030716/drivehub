@@ -27,7 +27,7 @@ const handleDelete = () => {
 </script>
 
 <template>
-  <RouterLink :to="`/hub/${hub.id}`" class="block">
+  <RouterLink :to="`/group/${hub.id}`" class="block">
     <div class="h-full py-8 px-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow duration-200 cursor-pointer hover:bg-slate-50">
       <!-- Content -->
       <div>

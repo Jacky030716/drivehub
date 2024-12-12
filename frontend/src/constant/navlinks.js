@@ -15,8 +15,8 @@ export const navlinks = [
     icon: '/src/assets/bookmark.svg'
   },
   {
-    name: "Hub",
-    href: "/hub",
+    name: "Group",
+    href: "/group",
     icon: "/src/assets/hub.svg"
   },
   {

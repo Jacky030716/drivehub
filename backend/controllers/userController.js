@@ -5,7 +5,7 @@ import { users } from "../drizzle/schema.js";
 
 // Create token using email
 const createToken = (email) => {
-  return jwt.sign({ email }, process.env.SECRET, { expiresIn: "24h" });
+  return jwt.sign({ email }, process.env.SECRET, { expiresIn: "3d" });
 }
 
 const userController = {

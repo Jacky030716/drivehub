@@ -32,7 +32,8 @@ watch(() => linksQuery.data, (newData) => {
 
 <template>
   <div v-if="isDisabled" class="min-h-screen w-full flex justify-center items-center">
-    <PulseLoader color="#882C4C"/>
+    <PulseLoader
+     color="#882C4C"/>
   </div>
 
   <section v-else class="sec-container">

@@ -1,17 +1,18 @@
-import { pgTable, text, uuid, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, uuid, timestamp, pgEnum } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 export const users = pgTable("user", {
   email: text("email").unique().primaryKey(),
   matricNumber: text("matric_number").notNull().unique(),
   name: text("name").notNull(),
-})
+  role: text("role").notNull(),
+});
 
 export const userRelations = relations(users, ({ many }) => ({
   hubs: many(hubs),
   links: many(links),
   feedbacks: many(feedbacks),
-}))
+}));
 
 export const hubs = pgTable("hubs", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -23,7 +24,7 @@ export const hubs = pgTable("hubs", {
   owner_email: text("owner_email").references(() => users.email, {
     onDelete: "CASCADE",
   }).notNull(),
-})
+});
 
 export const hubRelations = relations(hubs, ({ one, many }) => ({
   owner: one(users, {
@@ -31,7 +32,15 @@ export const hubRelations = relations(hubs, ({ one, many }) => ({
     references: [users.email],
   }),
   links: many(links),
-}))
+}));
+
+// ENUM for shareWith options
+export const shareWithEnum = pgEnum("share_with", [
+  "Private",
+  "All Students",
+  "All Lecturers",
+  "Others",
+]);
 
 export const links = pgTable("links", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -41,6 +50,7 @@ export const links = pgTable("links", {
   semester: text("semester").notNull(),
   session: text("session").notNull(),
   category: text("category").notNull(),
+  shared_with: shareWithEnum("share_with").notNull().default("Private"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   owner_email: text("owner_email").references(() => users.email, {
     onDelete: "CASCADE",
@@ -48,7 +58,7 @@ export const links = pgTable("links", {
   hubId: uuid("hub_id").references(() => hubs.id, {
     onDelete: "CASCADE",
   }), // fk for hub
-})
+});
 
 export const linkRelations = relations(links, ({ one, many }) => ({
   owner: one(users, {
@@ -60,32 +70,33 @@ export const linkRelations = relations(links, ({ one, many }) => ({
     references: [hubs.id],
   }),
   feedbacks: many(feedbacks),
-}))
+  sharedDetails: many(linkShareDetails),
+}));
 
-export const feedbacks = pgTable("feedback", {
+// Table for storing details of "Others" shareWith option
+export const linkShareDetails = pgTable("link_share_details", {
   id: uuid("id").primaryKey().defaultRandom(),
-  comment: text("comment").notNull(),
   linkId: uuid("link_id").references(() => links.id, {
     onDelete: "CASCADE",
   }).notNull(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  owner_email: text("owner_email").references(() => users.email, {
+  sharedEmail: text("shared_email"), // Nullable; used when sharing with individual emails
+  sharedGroupId: uuid("shared_hub_id").references(() => hubs.id, {
     onDelete: "CASCADE",
-  }).notNull(),
-})
+  }), // Nullable; used when sharing with hub
+});
 
-export const feedbackRelations = relations(feedbacks, ({ one }) => ({
+export const linkShareDetailsRelations = relations(linkShareDetails, ({ one }) => ({
   link: one(links, {
-    fields: [feedbacks.linkId],
+    fields: [linkShareDetails.linkId],
     references: [links.id],
   }),
-  user: one(users, {
-    fields: [feedbacks.owner_email],
-    references: [users.email],
+  hub: one(hubs, {
+    fields: [linkShareDetails.sharedGroupId],
+    references: [hubs.id],
   }),
-}))
+}));
 
 export const category = pgTable("category", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull().unique(),
-})
+});

@@ -4,13 +4,15 @@ import axios from 'axios'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 
-import { sessionOptions, semesterOptions } from '@/constant/options'
+import { sessionOptions, semesterOptions, shareWithOptions } from '@/constant/options'
 
 import { Button } from './ui/button'
 import CustomInputField from './CustomInputField.vue'
 import CustomSelectField from './CustomSelectField.vue'
 import { useCreateLink } from '@/features/links/api/use-create-link'
 import CustomTextareaField from './CustomTextareaField.vue'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const props = defineProps({
   hubs: Array,
@@ -23,9 +25,26 @@ const formSchema = toTypedSchema(z.object({
   description: z.string().min(10, { message: "Description must be at least 10 characters" }),
   semester: z.string().min(1, { message: "Semester is required" }),
   session: z.string().min(1, { message: "Session is required" }),
+  shared_with: z.string().min(1, { message: "Shared with is required" }),
+  shared_details: z.object({
+    email: z.string().optional(),
+    group: z.string().optional(),
+  }).optional(),
   category: z.string().min(1, { message: "Category is required" }),
-  hub_id: z.string().optional(),
 }))
+
+const router = useRouter()
+
+const sharedWith = ref('reset')
+const othersOption = ref('')
+
+const handleSharedWithChange = (value) => {
+  sharedWith.value = value
+
+  if (value !== 'Others'){
+    othersOption.value = ''
+  }
+}
 
 const { handleSubmit, resetForm, isSubmitting } = useForm({
   validationSchema: formSchema,
@@ -37,8 +56,10 @@ const onSubmit = handleSubmit((values) => {
   mutation.mutate(values, {
     onSuccess: () => {
       resetForm()
+      router.push('/shared')
     },
   })
+  console.log(values)
 })
 
 const categoryOptions = props.categories.map((category) => ({
@@ -71,9 +92,26 @@ const categoryOptions = props.categories.map((category) => ({
     <CustomSelectField :label="'Semester'" :options="semesterOptions" :placeholder="'Select your semester'"
       :name="'semester'" :span="1" />
 
-    <!-- Hub Name -->
-    <CustomSelectField :label="'Hub Name'" :placeholder="'Select hub (Optional)'"
-      :options="hubs.map(hub => ({ label: hub.name, value: hub.id }))" :name="'hub_id'" :span="4" />
+    <!-- Share With -->
+    <CustomSelectField :label="'Share With'" :options="shareWithOptions" :placeholder="'Select who can view your link'"
+      :name="'shared_with'" v-model="sharedWith" @update:modelValue="handleSharedWithChange" />
+
+    <!-- Radio Input When User Select "Others" -->
+    <div v-if="sharedWith.toLowerCase() === 'others'" class="w-full flex gap-2 flex-col ">
+      <div class="w-full flex items-center gap-2 text-sm">
+        <input type="radio" v-model="othersOption" value="email" class="mr-2" /> Individual Emails
+      </div>
+      <div class="w-full flex items-center gap-2 text-sm">
+        <input type="radio" v-model="othersOption" value="group" class="mr-2" /> Group
+      </div>
+    </div>
+
+    <!-- Email -->
+    <CustomInputField v-if="othersOption === 'email'" :label="'Individual Emails'" :placeholder="'Type the email of the users, separate with (comma) if more than one'" :name="'shared_details.email'" />
+
+    <!-- Group Name -->
+    <CustomSelectField v-if="othersOption === 'group'" :label="'Group (Optional)'" :placeholder="'Select Your Group'"
+      :options="hubs.map(hub => ({ label: hub.name, value: hub.id }))" :name="'shared_details.group'" :span="4" />
 
     <Button type="submit" class="col-span-4 bg-primary text-white rounded-full mt-6" :disabled="isSubmitting">
       Submit link

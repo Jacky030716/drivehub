@@ -23,6 +23,8 @@ const handleDelete = async () => {
   }
 };
 
+const isOwner = localStorage.getItem('email') === props.link.email
+
 </script>
 
 <template>
@@ -62,7 +64,7 @@ const handleDelete = async () => {
       </div>
 
     <!-- Edit and Delete Buttons -->
-    <div class="absolute bottom-2 right-2 flex space-x-2">
+    <div v-if="isOwner" class="absolute bottom-2 right-2 flex space-x-2">
       <RouterLink :to="`/share/edit/${link.id}`" class="px-3 py-1 text-xs text-white bg-blue-500 rounded hover:bg-blue-600">
         Edit
       </RouterLink>

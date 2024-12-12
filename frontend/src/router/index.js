@@ -32,16 +32,16 @@ export const routes = [
     meta: { title: 'Bookmark' },
   },
   {
-    name: "Hubs",
-    path: "/hub",
+    name: "Groups",
+    path: "/group",
     component: HubsView,
-    meta: { title: 'Hubs' },
+    meta: { title: 'Groups' },
   },
   {
-    name: "Hub",
-    path: "/hub/:hubId",
+    name: "Group",
+    path: "/group/:groupId",
     component: HubView,
-    meta: { title: 'Hub' },
+    meta: { title: 'Group' },
   },
   {
     name: "Shared Links",

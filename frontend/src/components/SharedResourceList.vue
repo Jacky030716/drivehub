@@ -4,6 +4,7 @@ import LinkList from './LinkList.vue';
 import HomePageSelect from './HomePageSelect.vue';
 import { computed, ref } from 'vue';
 import { semesterOptions, sessionOptions } from '@/constant/options';
+import NotFound from './NotFound.vue';
 
 const props = defineProps({
   links: {
@@ -98,10 +99,19 @@ const filteredLinks = computed(() => {
     </div>
 
     <!-- All Files Section -->
-    <div class="w-full space-y-2 overflow-y-auto">
+    <div class="h-full w-full space-y-2 overflow-y-auto">
       <h3 class="font-semibold">All Files</h3>
-      <div class="w-full h-full flex flex-col gap-2">
+      <div v-if="filteredLinks.length > 0" class="w-full h-full flex flex-col gap-2">
         <LinkList v-for="link in filteredLinks" :key="link.id" :link="link" />
+      </div>
+
+      <!-- Show no links found -->
+      <div v-else class="flex-1 mx-auto h-full w-full flex justify-center items-center">
+        <NotFound
+          message="No link found in your page!"
+          redirectUrl="/share"
+          buttonText="Share a link"
+        />
       </div>
     </div>
   </div>

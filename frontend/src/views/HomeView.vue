@@ -8,6 +8,7 @@ import Button from "@/components/ui/button/Button.vue";
 import { RouterLink } from "vue-router";
 import RecentFiles from "@/components/RecentFiles.vue";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
+import NotFound from "@/components/NotFound.vue";
 
 // Fetch the data
 const categoriesQuery = useGetCategories();
@@ -39,9 +40,9 @@ onMounted(() => {
         </span>
       </h1>
       <!-- Recent Files Section -->
-      <div class="w-full flex flex-col items-start gap-2.5">
+      <div v-if="links.length > 0" class="w-full flex flex-col items-start gap-2.5">
         <h3 class="font-semibold">Recent Shared Links</h3>
-        <div class="w-full grid xl:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-4">
+        <div class="w-full h-[150px] grid xl:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-4 overflow-y-auto">
           <RecentFiles :links="links" />
         </div>
       </div>
@@ -56,13 +57,22 @@ onMounted(() => {
         </h2>
         <!-- <HubForm /> -->
       </div>
-      <div class="w-full px-4 pb-4">
+      <div class="h-full w-full px-4 pb-4">
         <LinkList v-for="item in links.slice(0, Math.min(links.length, 8))" :key="item.id" :link="item" />
-        <Button as-child class="flex justify-center mt-4 w-fit mx-auto">
+        <Button v-if="links.length > 0" as-child class="flex justify-center mt-4 w-fit mx-auto">
           <RouterLink to="/shared">
             View All
           </RouterLink>
         </Button>
+
+        <!-- Show no links found -->
+         <div v-else class="mx-auto h-full w-full flex justify-center items-center">
+            <NotFound
+              message="No link found in your page!" 
+              redirectUrl="/share"
+              buttonText="Share a link"
+            />
+         </div>
       </div>
     </div>
   </div>

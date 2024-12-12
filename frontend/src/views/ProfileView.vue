@@ -39,22 +39,24 @@ import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
         <!-- User details table -->
         <div class="flex w-[450px] justify-between px-12">
           <table class="w-full">
-            <tr>
-              <th class="text-left w-1/2 py-1.5">Name</th>
-              <td>{{ name }}</td>
-            </tr>
-            <tr>
-              <th class="text-left py-1.5">Matric Number</th>
-              <td>{{ matricNumber }}</td>
-            </tr>
-            <tr>
-              <th class="text-left py-1.5">Email</th>
-              <td>{{ email }}</td>
-            </tr>
-            <tr>
-              <th class="text-left py-1.5">Role</th>
-              <td>{{ role }}</td>
-            </tr>
+            <tbody>
+              <tr>
+                <th class="text-left w-1/2 py-1.5">Name</th>
+                <td>{{ name }}</td>
+              </tr>
+              <tr>
+                <th class="text-left py-1.5">Matric Number</th>
+                <td>{{ matricNumber }}</td>
+              </tr>
+              <tr>
+                <th class="text-left py-1.5">Email</th>
+                <td>{{ email }}</td>
+              </tr>
+              <tr>
+                <th class="text-left py-1.5">Role</th>
+                <td>{{ role }}</td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>

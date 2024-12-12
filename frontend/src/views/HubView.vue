@@ -48,9 +48,9 @@ watch(() => hubQuery.data, (newData) => {
   </div>
   <div v-else-if="hub.links.length === 0">
     <NotFound 
-      message="No lists found for this hub!" 
+      message="No link found for this hub!" 
       redirectUrl="/share"
-      buttonText="Share a list"
+      buttonText="Share a link"
     />
   </div>
   <div v-else class="bg-gray-100 shadow p-4 w-full flex flex-col">
