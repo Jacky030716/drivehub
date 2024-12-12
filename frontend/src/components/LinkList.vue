@@ -1,7 +1,8 @@
 <script setup>
 import { useDeleteLink } from "@/features/links/api/use-delete-link";
-import { CalendarDays, Link2, Mail, FileText, Folder } from "lucide-vue-next";
+import { CalendarDays, Link2, Mail, FileText, Folder, EditIcon, Trash } from "lucide-vue-next";
 import { RouterLink } from 'vue-router'
+import Button from "./ui/button/Button.vue";
 
 const props = defineProps({
   link: {
@@ -14,12 +15,12 @@ const handleEdit = () => {
   alert("Edit functionality triggered for: " + props.link.id);
 }
 
-const mutation = useDeleteLink(props.link.id)
+const deleteMutation = useDeleteLink(props.link.id)
 
 const handleDelete = async () => {
   const confirm = window.confirm("Do you really want to delete this link?")
   if (confirm) {
-    mutation.mutate()
+    deleteMutation.mutate()
   }
 };
 
@@ -29,7 +30,7 @@ const isOwner = localStorage.getItem('email') === props.link.email
 
 <template>
   <div
-    class="bg-white p-4 mb-2 rounded-lg shadow hover:shadow-md transition-shadow duration-200 cursor-pointer hover:bg-gray-300 relative">
+    class="bg-white p-4 mb-2 rounded-lg shadow hover:shadow-md transition-shadow duration-200 cursor-pointer hover:bg-slate-100 relative">
     <!-- Content -->
     <div>
       <!-- Title with link icon -->
@@ -42,38 +43,42 @@ const isOwner = localStorage.getItem('email') === props.link.email
         </div>
       </a>
 
-        <!-- Details -->
-        <div class="space-y-1">
-          <div class="flex items-center text-xs text-gray-500">
-            <FileText class="w-3 h-3 mr-1" />
-            <span>{{ link.description }}</span>
-          </div>
-          <div class="flex items-center text-xs text-gray-500">
-            <CalendarDays class="w-3 h-3 mr-1" />
-            <span>{{ link.session }}-{{ link.semester }}</span>
-          </div>
-          <div class="flex items-center text-xs text-gray-500">
-            <Mail class="w-3 h-3 mr-1" />
-            <span>{{ link.email }} </span>
-          </div>
-          <div class="flex items-center text-xs text-gray-500">
-            <Folder class="w-3 h-3 mr-1" />
-            <span>{{ link.category }} </span>
-          </div>
+      <!-- Details -->
+      <div class="space-y-1">
+        <div class="flex items-center text-xs text-gray-500">
+          <FileText class="w-3 h-3 mr-1" />
+          <span>{{ link.description }}</span>
+        </div>
+        <div class="flex items-center text-xs text-gray-500">
+          <CalendarDays class="w-3 h-3 mr-1" />
+          <span>{{ link.session }}-{{ link.semester }}</span>
+        </div>
+        <div class="flex items-center text-xs text-gray-500">
+          <Mail class="w-3 h-3 mr-1" />
+          <span>{{ link.email }} </span>
+        </div>
+        <div class="flex items-center text-xs text-gray-500">
+          <Folder class="w-3 h-3 mr-1" />
+          <span>{{ link.category }} </span>
         </div>
       </div>
+    </div>
 
     <!-- Edit and Delete Buttons -->
     <div v-if="isOwner" class="absolute bottom-2 right-2 flex space-x-2">
-      <RouterLink :to="`/share/edit/${link.id}`" class="px-3 py-1 text-xs text-white bg-blue-500 rounded hover:bg-blue-600">
-        Edit
+      <RouterLink :to="`/share/edit/${link.id}`">
+        <Button size="sm" variant="outline" class="flex items-center gap-2">
+          <EditIcon />
+          Edit Link
+        </Button>
       </RouterLink>
-      <button class="px-3 py-1 text-xs text-white bg-red-500 rounded hover:bg-red-600" @click="handleDelete">
-        Delete
-      </button>
+      <Button size="sm" variant="destructive" @click.prevent="handleDelete" :disabled="deleteMutation.isLoading">
+        <Trash />
+        {{ deleteMutation.isLoading ? "Deleting..." : "Delete Link" }}
+      </Button>
     </div>
   </div>
-  
+
 </template>
 
 <style scoped>

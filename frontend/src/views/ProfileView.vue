@@ -84,7 +84,7 @@ import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
             <img src="../assets/link.png" alt="Share icon" class="w-14"/>
             <h3 class="font-semibold">Views all links</h3>
           </RouterLink>
-          <RouterLink to="/hub" class="flex flex-col items-center justify-center text-center h-auto border rounded-xl shadow-md p-4 flex-1 gap-2.5 hover:bg-slate-100 ease-in-out">
+          <RouterLink to="/group" class="flex flex-col items-center justify-center text-center h-auto border rounded-xl shadow-md p-4 flex-1 gap-2.5 hover:bg-slate-100 ease-in-out">
             <img src="../assets/hubs.png" alt="Share icon" class="w-14"/>
             <h3 class="font-semibold">View all hubs</h3>
           </RouterLink>

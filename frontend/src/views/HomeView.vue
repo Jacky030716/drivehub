@@ -55,18 +55,19 @@ onMounted(() => {
           <FileText class="w-4 h-4 mr-2" />
           Suggested Links
         </h2>
+        <span class="font-medium text-">{{ Math.min(links.length, 8) }} of out {{ links.length }} links</span>
         <!-- <HubForm /> -->
       </div>
       <div class="h-full w-full px-4 pb-4">
         <LinkList v-for="item in links.slice(0, Math.min(links.length, 8))" :key="item.id" :link="item" />
-        <Button v-if="links.length > 0" as-child class="flex justify-center mt-4 w-fit mx-auto">
+        <Button v-if="links.length > 0 && links.length >= 8" as-child class="flex justify-center mt-4 w-fit mx-auto">
           <RouterLink to="/shared">
             View All
           </RouterLink>
         </Button>
 
         <!-- Show no links found -->
-         <div v-else class="mx-auto h-full w-full flex justify-center items-center">
+         <div v-if="links.length === 0" class="mx-auto h-full w-full flex justify-center items-center">
             <NotFound
               message="No link found in your page!" 
               redirectUrl="/share"

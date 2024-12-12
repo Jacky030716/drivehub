@@ -9,6 +9,7 @@ import { shuffleArray } from '@/lib/utils';
 import { colorPalette } from '@/constant';
 import { useGetHubs } from '@/features/hubs/api/use-get-hubs';
 import NotFound from './NotFound.vue';
+import HubForm from '@/features/hubs/components/HubForm.vue';
 
 
 const props = defineProps({
@@ -107,8 +108,11 @@ const filteredHubs = computed(() => {
       <PulseLoader color="#882C4C" />
     </div>
 
-    <div class="h-screen flex justify-center items-center overflow-hidden" v-else-if="hubs.length === 0">
-      <NotFound message="No hub found for this hub!" />
+    <div class="h-screen flex flex-col justify-center items-center overflow-hidden" v-else-if="hubs.length === 0">
+      <NotFound 
+        message="No hub found! Create a hub to get started." 
+        description='You can use the "Add New Hub" button at top right to add new hub.'
+      />
     </div>
 
     <!-- Content -->
