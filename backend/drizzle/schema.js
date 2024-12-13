@@ -1,4 +1,4 @@
-import { pgTable, text, uuid, timestamp, pgEnum } from "drizzle-orm/pg-core";
+import { pgTable, text, uuid, timestamp } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 export const users = pgTable("user", {
@@ -34,14 +34,6 @@ export const hubRelations = relations(hubs, ({ one, many }) => ({
   links: many(links),
 }));
 
-// ENUM for shareWith options
-export const shareWithEnum = pgEnum("share_with", [
-  "Private",
-  "All Students",
-  "All Lecturers",
-  "Others",
-]);
-
 export const links = pgTable("links", {
   id: uuid("id").primaryKey().defaultRandom(),
   url: text("url").notNull().unique(),
@@ -50,7 +42,7 @@ export const links = pgTable("links", {
   semester: text("semester").notNull(),
   session: text("session").notNull(),
   category: text("category").notNull(),
-  shared_with: shareWithEnum("share_with").notNull().default("Private"),
+  shared_with: text("share_with").notNull().default("Private"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   owner_email: text("owner_email").references(() => users.email, {
     onDelete: "CASCADE",

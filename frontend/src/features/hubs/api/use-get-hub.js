@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/vue-query"
 import axios from "axios"
 
-export const useGetHub = (hubId) => {
+export const useGetHub = (groupId) => {
   const token = localStorage.getItem("token")
 
   const query = useQuery({
-    queryKey: ["hub", hubId],
+    queryKey: ["group", groupId],
     queryFn: async () => {
-      const response = await axios.get(`/api/hubs/${hubId}`, {
+      const response = await axios.get(`/api/hubs/${groupId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         }

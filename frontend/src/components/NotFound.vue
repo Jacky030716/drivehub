@@ -26,7 +26,7 @@ const router = useRouter()
 </script>
 
 <template>
-  <div class="max-w-7xl mx-auto w-full flex flex-col items-center justify-center gap-2">
+  <div class="max-w-7xl mx-auto w-full h-full flex flex-col items-center justify-center gap-2">
     <img src="/src/assets/drive.png" class="aspect-auto w-28" />
     <div class="space-y-6 flex flex-col items-center">
       <div class="w-full flex flex-col items-center justify-center">

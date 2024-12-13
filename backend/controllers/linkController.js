@@ -1,4 +1,4 @@
-import { and, desc, eq, or } from "drizzle-orm";
+import { and, desc, eq, ilike, or } from "drizzle-orm";
 import { db } from "../drizzle/drizzle.js";
 import { hubs, links, linkShareDetails, users } from "../drizzle/schema.js";
 
@@ -65,18 +65,21 @@ const linkController = {
     const { userEmail } = req.query;
 
     const data = await db
-      .selectDistinctOn([links.url])
+      .selectDistinctOn([links.createdAt])
       .from(links)
       .innerJoin(users, eq(links.owner_email, users.email))
       .leftJoin(linkShareDetails, eq(links.id, linkShareDetails.linkId))
       .where(
         or (
           eq(links.owner_email, userEmail),
-          eq(linkShareDetails.sharedEmail, userEmail)
+          eq(linkShareDetails.sharedEmail, userEmail),
+          eq(links.shared_with, users.role)
         )
       )
-      .orderBy(desc(links.url), desc(links.createdAt))
+      .orderBy(desc(links.createdAt))
     
+    console.log(data.map(row => row.links.shared_with));
+        
     if (!data) {
       return res.status(404).json({
         message: "No links found"
@@ -89,7 +92,7 @@ const linkController = {
       ref_name: row.links.ref_name,
       title: row.links.title,
       description: row.links.description,
-      category: row.links.category,
+      category: row.links.category, 
       session: row.links.session,
       semester: row.links.semester,
       email: row.user.email,

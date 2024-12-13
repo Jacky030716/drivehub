@@ -13,8 +13,8 @@ export const sessionOptions = [
 
 export const shareWithOptions = [
   { value: "Private", label: "Private" },
-  { value: "All Students", label: "All Students" },
-  { value: "All Lecturers", label: "All Lecturers" },
+  { value: "Student", label: "All Students" },
+  { value: "Lecturer", label: "All Lecturers" },
   { value: "Others", label: "Others" },
 ]
 

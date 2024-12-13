@@ -1,7 +1,7 @@
 <script setup>
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Select, SelectContent, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 const props = defineProps({
   label: { type: String, required: true },
@@ -15,6 +15,14 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue']);
 
 const selectedValue = ref(props.modelValue);
+
+// Compute the display label based on the selected value
+const selectedLabel = computed(() => {
+  if (selectedValue.value === 'reset') return props.placeholder;
+  
+  const selectedOption = props.options.find(option => option.value === selectedValue.value);
+  return selectedOption ? selectedOption.label : selectedValue.value;
+});
 
 // Update `selectedValue` on parent changes
 watch(() => props.modelValue, (newVal) => {
@@ -41,7 +49,7 @@ const handleValueChange = (value) => {
           <Select v-bind="componentField" v-model="field.value" :model-value="selectedValue" @update:model-value="handleValueChange">
             <SelectTrigger>
               <SelectValue :class="[selectedValue === 'reset' && 'text-muted-foreground']">
-                {{ selectedValue === 'reset' ? placeholder : selectedValue }}
+                {{ selectedLabel }}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>

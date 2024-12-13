@@ -13,9 +13,9 @@ const state = reactive({
   isLoading: true,
 });
 
-const hubId = computed(() => route.params.hubId);
+const groupId = computed(() => route.params.groupId);
 
-const hubQuery = useGetHub(hubId.value);
+const hubQuery = useGetHub(groupId.value);
 
 // Computed properties for reactivity
 const isDisabled = computed(() => hubQuery.isLoading.value);
@@ -27,9 +27,9 @@ onMounted(() => {
   }
 });
 
-watch(hubId, (newHubId) => {
+watch(groupId, (newGroupId) => {
   state.isLoading = true;
-  hubQuery.refetch({ queryKey: [newHubId] }).finally(() => {
+  hubQuery.refetch({ queryKey: ["group", newGroupId] }).finally(() => {
     state.isLoading = false;
   });
 });
@@ -46,17 +46,17 @@ watch(() => hubQuery.data, (newData) => {
   <div v-if="isDisabled" class="min-h-screen w-full flex justify-center items-center">
     <PulseLoader color="#882C4C"/>
   </div>
-  <div v-else-if="hub.links.length === 0">
+  <section v-else-if="hub.links.length === 0" class="sec-container">
     <NotFound 
       message="No link found for this hub!" 
       redirectUrl="/share"
       buttonText="Share a link"
     />
-  </div>
-  <div v-else class="bg-gray-100 shadow p-4 w-full flex flex-col">
+  </section>
+  <section v-else class="bg-gray-100 shadow p-4 w-full flex flex-col">
     <h1 class="text-lg font-semibold text-center">{{ hub.name }} Lists</h1>
     <div class="mt-2 max-h-[580px] overflow-y-auto">
       <LinkLists :links="hub.links" :isLoading="isDisabled" />
     </div>
-  </div>
+  </section>
 </template>

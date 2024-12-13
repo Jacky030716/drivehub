@@ -1,6 +1,6 @@
 {
-  "id": "30757447-fcdd-4d09-bb63-4ea69ff86202",
-  "prevId": "5e44e4b3-e31f-4c96-bc2c-ed18e9af50a4",
+  "id": "6897deda-87ab-4b8b-9e3e-93414b283504",
+  "prevId": "f4259d83-5d43-49ff-ad09-4c2b02e02520",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -34,78 +34,6 @@
           ]
         }
       },
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.feedback": {
-      "name": "feedback",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "comment": {
-          "name": "comment",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "link_id": {
-          "name": "link_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "owner_email": {
-          "name": "owner_email",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "feedback_link_id_links_id_fk": {
-          "name": "feedback_link_id_links_id_fk",
-          "tableFrom": "feedback",
-          "tableTo": "links",
-          "columnsFrom": [
-            "link_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "CASCADE",
-          "onUpdate": "no action"
-        },
-        "feedback_owner_email_user_email_fk": {
-          "name": "feedback_owner_email_user_email_fk",
-          "tableFrom": "feedback",
-          "tableTo": "user",
-          "columnsFrom": [
-            "owner_email"
-          ],
-          "columnsTo": [
-            "email"
-          ],
-          "onDelete": "CASCADE",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -181,6 +109,71 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.link_share_details": {
+      "name": "link_share_details",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "link_id": {
+          "name": "link_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "shared_email": {
+          "name": "shared_email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "shared_hub_id": {
+          "name": "shared_hub_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "link_share_details_link_id_links_id_fk": {
+          "name": "link_share_details_link_id_links_id_fk",
+          "tableFrom": "link_share_details",
+          "tableTo": "links",
+          "columnsFrom": [
+            "link_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "CASCADE",
+          "onUpdate": "no action"
+        },
+        "link_share_details_shared_hub_id_hubs_id_fk": {
+          "name": "link_share_details_shared_hub_id_hubs_id_fk",
+          "tableFrom": "link_share_details",
+          "tableTo": "hubs",
+          "columnsFrom": [
+            "shared_hub_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "CASCADE",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.links": {
       "name": "links",
       "schema": "",
@@ -227,6 +220,13 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "share_with": {
+          "name": "share_with",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'Private'"
         },
         "created_at": {
           "name": "created_at",
@@ -309,6 +309,12 @@
         },
         "name": {
           "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "role": {
+          "name": "role",
           "type": "text",
           "primaryKey": false,
           "notNull": true
