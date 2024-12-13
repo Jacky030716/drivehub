@@ -50,14 +50,14 @@ const onSubmit = handleSubmit((values) => {
   <Dialog>
     <DialogTrigger as-child>
       <Button class="rounded-full">
-        Add New Hub
+        Add New Group
       </Button>
     </DialogTrigger>
     <DialogContent>
       <DialogHeader>
         <DialogTitle>Create a new Hub</DialogTitle>
         <DialogDescription>
-          Fill in the form below to create a new hub
+          Fill in the form below to create a new group
         </DialogDescription>
       </DialogHeader>
       <form @submit="onSubmit" class="w-full grid grid-cols-4 gap-5">

@@ -70,7 +70,7 @@ import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
       <!-- Hubs details -->
       <div class="w-full h-full flex flex-col justify-center items-center gap-3.5 bg-white shadow-sm rounded-xl px-2 py-4">
         <img src="../assets/folder.png" alt="Share Icon" class="w-16 h-auto">
-        <p class="w-[200px] text-center">You had created <span class="font-bold text-primary">{{ hubs.data.length }}</span> hub(s) using DriveHub</p>
+        <p class="w-[200px] text-center">You had created <span class="font-bold text-primary">{{ hubs.data.length }}</span> group(s) using DriveHub</p>
       </div>
 
       <div class="w-full h-full col-span-2 flex flex-col  gap-3.5 bg-white shadow-sm rounded-xl py-4 px-6">
@@ -86,7 +86,7 @@ import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
           </RouterLink>
           <RouterLink to="/group" class="flex flex-col items-center justify-center text-center h-auto border rounded-xl shadow-md p-4 flex-1 gap-2.5 hover:bg-slate-100 ease-in-out">
             <img src="../assets/hubs.png" alt="Share icon" class="w-14"/>
-            <h3 class="font-semibold">View all hubs</h3>
+            <h3 class="font-semibold">View all groups</h3>
           </RouterLink>
         </div>
       </div>

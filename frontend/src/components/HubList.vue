@@ -68,7 +68,7 @@ const handleDelete = () => {
                 :disabled="deleteMutation.isLoading"
               >
                 <Trash />
-                {{ deleteMutation.isLoading ? "Deleting..." : "Delete Hub" }}
+                {{ deleteMutation.isLoading ? "Deleting..." : "Delete Group" }}
               </Button>
             </div>
         </div>

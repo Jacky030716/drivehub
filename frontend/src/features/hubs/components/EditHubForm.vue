@@ -94,14 +94,14 @@ watch(isOpen, (open) => {
     <DialogTrigger as-child>
       <Button size="sm" variant="outline" @click.prevent="isOpen = true" class="flex items-center gap-2">
         <EditIcon />
-        Edit Hub
+        Edit Group
       </Button>
     </DialogTrigger>
     <DialogContent>
       <DialogHeader>
         <DialogTitle>Edit Hub</DialogTitle>
         <DialogDescription>
-          Something went wrong? No worries! You can edit your hub here.
+          Something went wrong? No worries! You can edit your group here.
         </DialogDescription>
       </DialogHeader>
       <form @submit="onSubmit" class="w-full grid grid-cols-4 gap-5">
