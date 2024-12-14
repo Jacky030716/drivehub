@@ -110,8 +110,8 @@ const filteredHubs = computed(() => {
 
     <div class="h-screen flex flex-col justify-center items-center overflow-hidden" v-else-if="hubs.length === 0">
       <NotFound 
-        message="No hub found! Create a hub to get started." 
-        description='You can use the "Add New Hub" button at top right to add new hub.'
+        message="No group found! Create a group to get started." 
+        description='You can use the "Add New Group" button at top right to add new group.'
       />
     </div>
 

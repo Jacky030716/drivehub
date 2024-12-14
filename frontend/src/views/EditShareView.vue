@@ -21,7 +21,6 @@ const hubs = computed(() => hubsQuery.data?.value?.data || []);
 const link = computed(() => linkQuery.data?.value?.data || {});
 const categories = computed(() => categoriesQuery.data?.value?.data || []);
 
-
 </script>
 
 <template>

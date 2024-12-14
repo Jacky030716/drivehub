@@ -13,6 +13,7 @@ import { useCreateLink } from '@/features/links/api/use-create-link'
 import CustomTextareaField from './CustomTextareaField.vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import Checkbox from './ui/checkbox/Checkbox.vue'
 
 const props = defineProps({
   hubs: Array,
@@ -36,13 +37,16 @@ const formSchema = toTypedSchema(z.object({
 const router = useRouter()
 
 const sharedWith = ref('reset')
-const othersOption = ref('')
+const emailOption = ref(false)
+const groupOption = ref(false)
 
 const handleSharedWithChange = (value) => {
   sharedWith.value = value
 
-  if (value !== 'Others'){
-    othersOption.value = ''
+  // Reset email and group options when 'Others' is not selected
+  if (value !== 'Others') {
+    emailOption.value = false
+    groupOption.value = false
   }
 }
 
@@ -66,7 +70,6 @@ const categoryOptions = props.categories.map((category) => ({
   label: category.name,
   value: category.name,
 }))
-
 </script>
 
 <template>
@@ -99,19 +102,40 @@ const categoryOptions = props.categories.map((category) => ({
     <!-- Radio Input When User Select "Others" -->
     <div v-if="sharedWith.toLowerCase() === 'others'" class="w-full flex gap-2 flex-col ">
       <div class="w-full flex items-center gap-2 text-sm">
-        <input type="radio" v-model="othersOption" value="email" class="mr-2" /> Individual Emails
+        <Checkbox 
+          :checked="emailOption" 
+          @update:checked="(checked) => emailOption = checked" 
+          class="mr-2" 
+        />
+        <label>Individual Emails</label>
       </div>
       <div class="w-full flex items-center gap-2 text-sm">
-        <input type="radio" v-model="othersOption" value="group" class="mr-2" /> Group
+        <Checkbox 
+          :checked="groupOption"
+          @update:checked="(checked) => groupOption = checked" 
+          class="mr-2" 
+        />
+        <label>Group</label>
       </div>
     </div>
 
     <!-- Email -->
-    <CustomInputField v-if="othersOption === 'email'" :label="'Individual Emails'" :placeholder="'Type the email of the users, separate with (comma) if more than one'" :name="'shared_details.email'" />
+    <CustomInputField 
+      v-if="emailOption" 
+      :label="'Individual Emails'" 
+      :placeholder="'Type the email of the users, separate with (comma) if more than one'" 
+      :name="'shared_details.email'" 
+    />
 
     <!-- Group Name -->
-    <CustomSelectField v-if="othersOption === 'group'" :label="'Group (Optional)'" :placeholder="'Select Your Group'"
-      :options="hubs.map(hub => ({ label: hub.name, value: hub.id }))" :name="'shared_details.group'" :span="4" />
+    <CustomSelectField 
+      v-if="groupOption" 
+      :label="'Group (Optional)'" 
+      :placeholder="'Select Your Group'"
+      :options="hubs.map(hub => ({ label: hub.name, value: hub.id }))" 
+      :name="'shared_details.group'" 
+      :span="4" 
+    />
 
     <Button type="submit" class="col-span-4 bg-primary text-white rounded-full mt-6" :disabled="isSubmitting">
       Submit link

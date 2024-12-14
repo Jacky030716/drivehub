@@ -18,6 +18,8 @@ import CustomInputField from '@/components/CustomInputField.vue'
 import CustomTextareaField from '@/components/CustomTextareaField.vue'
 import CustomSelectField from '@/components/CustomSelectField.vue'
 import Button from '@/components/ui/button/Button.vue'
+import { useHubForm } from '@/hooks/useHubForm'
+import DialogClose from '@/components/ui/dialog/DialogClose.vue'
 
 defineProps({
   hubs: Array,
@@ -28,6 +30,7 @@ const formSchema = toTypedSchema(z.object({
   description: z.string().min(10, { message: "Description must be at least 10 characters" }),
   session: z.string().min(1, { message: "Session is required" }),
   semester: z.string().min(1, { message: "Semester is required" }),
+  shared_email: z.string().optional(),
 }))
 
 const { handleSubmit, resetForm, isSubmitting } = useForm({
@@ -68,18 +71,24 @@ const onSubmit = handleSubmit((values) => {
         <CustomTextareaField :label="'Hub Description'" :placeholder="'Describe what is your hub about'"
           :name="'description'" :span="4" />
 
-        <!-- Semester -->
-        <CustomSelectField :label="'Semester'" :options="semesterOptions" :placeholder="'Select your semester'"
-          :name="'semester'" :span="1" />
-
         <!-- Session -->
         <CustomSelectField :label="'Session'" :options="sessionOptions" :placeholder="'Select your session'"
           :name="'session'" :span="1" />
 
+        <!-- Semester -->
+        <CustomSelectField :label="'Semester'" :options="semesterOptions" :placeholder="'Select your semester'"
+          :name="'semester'" :span="1" />
+
+        <!-- Email -->
+        <CustomInputField :label="'Individual Emails'"
+          :placeholder="'Type the email of the users, separate with (comma) if more than one'" :name="'shared_email'" />
+
         <DialogFooter class="w-full col-span-full">
-          <Button type="submit" class="w-full bg-primary text-white rounded-full mt-6" :disabled="isSubmitting">
-            Submit
-          </Button>
+          <DialogClose class="w-full">
+            <Button type="submit" class="w-full bg-primary text-white rounded-full mt-6" :disabled="isSubmitting">
+              Submit
+            </Button>
+          </DialogClose>
         </DialogFooter>
       </form>
     </DialogContent>

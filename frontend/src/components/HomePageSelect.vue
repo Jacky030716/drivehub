@@ -36,7 +36,6 @@ watch(() => props.modelValue, (newVal) => {
 // Single selection handler
 const handleValueChange = (value) => {
   selectedValue.value = value
-  console.log('selectedValue', selectedValue.value)
   emit('update:modelValue', value)
 }
 

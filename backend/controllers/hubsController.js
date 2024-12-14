@@ -1,6 +1,6 @@
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, or } from "drizzle-orm";
 import { db } from "../drizzle/drizzle.js";
-import { hubs, users, links } from "../drizzle/schema.js";
+import { hubs, users, links, groupParticipants } from "../drizzle/schema.js";
 
 const hubsController = {
   getHubs: async (req, res) => {
@@ -11,11 +11,17 @@ const hubsController = {
     }
 
     const data = await db
-      .select()
+      .selectDistinctOn([hubs.createdAt])
       .from(hubs)
       .innerJoin(users, eq(hubs.owner_email, users.email))
-      .where(eq(users.email, userEmail))
-      .orderBy(desc(hubs.name))
+      .leftJoin(groupParticipants, eq(hubs.id, groupParticipants.hubId))
+      .where(
+        or(
+          eq(users.email, userEmail),
+          eq(groupParticipants.email, userEmail)
+        )
+      )
+      .orderBy(desc(hubs.createdAt))
 
     if (data.length === 0) {
       return res.json({ data: [] });
@@ -24,7 +30,6 @@ const hubsController = {
     const normalizedData = data.map((row) => ({
       id: row.hubs.id,
       name: row.hubs.name,
-      category: row.hubs.category,
       description: row.hubs.description,
       semester: row.hubs.semester,
       session: row.hubs.session,
@@ -53,7 +58,7 @@ const hubsController = {
         .where(eq(hubs.id, hubId));
   
       if (!data || data.length === 0) {
-        return res.status(404).json({ message: "No hub found" });
+        return res.status(404).json({ message: "No group found" });
       }
   
       // Group links associated with the hub
@@ -63,7 +68,7 @@ const hubsController = {
           id: row.links.id,
           url: row.links.url,
           name: row.links.ref_name,
-          email: row.user.email,
+          email: row.links.owner_email,
           description: row.links.description,
           semester: row.links.semester,
           session: row.links.session,
@@ -112,6 +117,22 @@ const hubsController = {
         ...hub
       })
       .returning();
+    
+    if (hub.shared_email){
+      const shared_emails = hub.shared_email.split(",").map(email => email.trim());
+
+      if (shared_emails.length > 0){
+        const sharedData = shared_emails.map(email => ({
+          hubId: data.id,
+          email
+        }));
+
+        await db
+          .insert(groupParticipants)
+          .values(sharedData)
+          .returning();
+      }
+    }
 
     if (!data) {
       return res.status(500).json({
@@ -183,6 +204,27 @@ const hubsController = {
       return res.status(500).json({
         message: "Error editing hub"
       });
+    }
+
+    if (hub.shared_email){
+      const shared_emails = hub.shared_email.split(",").map(email => email.trim());
+
+      await db
+        .delete(groupParticipants)
+        .where(eq(groupParticipants.hubId, hubId))
+        .returning();
+
+      if (shared_emails.length > 0){
+        const sharedData = shared_emails.map(email => ({
+          hubId: hubId,
+          email
+        }));
+
+        await db
+          .insert(groupParticipants)
+          .values(sharedData)
+          .returning();
+      }
     }
 
     res.json({

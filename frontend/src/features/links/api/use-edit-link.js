@@ -38,7 +38,7 @@ export const useEditLink = (linkId) => {
 
       queryClient.invalidateQueries({ queryKey: ["link", { linkId }]})
       queryClient.invalidateQueries({ queryKey: ["links"]})
-      queryClient.invalidateQueries({ queryKey: ["hubs"]})
+      queryClient.invalidateQueries({ queryKey: ["groups"]})
     },
     onError: () => {
       toast.error('Error editing link')

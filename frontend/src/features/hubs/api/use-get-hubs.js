@@ -10,7 +10,7 @@ export const useGetHubs = () => {
   }
 
   const query = useQuery({
-    queryKey: ["hubs"],
+    queryKey: ["groups"],
     queryFn: async () => {
       const response = await axios.get(`/api/hubs`, {
         params: {
@@ -22,7 +22,7 @@ export const useGetHubs = () => {
       })
 
       if(!response.data) {
-        throw new Error("No hubs found")
+        throw new Error("No groups found")
       }
 
       return response.data

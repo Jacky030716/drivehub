@@ -15,6 +15,20 @@
       "when": 1734071230474,
       "tag": "0001_boring_ma_gnuci",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1734096678664,
+      "tag": "0002_sweet_robin_chapel",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1734106424863,
+      "tag": "0003_known_lockjaw",
+      "breakpoints": true
     }
   ]
 }

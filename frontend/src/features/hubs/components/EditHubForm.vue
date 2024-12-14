@@ -18,10 +18,10 @@ import CustomInputField from '@/components/CustomInputField.vue'
 import CustomTextareaField from '@/components/CustomTextareaField.vue'
 import CustomSelectField from '@/components/CustomSelectField.vue'
 import { useGetHub } from '../api/use-get-hub'
-import { computed, watch } from 'vue'
+import { computed, reactive, watch } from 'vue'
 import useEditHubForm from '@/composables/useEditHubForm'
 import { useEditHub } from '../api/use-edit-hub'
-import { EditIcon } from 'lucide-vue-next'
+import { EditIcon, Loader } from 'lucide-vue-next'
 
 const { isOpen } = useEditHubForm()
 
@@ -43,21 +43,28 @@ const formSchema = toTypedSchema(z.object({
   description: z.string().min(10, { message: "Description must be at least 10 characters" }),
   session: z.string().min(1, { message: "Session is required" }),
   semester: z.string().min(1, { message: "Semester is required" }),
+  shared_email: z.string().optional(),
 }))
+
+const formState = reactive({
+  name: data.value.name || "",
+  description: data.value.description || "",
+  session: data.value.session || "",
+  semester: data.value.semester || "",
+  shared_email: data.value.shared_email || "",
+})
 
 const { handleSubmit, resetForm, isSubmitting, setValues } = useForm({
   validationSchema: formSchema,
-  initialValues: {
-    name: '',
-    description: '',
-    session: '',
-    semester: '',
-  }
+  initialValues: formState
 })
 
 const onSubmit = handleSubmit((values) => {
-  editMutation.mutate(values)
-  console.log(values)
+  editMutation.mutate(values, {
+    onSuccess: () => {
+      isOpen.value = false
+    }
+  })
 })
 
 // Watch for data changes and set the form values dynamically
@@ -68,6 +75,7 @@ watch(data, (newData) => {
       description: newData.description || "",
       session: newData.session || "",
       semester: newData.semester || "",
+      shared_email: newData.shared_email || "",
     });
   }
 });
@@ -80,6 +88,7 @@ watch(isOpen, (open) => {
       description: data.value.description || "",
       session: data.value.session || "",
       semester: data.value.semester || "",
+      shared_email: data.value.shared_email || "",
     });
   }
 });
@@ -88,7 +97,7 @@ watch(isOpen, (open) => {
 
 <template>
   <div v-if="isDisabled">
-    Loading...
+    <Loader class="animate-spin w-4 h-4"/>
   </div>
   <Dialog v-else :open="isOpen" @update:open="isOpen = $event">
     <DialogTrigger as-child>
@@ -112,13 +121,17 @@ watch(isOpen, (open) => {
         <CustomTextareaField :label="'Hub Description'" :placeholder="'Describe what is your hub about'"
           :name="'description'" :span="4" />
 
-        <!-- Semester -->
-        <CustomSelectField :label="'Semester'" :options="semesterOptions" :placeholder="'Select your semester'"
-          :name="'semester'" :span="1" />
-
         <!-- Session -->
         <CustomSelectField :label="'Session'" :options="sessionOptions" :placeholder="'Select your session'"
-          :name="'session'" :span="1" />
+          :name="'session'" :span="1" v-model="data.session" />
+
+        <!-- Semester -->
+        <CustomSelectField :label="'Semester'" :options="semesterOptions" :placeholder="'Select your semester'"
+          :name="'semester'" :span="1" v-model="data.semester" />
+
+        <!-- Email -->
+        <CustomInputField :label="'Individual Emails'"
+          :placeholder="'Type the email of the users, separate with (comma) if more than one'" :name="'shared_email'" />
 
         <DialogFooter class="w-full col-span-full">
           <Button type="submit" class="w-full bg-primary text-white rounded-full mt-6" :disabled="isSubmitting">

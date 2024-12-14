@@ -16,8 +16,9 @@ const props = defineProps({
   },
 });
 
-const deleteMutation = useDeleteHub(props.hub.id)
+const name = localStorage.getItem("name");
 
+const deleteMutation = useDeleteHub(props.hub.id)
 
 const handleDelete = () => {
   if (confirm('Are you sure you want to delete this hub?')) {
@@ -57,7 +58,7 @@ const handleDelete = () => {
           </div>
 
             <!-- Edit and Delete Buttons -->
-            <div class="flex items-end space-x-2">
+            <div v-if="hub.username === name" class="flex items-end space-x-2">
               <EditHubForm 
                 :hub="hub"
               />

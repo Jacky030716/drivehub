@@ -1,5 +1,5 @@
 <script setup>
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
@@ -33,10 +33,12 @@ const username = localStorage.getItem("name");
           <div class="flex flex-col gap-y-3.5">
             <h4 class="text-secondary-600 font-bold text-xl">Overview</h4>
             <div class="flex flex-col items-start gap-3.5 text-secondary-500">
-              <RouterLink v-for="(link, index) in overviewLinks" :key="index" :to="link.href" @click="closeNav"
-                class="flex items-center gap-3 text-secondary-500 hover:font-medium transition-colors ease-in-out hover:text-primary-500 cursor-pointer p-0.5">
-                <img :src="link.icon" :alt="link.name" class="w-5 h-5" />
-                {{ link.name }}
+              <RouterLink v-for="(link, index) in overviewLinks" :key="index" :to="link.href" @click="closeNav">
+                <SheetClose
+                  class="flex items-center gap-3 text-secondary-500 hover:font-medium transition-colors ease-in-out hover:text-primary-500 cursor-pointer p-0.5">
+                  <img :src="link.icon" :alt="link.name" class="w-5 h-5" />
+                  {{ link.name }}
+                </SheetClose>
               </RouterLink>
             </div>
           </div>
@@ -48,10 +50,12 @@ const username = localStorage.getItem("name");
           <div class="flex flex-col gap-3.5">
             <h4 class="text-secondary-600 font-bold text-xl">Resources</h4>
             <div class="flex flex-col items-start gap-3.5 text-secondary-500">
-              <RouterLink v-for="(link, index) in resourcesLinks" :key="index" :to="link.href"
-                class="flex items-center gap-3 text-secondary-500 hover:font-medium transition-colors ease-in-out hover:text-primary-500 cursor-pointer p-0.5">
-                <img :src="link.icon" :alt="link.name" class="w-5 h-5" />
-                {{ link.name }}
+              <RouterLink v-for="(link, index) in resourcesLinks" :key="index" :to="link.href">
+                <SheetClose
+                  class="flex items-center gap-3 text-secondary-500 hover:font-medium transition-colors ease-in-out hover:text-primary-500 cursor-pointer p-0.5">
+                  <img :src="link.icon" :alt="link.name" class="w-5 h-5" />
+                  {{ link.name }}
+                </SheetClose>
               </RouterLink>
             </div>
           </div>
@@ -59,11 +63,8 @@ const username = localStorage.getItem("name");
 
         <!-- Logout Button -->
         <div class="w-full">
-          <Button 
-            onclick="localStorage.clear(); 
-            window.location.href = '/sign-in'"
-            class="w-full"
-          >
+          <Button onclick="localStorage.clear(); 
+            window.location.href = '/sign-in'" class="w-full">
             Logout
           </Button>
         </div>

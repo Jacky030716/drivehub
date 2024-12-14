@@ -14,7 +14,7 @@ defineProps({
   label: { type: String, required: true },
   name: { type: String, required: true },
   placeholder: { type: String, required: true },
-  type: { type: String, required: false, default: 'text' }
+  type: { type: String, required: false, default: 'text' },
 })
 </script>
 

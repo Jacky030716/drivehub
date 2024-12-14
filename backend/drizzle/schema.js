@@ -1,4 +1,4 @@
-import { pgTable, text, uuid, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, uuid, timestamp, jsonb } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 export const users = pgTable("user", {
@@ -24,6 +24,7 @@ export const hubs = pgTable("hubs", {
   owner_email: text("owner_email").references(() => users.email, {
     onDelete: "CASCADE",
   }).notNull(),
+  links: jsonb("links").default([]), // New column to store array of links objects
 });
 
 export const hubRelations = relations(hubs, ({ one, many }) => ({
@@ -32,6 +33,27 @@ export const hubRelations = relations(hubs, ({ one, many }) => ({
     references: [users.email],
   }),
   links: many(links),
+}));
+
+export const groupParticipants = pgTable("group_participants", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  hubId: uuid("hub_id").references(() => hubs.id, {
+    onDelete: "CASCADE",
+  }).notNull(),
+  email: text("email").references(() => users.email, {
+    onDelete: "CASCADE",
+  }).notNull(),
+});
+
+export const groupParticipantsRelations = relations(groupParticipants, ({ one }) => ({
+  hub: one(hubs, {
+    fields: [groupParticipants.hubId],
+    references: [hubs.id],
+  }),
+  user: one(users, {
+    fields: [groupParticipants.email],
+    references: [users.email],
+  }),
 }));
 
 export const links = pgTable("links", {

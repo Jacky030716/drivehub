@@ -37,7 +37,7 @@ export const useCreateHub = () => {
       queryClient.invalidateQueries(["hubs"])
     },
     onError: () => {
-      toast('Error creating hub')
+      toast.error('Error creating hub')
     }
   })
 

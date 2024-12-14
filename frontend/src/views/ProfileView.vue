@@ -34,7 +34,9 @@ import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
   <section v-else class="sec-container">
     <div class="w-full h-full grid lg:grid-cols-4 gap-4 auto-rows-auto overflow-y-auto">
       <div class="relative md:row-span-2 col-span-2 row-span-1 w-full h-full flex flex-col justify-center items-center bg-white gap-8 shadow-sm rounded-xl p-6">
-        <img src="../assets/student.png" alt="Student Icon" class="w-40 h-auto object-cover border rounded-full"/>
+        <img v-if="role === 'Pelajar FC'" src="../assets/student.png" alt="Student Icon" class="w-40 h-auto object-cover border rounded-full"/>
+
+        <img v-else src="../assets/lecturer.png" alt="Lecturer Icon" class="w-40 h-auto object-cover border rounded-full"/>
 
         <!-- User details table -->
         <div class="flex w-[450px] justify-between px-12">

@@ -13,6 +13,7 @@ import CustomTextareaField from './CustomTextareaField.vue'
 import { useEditLink } from '@/features/links/api/use-edit-link'
 import { useRouter } from 'vue-router'
 import { reactive, ref } from 'vue'
+import Checkbox from './ui/checkbox/Checkbox.vue'
 
 const props = defineProps({
   hubs: Array,
@@ -23,16 +24,18 @@ const props = defineProps({
 const router = useRouter()
 
 const sharedWith = ref('reset')
+
 const othersOption = ref(props.link.sharedEmail.length > 0 ? 'email' : props.link.hub_id ? 'group' : '')
 
 const handleSharedWithChange = (value) => {
   sharedWith.value = value
 
-  if (value !== 'Others'){
-    othersOption.value = ''
+  // Reset email and group options when 'Others' is not selected
+  if (value !== 'Others') {
+    emailOption.value = false
+    groupOption.value = false
   }
 }
-
 const categoryOptions = props.categories.map((category) => ({
   label: category.name,
   value: category.name,
@@ -61,10 +64,13 @@ const formState = reactive({
   category: props.link.category,
   shared_with: props.link.sharedWith,
   shared_details: {
-    email: props.link.sharedEmail.join(', '),
-    group: ''
+    email: props.link.sharedEmail.join(', ') || '',
+    group: props.link.hub_id || '',
   }
 })
+
+const emailOption = ref(formState.shared_details.email.length > 0)
+const groupOption = ref(formState.shared_details.group !== '')
 
 const { handleSubmit, resetForm, isSubmitting } = useForm({
   validationSchema: formSchema,
@@ -111,24 +117,34 @@ const onSubmit = handleSubmit((values) => {
     <CustomSelectField :label="'Share With'" :options="shareWithOptions" :placeholder="'Select who can view your link'"
       :name="'shared_with'" v-model="formState.shared_with" @update:modelValue="handleSharedWithChange" />
 
-    <!-- Radio Input When User Select "Others" -->
+    <!-- Checkbox When User Select "Others" -->
     <div v-if="formState.shared_with.toLowerCase() === 'others'" class="w-full flex gap-2 flex-col ">
       <div class="w-full flex items-center gap-2 text-sm">
-        <input type="radio" v-model="othersOption" value="email" class="mr-2" /> Individual Emails
+        <Checkbox 
+          :checked="emailOption" 
+          @update:checked="(checked) => emailOption = checked" 
+          class="mr-2" 
+        />
+        <label>Individual Emails</label>
       </div>
       <div class="w-full flex items-center gap-2 text-sm">
-        <input type="radio" v-model="othersOption" value="group" class="mr-2" /> Group
+        <Checkbox 
+          :checked="groupOption"
+          @update:checked="(checked) => groupOption = checked" 
+          class="mr-2" 
+        />
+        <label>Group</label>
       </div>
     </div>
 
     <!-- Email -->
-    <CustomInputField v-if="othersOption === 'email'" :label="'Individual Emails'"
+    <CustomInputField v-show="emailOption" :label="'Individual Emails'"
       :placeholder="'Type the email of the users, separate with (comma) if more than one'"
-      :name="'shared_details.email'"/>
+      :name="'shared_details.email'" v-model="formState.shared_details.email"/>
 
     <!-- Group Name -->
-    <CustomSelectField v-if="othersOption === 'group'" :label="'Group (Optional)'" :placeholder="'Select Your Group'"
-      :options="hubs.map(hub => ({ label: hub.name, value: hub.id }))" :name="'shared_details.group'" :span="4" />
+    <CustomSelectField v-show="groupOption" :label="'Group (Optional)'" :placeholder="'Select Your Group'"
+      :options="hubs.map(hub => ({ label: hub.name, value: hub.id }))" :name="'shared_details.group'" :span="4" v-model="formState.shared_details.group"/>
 
     <Button type="submit" class="col-span-4 bg-primary text-white rounded-full mt-6" :disabled="isSubmitting">
       Update link
