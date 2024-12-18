@@ -27,7 +27,7 @@ const userController = {
       .where(
         eq(users.email, email),
       );
-    
+        
     const token = createToken(email);
 
     if (data.length === 0) {
@@ -44,9 +44,9 @@ const userController = {
     });
   },
   loginCreateUser: async (req, res) => {
-    const { email, matricNumber, name } = req.body;    
+    const { email, matricNumber, name, role } = req.body;    
 
-    if (!email || !matricNumber || !name) {
+    if (!email || !matricNumber || !name || !role ) {
       return res.status(400).json({
         message: "Bad request"
       });
@@ -56,25 +56,9 @@ const userController = {
     const user = {
       email: email.trim(),
       matricNumber: matricNumber.trim(),
-      name: name.trim()
+      name: name.trim(),
+      role
     };
-
-    // Check if the user already exists
-    const existingUser = await db
-      .select()
-      .from(users)
-      .where(eq(users.email, user.email))
-
-    if (existingUser) {
-      // User already exists, return the existing user's data and a new token
-      const token = createToken(user.email);
-      return res.json({
-        data: {
-          user: existingUser,
-          token
-        }
-      });
-    }
 
     // Create the new user
     const data = await db
@@ -82,10 +66,11 @@ const userController = {
       .values({
         email: user.email,
         matricNumber: user.matricNumber,
-        name: user.name
+        name: user.name,
+        role: user.role
       })
       .returning();
-
+    
     const token = createToken(user.email);
     
     if (!data) {

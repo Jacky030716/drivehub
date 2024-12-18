@@ -68,20 +68,25 @@ const linkController = {
     const { userEmail } = req.query;
 
     const data = await db
-      .selectDistinctOn([links.createdAt])
+      .selectDistinctOn([links.createdAt]) // Use links.id to avoid duplicates
       .from(links)
       .innerJoin(users, eq(links.owner_email, users.email)) // Link's owner
       .leftJoin(linkShareDetails, eq(links.id, linkShareDetails.linkId)) // Shared details
-      .leftJoin(
-        groupParticipants,
-        eq(links.hubId, groupParticipants.hubId)
-      ) // Group participants via shared hub
+      .leftJoin(groupParticipants, eq(links.hubId, groupParticipants.hubId))
+      .leftJoin(hubs, eq(links.hubId, hubs.id))
       .where(
         or(
-          eq(links.owner_email, userEmail), // User owns the link
-          eq(linkShareDetails.sharedEmail, userEmail), // Shared directly with the user
-          eq(groupParticipants.email, userEmail), // User is part of the shared group
-          eq(groupParticipants.hubId, links.hubId) // User is part of the shared group
+          // 1. Links owned by the user
+          eq(links.owner_email, userEmail),
+
+          // 2. Links directly shared with the user
+          eq(linkShareDetails.sharedEmail, userEmail),
+
+          // 3a. Links from groups the user has participated in
+          eq(groupParticipants.email, userEmail),
+
+          // 3b. Links from groups the user has created
+          eq(hubs.owner_email, userEmail)
         )
       )
       .orderBy(desc(links.createdAt));
@@ -110,19 +115,19 @@ const linkController = {
   },
   addLink: async (req, res) => {
     const { userEmail, link } = req.body;
-  
+
     if (!userEmail) {
       return res.status(401).json({
         message: "Unauthorized",
       });
     }
-  
+
     if (!link) {
       return res.status(400).json({
         message: "Bad request",
       });
     }
-  
+
     try {
       const [data] = await db
         .insert(links)
@@ -132,14 +137,17 @@ const linkController = {
           hubId: link.shared_details?.group || null,
         })
         .returning();
-  
+
       let sharedData = [];
-  
+
       if (link.shared_with === "Others" && link.shared_details) {
         const shared_emails = link.shared_details.email
-          ? link.shared_details.email.split(",").map((email) => email.trim()).filter(email => email)
+          ? link.shared_details.email
+              .split(",")
+              .map((email) => email.trim())
+              .filter((email) => email)
           : [];
-  
+
         // Scenario 1: Only shared emails
         if (shared_emails.length > 0 && !link.shared_details.group) {
           sharedData = shared_emails.map((email) => ({
@@ -148,16 +156,18 @@ const linkController = {
             sharedGroupId: null,
           }));
         }
-        
+
         // Scenario 2: Only shared group
         else if (shared_emails.length === 0 && link.shared_details.group) {
-          sharedData = [{
-            linkId: data.id,
-            sharedEmail: null,
-            sharedGroupId: link.shared_details.group,
-          }];
+          sharedData = [
+            {
+              linkId: data.id,
+              sharedEmail: null,
+              sharedGroupId: link.shared_details.group,
+            },
+          ];
         }
-        
+
         // Scenario 3: Both shared emails and group
         else if (shared_emails.length > 0 && link.shared_details.group) {
           sharedData = shared_emails.map((email) => ({
@@ -166,13 +176,13 @@ const linkController = {
             sharedGroupId: link.shared_details.group,
           }));
         }
-  
+
         // Insert shared data if exists
         if (sharedData.length > 0) {
           await db.insert(linkShareDetails).values(sharedData).returning();
         }
       }
-  
+
       res.status(201).json({
         message: "Link added successfully",
         data,
@@ -247,8 +257,11 @@ const linkController = {
       let sharedData = [];
 
       const shared_emails = link.shared_details.email
-          ? link.shared_details.email.split(",").map((email) => email.trim()).filter(email => email)
-          : [];
+        ? link.shared_details.email
+            .split(",")
+            .map((email) => email.trim())
+            .filter((email) => email)
+        : [];
 
       // Clear existing sharing details for this link
       await db
@@ -263,16 +276,18 @@ const linkController = {
           sharedGroupId: null,
         }));
       }
-      
+
       // Scenario 2: Only shared group
       else if (shared_emails.length === 0 && link.shared_details.group) {
-        sharedData = [{
-          linkId: data.id,
-          sharedEmail: null,
-          sharedGroupId: link.shared_details.group,
-        }];
+        sharedData = [
+          {
+            linkId: data.id,
+            sharedEmail: null,
+            sharedGroupId: link.shared_details.group,
+          },
+        ];
       }
-      
+
       // Scenario 3: Both shared emails and group
       else if (shared_emails.length > 0 && link.shared_details.group) {
         sharedData = shared_emails.map((email) => ({
@@ -286,6 +301,11 @@ const linkController = {
       if (sharedData.length > 0) {
         await db.insert(linkShareDetails).values(sharedData).returning();
       }
+    } else {
+      // New thing
+      await db
+        .delete(linkShareDetails)
+        .where(eq(linkShareDetails.linkId, linkId));
     }
 
     res.json({

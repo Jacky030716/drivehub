@@ -28,6 +28,9 @@ export const useLoginUser = () => {
         const userData = verificationResponse.data[0];
         const { email, login_name, full_name, description } =  userData;
 
+        // Check role
+        const role = description.toLowerCase().includes("pelajar") ? "Student" : "Lecturer";
+
         // Check user existence
         try {
           const res = await axios.get(`/api/users/${email}`); // Return token
@@ -41,7 +44,8 @@ export const useLoginUser = () => {
             const res = await axios.post(`/api/users`, {
               email,
               matricNumber: login_name,
-              name: full_name
+              name: full_name,
+              role: role,
             });
 
             const { token } = res.data.data;
