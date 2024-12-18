@@ -58,7 +58,10 @@ const onSubmit = form.handleSubmit((values) => {
             />
           </div>
 
-          <Button type="submit" class="w-full col-span-4 bg-primary text-white font-bold py-2 rounded-full">Sign In</Button>
+          <Button 
+            type="submit" 
+            class="w-full col-span-4 bg-primary text-white font-bold py-2 rounded-full"
+          >Sign In</Button>
         </form>
     </div>
   </main>
