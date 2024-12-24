@@ -1,6 +1,7 @@
 <script setup>
 import { useGetBookmark } from "@/features/bookmark/api/use-get-bookmark";
 import BookmarkList from "@/components/BookmarkList.vue";
+import NotFound from "@/components/NotFound.vue";
 
 const { data, isLoading, error } = useGetBookmark();
 </script>
@@ -11,7 +12,7 @@ const { data, isLoading, error } = useGetBookmark();
 
     <div v-if="isLoading" class="text-center">Loading...</div>
     <section v-else-if="data.data.length === 0" class="sec-container">
-      <NotFound message="No bookmarked link!" redirectUrl="/share" buttonText="Share a link" />
+      <NotFound message="No bookmarked link!" redirectUrl="/" buttonText="Back to homepage" />
     </section>
     <div v-else-if="error" class="text-center text-red-500">Error loading bookmarks</div>
     <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
