@@ -1,4 +1,4 @@
-import { pgTable, text, uuid, timestamp, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, uuid, timestamp, jsonb, boolean } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 export const users = pgTable("user", {
@@ -72,6 +72,9 @@ export const links = pgTable("links", {
   hubId: uuid("hub_id").references(() => hubs.id, {
     onDelete: "CASCADE",
   }), // fk for hub
+
+  // new one try xia
+  // isBookmarked: boolean("is_bookmarked").notNull().default(false),
 });
 
 export const linkRelations = relations(links, ({ one, many }) => ({
@@ -114,3 +117,26 @@ export const category = pgTable("category", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull().unique(),
 });
+
+
+export const bookmarks = pgTable("bookmarks", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  linkId: uuid("link_id").references(() => links.id, {
+    onDelete: "CASCADE",
+  }).notNull(), // Reference to the links table
+  userEmail: text("user_email").references(() => users.email, {
+    onDelete: "CASCADE",
+  }).notNull(), // Reference to the users table
+  createdAt: timestamp("created_at").notNull().defaultNow(), // Timestamp for when the bookmark was created
+});
+
+export const bookmarkRelations = relations(bookmarks, ({ one }) => ({
+  link: one(links, {
+    fields: [bookmarks.linkId],
+    references: [links.id],
+  }),
+  user: one(users, {
+    fields: [bookmarks.userEmail],
+    references: [users.email],
+  }),
+}));

@@ -60,7 +60,7 @@ const onSubmit = handleSubmit((values) => {
     </DialogTrigger>
     <DialogContent>
       <DialogHeader>
-        <DialogTitle>Create a new Hub</DialogTitle>
+        <DialogTitle>Create a new DriveHub Group</DialogTitle>
         <DialogDescription>
           Fill in the form below to create a new group
           {{ users }}
@@ -68,10 +68,10 @@ const onSubmit = handleSubmit((values) => {
       </DialogHeader>
       <form @submit="onSubmit" class="w-full grid grid-cols-4 gap-5">
         <!-- Hub Name -->
-        <CustomInputField :label="'Hub Name'" :placeholder="'Give your hub a name!'" :name="'name'" />
+        <CustomInputField :label="'Group Name'" :placeholder="'Give your group a name!'" :name="'name'" />
 
         <!-- Description -->
-        <CustomTextareaField :label="'Hub Description'" :placeholder="'Describe what is your hub about'"
+        <CustomTextareaField :label="'Group Description'" :placeholder="'Describe what is your group about'"
           :name="'description'" :span="4" />
 
         <!-- Session -->
