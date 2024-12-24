@@ -20,6 +20,8 @@ import CustomSelectField from '@/components/CustomSelectField.vue'
 import Button from '@/components/ui/button/Button.vue'
 import { useHubForm } from '@/hooks/useHubForm'
 import DialogClose from '@/components/ui/dialog/DialogClose.vue'
+import { useGetUsers } from '@/features/user/api/use-get-users'
+import { computed, onMounted } from 'vue'
 
 defineProps({
   hubs: Array,
@@ -61,6 +63,7 @@ const onSubmit = handleSubmit((values) => {
         <DialogTitle>Create a new Hub</DialogTitle>
         <DialogDescription>
           Fill in the form below to create a new group
+          {{ users }}
         </DialogDescription>
       </DialogHeader>
       <form @submit="onSubmit" class="w-full grid grid-cols-4 gap-5">

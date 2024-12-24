@@ -2,17 +2,20 @@
 import ResourceForm from '@/components/ResourceForm.vue';
 import { useGetCategories } from '@/features/category/use-get-categories';
 import { useGetHubs } from '@/features/hubs/api/use-get-hubs';
+import { useGetUsers } from '@/features/user/api/use-get-users';
 import { computed } from 'vue';
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 
 // Fetch hubs using Vue Query
 const hubsQuery = useGetHubs();
 const categoriesQuery = useGetCategories()
+const usersQuery = useGetUsers();
 
 // Computed properties for reactivity
-const isDisabled = computed(() => hubsQuery.isLoading.value || categoriesQuery.isLoading.value);
+const isDisabled = computed(() => hubsQuery.isLoading.value || categoriesQuery.isLoading.value || usersQuery.isLoading.value);
 const hubs = computed(() => hubsQuery.data?.value?.data || []);
 const categories = computed(() => categoriesQuery.data?.value?.data || []);
+const users = computed(() => usersQuery.data?.value?.data || []);
 
 </script>
 
@@ -32,7 +35,7 @@ const categories = computed(() => categoriesQuery.data?.value?.data || []);
         </div>
       </div>
       <!-- Resource Form -->
-      <ResourceForm :hubs="hubs" :categories="categories" />
+      <ResourceForm :hubs="hubs" :categories="categories" :users="users"/>
     </div>
   </div>
 </template>

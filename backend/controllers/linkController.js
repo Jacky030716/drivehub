@@ -86,7 +86,10 @@ const linkController = {
           eq(groupParticipants.email, userEmail),
 
           // 3b. Links from groups the user has created
-          eq(hubs.owner_email, userEmail)
+          eq(hubs.owner_email, userEmail),
+
+          // Role are same
+          eq(links.shared_with, users.role)
         )
       )
       .orderBy(desc(links.createdAt));

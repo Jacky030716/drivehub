@@ -5,43 +5,67 @@ import { hubs, users, links, groupParticipants } from "../drizzle/schema.js";
 const hubsController = {
   getHubs: async (req, res) => {
     const { userEmail } = req.query;
-
+  
     if (!userEmail) {
       return res.status(400).json({ message: "Missing email!" });
     }
-
-    const data = await db
-      .selectDistinctOn([hubs.createdAt])
-      .from(hubs)
-      .innerJoin(users, eq(hubs.owner_email, users.email))
-      .leftJoin(groupParticipants, eq(hubs.id, groupParticipants.hubId))
-      .where(
-        or(
-          eq(users.email, userEmail),
-          eq(groupParticipants.email, userEmail)
-        )
-      )
-      .orderBy(desc(hubs.createdAt))
-
-    if (data.length === 0) {
-      return res.json({ data: [] });
-    }
   
-    const normalizedData = data.map((row) => ({
-      id: row.hubs.id,
-      name: row.hubs.name,
-      description: row.hubs.description,
-      semester: row.hubs.semester,
-      session: row.hubs.session,
-      userId: row.hubs.userId,
-      email: row.user.email,
-      username: row.user.name
-    }));
+    try {
+      const data = await db
+        .select()
+        .from(hubs)
+        .innerJoin(users, eq(hubs.owner_email, users.email))
+        .leftJoin(groupParticipants, eq(hubs.id, groupParticipants.hubId))
+        .where(
+          or(
+            eq(users.email, userEmail),
+            eq(groupParticipants.email, userEmail)
+          )
+        )
+        .orderBy(desc(hubs.id));
+  
+      if (data.length === 0) {
+        return res.json({ data: [] });
+      }
+  
+      // Normalize the data by grouping hubs and their participants
+      let normalizedData = data.reduce((acc, row) => {
+        const existingHub = acc.find(hub => hub.id === row.hubs.id);
+  
+        if (existingHub) {
+          // Add participant if it's not null and doesn't already exist
+          if (row.group_participants?.email && !existingHub.participants.includes(row.group_participants.email)) {
+            existingHub.participants.push(row.group_participants.email);
+          }
+        } else {
+          // Create a new hub entry
+          acc.push({
+            id: row.hubs.id,
+            name: row.hubs.name,
+            description: row.hubs.description,
+            semester: row.hubs.semester,
+            session: row.hubs.session,
+            userId: row.hubs.userId,
+            createdAt: row.hubs.createdAt,
+            email: row.user.email,
+            username: row.user.name,
+            participants: row.group_participants?.email ? [row.group_participants.email] : []
+          });
+        }
+  
+        return acc;
+      }, []);
 
-    res.json({
-      data: normalizedData,
-    });
-  },
+      normalizedData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+      res.json({
+        data: normalizedData,
+      });
+    } catch (error) {
+      console.error("Error fetching hubs:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  },  
   getHubDetail: async (req, res) => {
     const { hubId } = req.params;
   
@@ -51,15 +75,30 @@ const hubsController = {
   
     try {
       const data = await db
-        .select()
+        .selectDistinctOn([links.createdAt])
         .from(hubs)
         .innerJoin(users, eq(hubs.owner_email, users.email))
         .leftJoin(links, eq(links.hubId, hubs.id))
-        .where(eq(hubs.id, hubId));
+        .where(
+          eq(hubs.id, hubId)
+        )
+        .orderBy(desc(links.createdAt));
   
       if (!data || data.length === 0) {
         return res.status(404).json({ message: "No group found" });
       }
+
+      let sharedEmails = await db
+        .select({
+          email: groupParticipants.email
+        })
+        .from(groupParticipants)
+        .where(
+          eq(groupParticipants.hubId, hubId)
+        );
+      
+      sharedEmails = sharedEmails.map(row => row.email);
+
   
       // Group links associated with the hub
       const hubLinks = data
@@ -72,7 +111,7 @@ const hubsController = {
           description: row.links.description,
           semester: row.links.semester,
           session: row.links.session,
-          category: row.links.category
+          category: row.links.category,
         }));
   
       // Normalize hub details (taking the first row as reference)
@@ -90,7 +129,8 @@ const hubsController = {
         userId,
         email,
         username,
-        links: hubLinks
+        links: hubLinks,
+        shared_email: sharedEmails
       };
   
       return res.json({ data: normalizedData });

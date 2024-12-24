@@ -49,7 +49,7 @@ onMounted(() => {
     </div>
 
     <!-- Content Area -->
-    <div class="max-h-[calc(100vh-180px)] overflow-y-auto">
+    <div class="h-[calc(100vh-180px)] overflow-y-auto">
       <div class="w-full flex items-center justify-between px-8 pb-6">
         <h2 class="font-semibold text-gray-600 flex items-center px-4">
           <FileText class="w-4 h-4 mr-2" />

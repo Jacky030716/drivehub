@@ -2,6 +2,7 @@
  import SharedResourceList from '@/components/SharedResourceList.vue';
 import { useGetCategories } from '@/features/category/use-get-categories';
 import { useGetLinks } from '@/features/links/api/use-get-links';
+import { useGetUsers } from '@/features/user/api/use-get-users';
 import { computed, onMounted, watch } from 'vue';
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 

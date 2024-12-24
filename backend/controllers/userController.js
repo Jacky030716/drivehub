@@ -85,6 +85,23 @@ const userController = {
         token
       }
     });
+  },
+  getAllUsers: async (req, res) => {
+    const data = await db
+      .select()
+      .from(users);
+    
+    console.log(data);
+    
+    if (data.length === 0) {
+      return res.status(404).json({
+        message: "No users found"
+      });
+    }
+
+    res.json({
+      data
+    });
   }
 };
 
