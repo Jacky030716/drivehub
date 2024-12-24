@@ -99,12 +99,12 @@ const filteredLinks = computed(() => {
     </div>
 
     <!-- All Files Section -->
-    <div class="h-full w-full space-y-2 overflow-y-auto">
+    <div class="h-full w-full space-y-2">
       <div class="w-full flex items-center justify-between px-6">
         <h3 class="font-semibold">All Links</h3>
         <span class="text-sm text-gray-800 font-medium">{{ filteredLinks.length }} link(s) found</span>
       </div>
-      <div v-if="filteredLinks.length > 0" class="w-full h-full flex flex-col gap-2">
+      <div v-if="filteredLinks.length > 0" class="w-full h-full flex flex-col gap-2 px-4 overflow-y-auto shadow-t">
         <LinkList v-for="link in filteredLinks" :key="link.id" :link="link" />
       </div>
 
@@ -119,3 +119,8 @@ const filteredLinks = computed(() => {
     </div>
   </div>
 </template>
+<style>
+.shadow-t {
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.04);
+}
+</style>

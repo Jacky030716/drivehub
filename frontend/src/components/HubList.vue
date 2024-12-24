@@ -29,7 +29,7 @@ const handleDelete = () => {
 
 <template>
   <RouterLink :to="`/group/${hub.id}`" class="block">
-    <div class="h-full py-8 px-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow duration-200 cursor-pointer hover:bg-slate-50">
+    <div class="h-full py-8 px-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow duration-200 cursor-pointer hover:bg-gray-300">
       <!-- Content -->
       <div>
         <div class="flex items-center mb-2">

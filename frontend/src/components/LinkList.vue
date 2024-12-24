@@ -113,7 +113,7 @@ const isOwner = localStorage.getItem("email") === props.link.email;
 
 <template>
   <div
-    class="bg-white p-4 mb-2 rounded-lg shadow hover:shadow-md transition-shadow duration-200 cursor-pointer hover:bg-slate-100 relative">
+    class="bg-white p-4 mb-2 rounded-lg shadow hover:shadow-md transition-shadow duration-200 cursor-pointer hover:bg-gray-300 relative">
     <!-- Bookmark Icon -->
     <div
       class="absolute top-3 right-3 cursor-pointer group"
@@ -123,8 +123,8 @@ const isOwner = localStorage.getItem("email") === props.link.email;
         :class="[ 
           'w-6 h-6',
           isBookmarked
-            ? 'text-red-800 fill-red-800 group-hover:text-red-900 group-hover:fill-red-900'
-            : 'text-gray-300 group-hover:text-gray-500'
+            ? 'text-red-700 fill-red-700 group-hover:text-red-900 group-hover:fill-red-900'
+            : 'text-gray-500 group-hover:text-red-700 group-hover:fill-red-700'
         ]"
       />
     </div>

@@ -37,7 +37,7 @@ watch(() => linksQuery.data, (newData) => {
      color="#882C4C"/>
   </div>
 
-  <section v-else class="sec-container">
+  <section v-else class="sec-container px-0">
     <div class="flex flex-col items-center">
       <h1 class="text-2xl font-bold text-center">Shared Links List</h1>
       <p class="text-muted-foreground leading-tight text-sm">Here are the list of links that you've shared with others before</p>
