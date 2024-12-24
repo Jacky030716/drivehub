@@ -7,7 +7,7 @@ export const useGetBookmark = () => {
   const token = localStorage.getItem("token");
 
   if (!token) {
-    toast.error("Please log in to view bookmarks");
+    toast.error("Please log in to view bookmarked links");
     return;
   }
 
@@ -27,12 +27,12 @@ export const useGetBookmark = () => {
       });
 
       if (!response.data) {
-        throw new Error("No bookmarks found");
+        throw new Error("No bookmarked links found");
       }
       return response.data;
     },
     onError: () => {
-      toast.error("Error fetching bookmarks");
+      toast.error("Error fetching bookmarked links");
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
     cacheTime: 10 * 60 * 1000, // 10 minutes

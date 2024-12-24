@@ -7,7 +7,7 @@ export const useDeleteBookmark = () => {
   const token = localStorage.getItem("token");
 
   if (!token) {
-    toast.error("Please log in to delete a bookmark");
+    toast.error("Please log in to remove a bookmarked link");
     return;
   }
 
@@ -27,12 +27,12 @@ export const useDeleteBookmark = () => {
       return response.data;
     },
     onSuccess: () => {
-      toast.success("Bookmark deleted successfully!");
+      toast.success("Bookmark removed successfully!");
       queryClient.invalidateQueries(["bookmarks"]); // Refetch bookmarks for the user
     },
     onError: (error) => {
-      console.error('Delete bookmark error:', error);
-      toast.error("Error deleting bookmark");
+      console.error('Remove bookmark error:', error);
+      toast.error("Error removing bookmark");
     },
   });
 

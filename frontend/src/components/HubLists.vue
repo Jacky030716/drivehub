@@ -112,6 +112,7 @@ const filteredHubs = computed(() => {
       <NotFound 
         message="No group found! Create a group to get started." 
         description='You can use the "Add New Group" button at top right to add new group.'
+        buttonText="Back to homepage" 
       />
     </div>
 

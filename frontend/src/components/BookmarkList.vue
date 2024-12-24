@@ -12,6 +12,10 @@ import {
   Edit,
 } from "lucide-vue-next";
 
+// Local bookmark state
+const isBookmarked = ref(false);
+const currentBookmarkId = ref(null);
+
 const props = defineProps({
   link: Object,
 });
@@ -20,7 +24,7 @@ const deleteBookmarkMutation = useDeleteBookmark();
 
 const handleDelete = async (bookmarkId) => {
   if (!bookmarkId) return;
-  
+
   const confirmed = confirm("Are you sure you want to remove this link from the bookmark?");
   if (confirmed) {
     try {
@@ -34,17 +38,13 @@ const handleDelete = async (bookmarkId) => {
 </script>
 
 <template>
-  <div class="bg-white p-4 mb-2 rounded-lg shadow relative">
+  <div class="bg-white p-4 mb-2 rounded-lg shadow relative pr-6">
 
     <!-- Link URL -->
-    <a
-      :href="link.link.url"
-      target="_blank"
-      class="block mb-2 hover:underline text-blue-500"
-    >
+    <a :href="link.link.url" target="_blank" class="block mb-2 hover:underline text-blue-500">
       <div class="flex items-center">
         <Link2 class="text-blue-500 w-4 h-4 mr-2 flex-shrink-0" />
-        <span class="text-sm font-semibold line-clamp-1">{{
+        <span class="text-sm font-semibold line-clamp-1 pr-6">{{
           link.link.url
         }}</span>
       </div>
@@ -79,13 +79,21 @@ const handleDelete = async (bookmarkId) => {
       </div>
 
       <!-- Delete Buttons -->
-      <div class="absolute bottom-4 right-4">
+      <!-- <div class="absolute bottom-4 right-4">
         <button
           class="p-2 text-xs text-white bg-red-500 rounded-full hover:bg-red-600 flex items-center"
           @click="handleDelete(link.id)"
         >
           <Trash2 class="w-5 h-5" />
         </button>
+      </div> -->
+      <div class="absolute top-1 right-3 cursor-pointer group" @click="handleDelete(link.id)">
+        <Bookmark :class="[
+          'w-6 h-6',
+          isBookmarked
+            ? 'group-hover:text-red-700 group-hover:fill-red-700 text-red-900 fill-red-900'
+            : 'group-hover:text-gray-700 group-hover:fill-gray-500 text-red-700 fill-red-700'
+        ]" />
       </div>
     </div>
   </div>

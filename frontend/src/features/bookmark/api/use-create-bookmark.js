@@ -8,7 +8,7 @@ export const useCreateBookmark = () => {
   const token = localStorage.getItem("token");
 
   if (!token) {
-    toast.error('Please log in to create a bookmark');
+    toast.error('Please log in to add a bookmark to a link');
     return;
   }
 
@@ -38,7 +38,7 @@ export const useCreateBookmark = () => {
       queryClient.invalidateQueries(["bookmarks"]); // Refetch bookmarks for the user
     },
     onError: () => {
-      toast.error('Error creating bookmark');
+      toast.error('Error adding bookmark');
     },
   });
 
