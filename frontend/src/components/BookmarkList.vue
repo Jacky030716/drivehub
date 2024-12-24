@@ -43,7 +43,7 @@ const handleDelete = async (bookmarkId) => {
       class="block mb-2 hover:underline text-blue-500"
     >
       <div class="flex items-center">
-        <Link2 class="text-blue-500 w-4 h-4 mr-2" />
+        <Link2 class="text-blue-500 w-4 h-4 mr-2 flex-shrink-0" />
         <span class="text-sm font-semibold line-clamp-1">{{
           link.link.url
         }}</span>

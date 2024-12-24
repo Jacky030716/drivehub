@@ -34,7 +34,7 @@ export const useCreateBookmark = () => {
       return response.data;
     },
     onSuccess: () => {
-      toast.success('Bookmark created successfully!');
+      toast.success('Bookmark added successfully!');
       queryClient.invalidateQueries(["bookmarks"]); // Refetch bookmarks for the user
     },
     onError: () => {

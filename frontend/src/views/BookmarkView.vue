@@ -10,7 +10,7 @@ const { data, isLoading, error } = useGetBookmark();
     <h3 class="text-xl font-semibold mt-3 mb-5">Bookmarked Links</h3>
 
     <div v-if="isLoading" class="text-center">Loading...</div>
-    <section v-else-if="link.length === 0" class="sec-container">
+    <section v-else-if="data.data.length === 0" class="sec-container">
       <NotFound message="No bookmarked link!" redirectUrl="/share" buttonText="Share a link" />
     </section>
     <div v-else-if="error" class="text-center text-red-500">Error loading bookmarks</div>
