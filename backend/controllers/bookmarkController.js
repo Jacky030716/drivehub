@@ -1,6 +1,6 @@
 import { db } from "../drizzle/drizzle.js";
 import { bookmarks, links } from "../drizzle/schema.js";
-import { eq } from "drizzle-orm";
+import { and,eq } from "drizzle-orm";
 
 const bookmarkController = {
     getBookmarks: async (req, res) => {
@@ -18,7 +18,7 @@ const bookmarkController = {
             .where(eq(bookmarks.userEmail, userEmail));
 
             if (!data.length) {
-            return res.json({ data: [] });
+                return res.json({ data: [] });
             }
 
             const normalizedData = data.map((row) => ({
@@ -56,9 +56,10 @@ const bookmarkController = {
             const existingBookmark = await db
             .select()
             .from(bookmarks)
-            .where(
-                eq(bookmarks.userEmail, userEmail) && 
+            .where(and(
+                eq(bookmarks.userEmail, userEmail),
                 eq(bookmarks.linkId, linkId)
+            )
             );
 
             if (existingBookmark.length) {
