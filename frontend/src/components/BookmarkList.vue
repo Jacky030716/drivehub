@@ -38,17 +38,23 @@ const handleDelete = async (bookmarkId) => {
 </script>
 
 <template>
-  <div class="bg-white p-4 mb-2 rounded-lg shadow relative pr-6">
+  <div class="bg-white p-4 mb-2 rounded-lg shadow relative pr-6 hover:shadow-md transition-shadow duration-200 hover:bg-gray-300 ">
 
     <!-- Link URL -->
-    <a :href="link.link.url" target="_blank" class="block mb-2 hover:underline text-blue-500">
+    <div class="block mb-2 text-blue-500 cursor-default">
       <div class="flex items-center">
         <Link2 class="text-blue-500 w-4 h-4 mr-2 flex-shrink-0" />
-        <span class="text-sm font-semibold line-clamp-1 pr-6">{{
+        <a :href="link.link.url" target="_blank" class="text-sm font-semibold line-clamp-1 pr-6 hover:underline cursor-pointer">{{
           link.link.url
-        }}</span>
+        }}</a>
       </div>
-    </a>
+    </div>
+    <!-- <div class="flex items-center mb-2">
+        <Link2 :class="['text-blue-500', 'w-4 h-4 mr-2']" />
+        <a :href="link.link.url" target="_blank" class="text-blue-500 hover:underline text-sm font-semibold">
+          {{ link.link.url }}
+        </a>
+      </div> -->
 
     <!-- Details -->
     <div class="space-y-2">

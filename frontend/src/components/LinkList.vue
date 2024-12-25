@@ -1,7 +1,7 @@
 <script setup>
 import { useDeleteLink } from "@/features/links/api/use-delete-link";
 import { useCreateBookmark } from "@/features/bookmark/api/use-create-bookmark";
-import { useDeleteBookmark } from "@/features/bookmark/api/use-delete-bookmark"; 
+import { useDeleteBookmark } from "@/features/bookmark/api/use-delete-bookmark";
 import {
   CalendarDays,
   Link2,
@@ -36,7 +36,7 @@ const deleteBookmarkMutation = useDeleteBookmark();
 onMounted(async () => {
   const token = localStorage.getItem("token");
   const userEmail = localStorage.getItem("email");
-  
+
   if (!token || !userEmail) return;
 
   try {
@@ -48,17 +48,17 @@ onMounted(async () => {
     });
 
     console.log("Bookmarks fetched:", response.data.data); // Debugging log
-    
+
     // Find the bookmark for this link if it exists
     const bookmark = response.data.data.find(
       bookmark => bookmark.link.id === props.link.id
     );
-    
+
     if (bookmark) {
       isBookmarked.value = true;
       currentBookmarkId.value = bookmark.id; // Store the bookmark ID
     }
-  } catch (error) { 
+  } catch (error) {
     console.error('Error checking bookmark status:', error);
   }
 });
@@ -73,7 +73,7 @@ const handleBookmarkToggle = async () => {
           linkId: props.link.id,
           userEmail: localStorage.getItem("email")
         });
-        
+
         isBookmarked.value = true;
         currentBookmarkId.value = response.data.id; // Store the new bookmark ID
       } catch (error) {
@@ -113,37 +113,26 @@ const isOwner = localStorage.getItem("email") === props.link.email;
 
 <template>
   <div
-    class="bg-white p-4 mb-2 rounded-lg shadow hover:shadow-md transition-shadow duration-200 cursor-pointer hover:bg-gray-300 relative">
+    class="bg-white p-4 mb-2 rounded-lg shadow hover:shadow-md transition-shadow duration-200 hover:bg-gray-300 relative">
     <!-- Bookmark Icon -->
-    <div
-      class="absolute top-3 right-3 cursor-pointer group"
-      @click="handleBookmarkToggle()"
-    >
-      <Bookmark
-        :class="[ 
-          'w-6 h-6',
-          isBookmarked
-            ? 'text-red-700 fill-red-700 group-hover:text-red-900 group-hover:fill-red-900'
-            : 'text-gray-500 group-hover:text-red-700 group-hover:fill-red-700'
-        ]"
-      />
+    <div class="absolute top-3 right-3 cursor-pointer group" @click="handleBookmarkToggle()">
+      <Bookmark :class="[
+        'w-6 h-6',
+        isBookmarked
+          ? 'text-red-700 fill-red-700 group-hover:text-red-900 group-hover:fill-red-900'
+          : 'text-gray-500 group-hover:text-red-700 group-hover:fill-red-700'
+      ]" />
     </div>
 
     <!-- Content -->
     <div>
       <!-- Title with link icon -->
-      <a :href="link.url">
-        <div class="flex items-center mb-2">
-          <Link2 :class="['text-blue-500', 'w-4 h-4 mr-2']" />
-          <a
-            :href="link.url"
-            target="_blank"
-            class="text-blue-500 hover:underline text-sm font-semibold"
-          >
-            {{ link.url }}
-          </a>
-        </div>
-      </a>
+      <div class="flex items-center mb-2">
+        <Link2 :class="['text-blue-500', 'w-4 h-4 mr-2']" />
+        <a :href="link.url" target="_blank" class="text-blue-500 hover:underline text-sm font-semibold">
+          {{ link.url }}
+        </a>
+      </div>
 
       <!-- Details -->
       <div class="space-y-1">
@@ -174,12 +163,7 @@ const isOwner = localStorage.getItem("email") === props.link.email;
           Edit Link
         </Button>
       </RouterLink>
-      <Button
-        size="sm"
-        variant="destructive"
-        @click.prevent="handleDelete"
-        :disabled="deleteMutation.isLoading"
-      >
+      <Button size="sm" variant="destructive" @click.prevent="handleDelete" :disabled="deleteMutation.isLoading">
         <Trash />
         {{ deleteMutation.isLoading ? "Deleting..." : "Delete Link" }}
       </Button>
