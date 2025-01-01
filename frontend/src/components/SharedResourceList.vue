@@ -4,6 +4,7 @@ import HomePageSelect from './HomePageSelect.vue';
 import { computed, ref } from 'vue';
 import { semesterOptions, sessionOptions, sharedByOptions } from '@/constant/options';
 import NotFound from './NotFound.vue';
+import { useRoute } from 'vue-router';
 
 const props = defineProps({
   links: {
@@ -16,12 +17,15 @@ const props = defineProps({
   },
 });
 
+const route = useRoute();
+
 const userEmail = localStorage.getItem('email');
+const categoryName = route.query.category;
 
 const searchQuery = ref('');
 const selectedSession = ref('reset');
 const selectedSemester = ref('reset');
-const selectedCategory = ref('reset');
+const selectedCategory = ref(categoryName || 'reset');
 const selectedSharedBy = ref('reset');
 
 const handleCategoryChange = (value) => {
@@ -55,8 +59,6 @@ const filteredLinks = computed(() => {
   if (selectedCategory.value === "reset" && selectedSession.value === "reset" && selectedSemester.value === "reset" && selectedSharedBy === "reset" && searchQuery.value === "") {
     return props.links;
   }
-
-  console.log(props.links)
 
   return props.links.filter((link) => {
     const matchesSession = selectedSession.value === "reset" || link.session.includes(selectedSession.value.trim());

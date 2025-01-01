@@ -1,6 +1,8 @@
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+import { course_files, internship, meeting, timetable, psm, training, research, coordinator } from "@/assets/category";
+
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
@@ -11,4 +13,24 @@ export const shuffleArray = (array) => {
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
+}
+
+export const getCategoryImage = (categoryName) => {
+  if (!categoryName) {
+    return;
+  }  
+
+  // Map images with category names
+  const images = {
+    "course files": course_files,
+    "internship": internship,
+    "meeting": meeting,
+    "research": research,
+    "timetable": timetable,
+    "training/workshop": training,
+    "psm 1": psm,
+    "course coordination": coordinator
+  };
+
+  return images[categoryName.toLowerCase()] || '../assets/category/default.png';
 }

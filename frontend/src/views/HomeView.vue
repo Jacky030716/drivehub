@@ -1,25 +1,40 @@
 <script setup>
-import { computed, onMounted, ref } from "vue";
-import { FileText } from 'lucide-vue-next';
+import { computed, onMounted } from "vue";
 import { useGetCategories } from "@/features/category/use-get-categories";
 import { useGetLinks } from "@/features/links/api/use-get-links";
-import LinkList from "@/components/LinkList.vue";
-import Button from "@/components/ui/button/Button.vue";
-import { RouterLink } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
 import RecentFiles from "@/components/RecentFiles.vue";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
-import NotFound from "@/components/NotFound.vue";
 import { useGetHubs } from "@/features/hubs/api/use-get-hubs";
+import { getCategoryImage } from "@/lib/utils";
 
 // Fetch the data
 const categoriesQuery = useGetCategories();
 const linksQuery = useGetLinks();
-const hubsQuery = useGetHubs();
+
+// Router
+const router = useRouter();
 
 // Computed properties for reactivity
-const isDisabled = computed(() => categoriesQuery.isLoading.value || linksQuery.isLoading.value || hubsQuery.isLoading.value);
+const isDisabled = computed(() => categoriesQuery.isLoading.value || linksQuery.isLoading.value);
 const links = computed(() => linksQuery.data?.value?.data || []);
-const hubs = computed(() => hubsQuery.data?.value?.data || []);
+const categories = computed(() => categoriesQuery.data?.value || []);
+
+// Group links by category in object
+const groupedLinks = computed(() => {
+  const grouped = {};
+  links.value.forEach((link) => {
+    if (!grouped[link.category]) {
+      grouped[link.category] = [];
+    }
+    grouped[link.category].push(link);
+  });
+  return grouped;
+});
+
+const handleNavigation = (categoryName) => {
+  router.push({ name: "Shared Links", query: { category: categoryName } });
+};
 
 onMounted(() => {
   if (!categoriesQuery.data) {
@@ -33,7 +48,7 @@ onMounted(() => {
     <PulseLoader color="#882C4C" />
   </div>
 
-  <div v-else class="sec-container font-sans px-0 pt-0 gap-2">
+  <div v-else class="sec-container font-sans px-0 py-0 gap-2">
     <!-- Header -->
     <div class="bg-white shadow py-6 w-full flex-shrink-0 h-fit">
       <h1 class="text-2xl font-semibold text-center">
@@ -44,7 +59,7 @@ onMounted(() => {
       </h1>
       <!-- Recent Files Section -->
       <div v-if="links.length > 0" class="w-full flex flex-col items-start gap-2.5">
-        <h3 class="font-semibold px-4">Recent Shared Links</h3>
+        <h3 class="font-semibold px-4 text-xl">Recent Shared Links</h3>
         <div class="w-full h-[160px] overflow-y-auto">
           <div class="px-4 grid xl:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-4 ">
             <RecentFiles :links="links" />
@@ -56,7 +71,7 @@ onMounted(() => {
     <!-- Content Area -->
     <div class="h-[calc(100vh-180px)] overflow-y-auto">
       <!-- Links details -->
-      <div class="w-full grid grid-cols-3 gap-4 p-4 bg-white">
+      <div class="w-full h-full grid grid-cols-3 gap-8 p-4 bg-white">
         <div class="rounded-md flex flex-col gap-4">
           <h4 class="text-xl font-semibold">Quick Links</h4>
           <div class="flex gap-3 flex-col flex-1 w-full justify-between">
@@ -76,26 +91,35 @@ onMounted(() => {
               <h3 class="font-semibold">View all groups</h3>
             </RouterLink>
           </div>
-        </div>
+        </div>         
 
         <div class="col-span-2 w-full flex flex-col gap-4">
-          <h4 class="text-xl font-semibold">Sharing Details</h4>
-          <!-- Links details -->
-           <div class="w-full flex-1 flex gap-4">
-            <div
-              class="w-full h-full flex flex-col justify-center border shadow-md items-center gap-3.5 bg-white rounded-xl px-2 py-4">
-              <img src="../assets/google-drive.png" alt="Share Icon" class="w-16 h-auto">
-              <p class="w-[200px] text-center">You had shared <span class="font-bold text-primary">{{ links.length
-                  }}</span> link(s) using DriveHub</p>
+          <div class="w-full space-y-4">
+            <h4 class="text-xl font-semibold">Links Sharing Overview</h4>
+            <div 
+              class="w-full grid grid-cols-3 auto-rows-auto gap-4"
+            
+            >
+              <div 
+                v-for="category in categories.data" 
+                :key="category.id"
+                class="w-full flex items-center gap-6 border rounded-md p-4  cursor-pointer hover:bg-gray-100"
+                @click="handleNavigation(category.name)"
+              >
+                <img 
+                  :src="getCategoryImage(category.name)"
+                  :alt="category.name"
+                  class="w-[40px] h-[40px] object-cover"
+                />
+                <div>
+                  <h5 class="font-semibold text-lg">{{category.name}}</h5>
+                  <p class="text-sm text-gray-500">Total links: {{ groupedLinks[category.name].length || 0 }}</p>
+                </div>
+              </div>
             </div>
-            <div
-              class="w-full h-full flex flex-col justify-center border shadow-md  items-center gap-3.5 bg-white rounded-xl px-2 py-4">
-              <img src="../assets/folder.png" alt="Share Icon" class="w-16 h-auto">
-              <p class="w-[200px] text-center">You had joined <span class="font-bold text-primary">{{ hubs.length
-                  }}</span> group(s) using DriveHub</p>
-            </div>
-           </div>
+          </div>
         </div>
+        
       </div>
     </div>
   </div>

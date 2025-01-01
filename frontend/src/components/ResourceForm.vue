@@ -63,7 +63,6 @@ const onSubmit = handleSubmit((values) => {
       router.push('/shared')
     },
   })
-  console.log(values)
 })
 
 const categoryOptions = props.categories.map((category) => ({
