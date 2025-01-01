@@ -11,6 +11,11 @@ export const sessionOptions = [
   { value: "2024/2025", label: "2024/2025" },
 ]
 
+export const sharedByOptions = [
+  { value: "Me", label: "Me" },
+  { value: "Others", label: "Others" },
+]
+
 export const shareWithOptions = [
   { value: "Private", label: "Private" },
   { value: "Student", label: "All Students" },

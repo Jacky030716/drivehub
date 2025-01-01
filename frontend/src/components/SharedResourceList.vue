@@ -1,9 +1,8 @@
 <script setup>
-import RecentFiles from './RecentFiles.vue';
 import LinkList from './LinkList.vue';
 import HomePageSelect from './HomePageSelect.vue';
 import { computed, ref } from 'vue';
-import { semesterOptions, sessionOptions } from '@/constant/options';
+import { semesterOptions, sessionOptions, sharedByOptions } from '@/constant/options';
 import NotFound from './NotFound.vue';
 
 const props = defineProps({
@@ -17,10 +16,13 @@ const props = defineProps({
   },
 });
 
+const userEmail = localStorage.getItem('email');
+
 const searchQuery = ref('');
 const selectedSession = ref('reset');
 const selectedSemester = ref('reset');
 const selectedCategory = ref('reset');
+const selectedSharedBy = ref('reset');
 
 const handleCategoryChange = (value) => {
   selectedCategory.value = value;
@@ -32,6 +34,10 @@ const handleSessionChange = (value) => {
 
 const handleSemesterChange = (value) => {
   selectedSemester.value = value;
+};
+
+const handleSharedByChange = (value) => {
+  selectedSharedBy.value = value;
 };
 
 // Category Options
@@ -46,17 +52,20 @@ const categoryOptions = computed(() => {
 
 // Filter the options
 const filteredLinks = computed(() => {
-  if (selectedCategory.value === "reset" && selectedSession.value === "reset" && selectedSemester.value === "reset" && searchQuery.value === "") {
+  if (selectedCategory.value === "reset" && selectedSession.value === "reset" && selectedSemester.value === "reset" && selectedSharedBy === "reset" && searchQuery.value === "") {
     return props.links;
   }
+
+  console.log(props.links)
 
   return props.links.filter((link) => {
     const matchesSession = selectedSession.value === "reset" || link.session.includes(selectedSession.value.trim());
     const matchesSemester = selectedSemester.value === "reset" || link.semester.includes(selectedSemester.value.trim());
     const matchesCategory = selectedCategory.value === "reset" || link.category.includes(selectedCategory.value.trim());
+    const matchesSharedBy = selectedSharedBy.value === "Me" ? link.email.includes(userEmail) : selectedSharedBy.value === "Others" ? !link.email.includes(userEmail) : true;
     const matchesSearchQuery = link.description.toLowerCase().includes(searchQuery.value.toLowerCase()) || link.ref_name.toLowerCase().includes(searchQuery.value.toLowerCase());
 
-    return matchesSession && matchesSemester && matchesCategory && matchesSearchQuery;
+    return matchesSession && matchesSemester && matchesCategory && matchesSearchQuery && matchesSharedBy;
   });
 });
 </script>
@@ -82,6 +91,12 @@ const filteredLinks = computed(() => {
           :options="categoryOptions"
           v-model="selectedCategory"
           @update:modelValue="handleCategoryChange"
+        />
+        <HomePageSelect
+          buttonName="shared_by"
+          :options="sharedByOptions"
+          v-model="selectedSharedBy"
+          @update:modelValue="handleSharedByChange"
         />
         <HomePageSelect
           buttonName="session"

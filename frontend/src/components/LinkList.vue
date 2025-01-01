@@ -47,8 +47,6 @@ onMounted(async () => {
       },
     });
 
-    console.log("Bookmarks fetched:", response.data.data); // Debugging log
-
     // Find the bookmark for this link if it exists
     const bookmark = response.data.data.find(
       bookmark => bookmark.link.id === props.link.id

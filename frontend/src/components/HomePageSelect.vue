@@ -43,7 +43,8 @@ const getLabel = computed(() => {
   const labels = {
     'category': 'Category',
     'semester': 'Semester',
-    'session': 'Session'
+    'session': 'Session',
+    'shared_by': 'Shared By'
   }
   return labels[props.buttonName] || 'Select Option'
 })
