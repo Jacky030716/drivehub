@@ -1,10 +1,17 @@
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-import { course_files, internship, meeting, timetable, psm, training, research, coordinator } from "@/assets/category";
+import { course_files, internship, meeting, timetable, psm, training, research, coordinator, defaultImage } from "@/assets/category";
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
+}
+
+
+export function valueUpdater(updaterOrValue, ref) {
+  ref.value = typeof updaterOrValue === 'function'
+    ? updaterOrValue(ref.value)
+    : updaterOrValue
 }
 
 export const shuffleArray = (array) => {
@@ -17,7 +24,7 @@ export const shuffleArray = (array) => {
 
 export const getCategoryImage = (categoryName) => {
   if (!categoryName) {
-    return;
+    return '../assets/category/default.png';
   }  
 
   // Map images with category names
@@ -32,5 +39,5 @@ export const getCategoryImage = (categoryName) => {
     "course coordination": coordinator
   };
 
-  return images[categoryName.toLowerCase()] || '../assets/category/default.png';
+  return images[categoryName.toLowerCase()] || defaultImage;
 }

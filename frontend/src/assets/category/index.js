@@ -6,6 +6,7 @@ import timetable from "./timetable.png";
 import training from "./training.png";
 import psm from "./psm.png";
 import coordinator from "./coordinator.png"
+import defaultImage from "./default.png"
 
 export {
   course_files,
@@ -15,5 +16,6 @@ export {
   timetable,
   training,
   psm,
-  coordinator
+  coordinator,
+  defaultImage
 }

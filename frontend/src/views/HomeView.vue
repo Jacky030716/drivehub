@@ -71,7 +71,7 @@ onMounted(() => {
     <!-- Content Area -->
     <div class="h-[calc(100vh-180px)] overflow-y-auto">
       <!-- Links details -->
-      <div class="w-full h-full grid grid-cols-3 gap-8 p-4 bg-white">
+      <div class="w-full grid grid-cols-3 gap-8 p-4 bg-white">
         <div class="rounded-md flex flex-col gap-4">
           <h4 class="text-xl font-semibold">Quick Links</h4>
           <div class="flex gap-3 flex-col flex-1 w-full justify-between">
@@ -112,14 +112,13 @@ onMounted(() => {
                   class="w-[40px] h-[40px] object-cover"
                 />
                 <div>
-                  <h5 class="font-semibold text-lg">{{category.name}}</h5>
-                  <p class="text-sm text-gray-500">Total links: {{ groupedLinks[category.name].length || 0 }}</p>
+                  <h5 class="font-semibold">{{category.name}}</h5>
+                  <p class="text-sm text-gray-400">Total links: {{ groupedLinks[category.name]?.length || 0 }}</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        
       </div>
     </div>
   </div>

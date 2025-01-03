@@ -11,6 +11,7 @@ import EditShareView from "@/views/EditShareView.vue"
 import NotificationsView from "@/views/NotificationsView.vue";
 import SignInView from "@/views/SignInView.vue";
 import NotFoundView from '@/views/NotFoundView.vue'
+import CategoryView from "@/views/CategoryView.vue";
 
 export const routes = [
   {
@@ -72,6 +73,12 @@ export const routes = [
     path: "/sign-in",
     component: SignInView,
     meta: { title: 'Sign In' },
+  },
+  {
+    name: "Admin Panel",
+    path: "/admin",
+    component: CategoryView,
+    meta: { title: 'Admin Panel' },
   },
   {
     path: '/:catchAll(.*)',

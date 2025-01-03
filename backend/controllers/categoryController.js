@@ -1,6 +1,6 @@
-import { category, users } from "../drizzle/schema.js";
+import { category } from "../drizzle/schema.js";
 import { db } from "../drizzle/drizzle.js";
-import { desc, eq } from "drizzle-orm";
+import { desc } from "drizzle-orm";
 
 const categoryController = {
   getCategories: async (req, res) => {
@@ -24,6 +24,31 @@ const categoryController = {
     res.json({
       data
     });
+  },
+  createCategory: async (req, res) => {
+    try {
+      const { userEmail, newCategory } = req.body;
+
+      if (!userEmail) {
+        return res.status(400).json({ message: "Missing userEmail" });
+      }
+  
+      const [data] = await db
+        .insert(category)
+        .values({
+          name: newCategory
+        })
+        .returning();
+      
+      res.status(200).json({
+        data
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "Internal Server Error"
+      });
+    }
+
   }
 }
 
