@@ -118,6 +118,7 @@ const linkController = {
   },
   addLink: async (req, res) => {
     const { userEmail, link } = req.body;
+    let targetedUsers = []; // Array to store target user emails for notifications
 
     if (!userEmail) {
       return res.status(401).json({
@@ -132,6 +133,15 @@ const linkController = {
     }
 
     try {
+      const { io } = req;
+
+      const allUsers = await db
+        .select({
+          email: users.email,
+          role: users.role,
+        })
+        .from(users)
+      
       const [data] = await db
         .insert(links)
         .values({
@@ -140,6 +150,20 @@ const linkController = {
           hubId: link.shared_details?.group || null,
         })
         .returning();
+
+      // Handle shared with "Students"
+      if (link.shared_with === "Student") {
+        const studentEmails = allUsers.filter((user) => user.role === "Student").map((user) => user.email).filter((email) => email !== userEmail);
+
+        targetedUsers.push(...studentEmails);
+      }
+
+      // Handle shared with "Lecturers"
+      if (link.shared_with === "Lecturer") {
+        const lecturerEmails = allUsers.filter((user) => user.role === "Lecturer").map((user) => user.email).filter((email) => email !== userEmail);
+
+        targetedUsers.push(...lecturerEmails);
+      }
 
       let sharedData = [];
 
@@ -158,6 +182,9 @@ const linkController = {
             sharedEmail: email,
             sharedGroupId: null,
           }));
+
+          // Add targeted users for notifications
+          targetedUsers.push(...shared_emails);
         }
 
         // Scenario 2: Only shared group
@@ -184,6 +211,20 @@ const linkController = {
         if (sharedData.length > 0) {
           await db.insert(linkShareDetails).values(sharedData).returning();
         }
+      }
+
+      if (targetedUsers.length > 0) {
+        // Notify shared users
+        targetedUsers.forEach((targetUser) => {
+          try {
+            io.to(targetUser).emit("notification", {
+              userEmail: targetUser,
+              message: `New link shared with you by ${userEmail}`,
+            });
+          } catch (emitError) {
+            console.error("Socket.IO Emit Error:", emitError);
+          }
+        });
       }
 
       res.status(201).json({

@@ -69,9 +69,9 @@ onMounted(() => {
     </div>
 
     <!-- Content Area -->
-    <div class="h-[calc(100vh-180px)] overflow-y-auto">
+    <div class="h-[calc(100vh-180px)] flex flex-col overflow-y-auto">
       <!-- Links details -->
-      <div class="w-full grid grid-cols-3 gap-8 p-4 bg-white">
+      <div class="w-full flex-1 grid grid-cols-3 gap-8 p-4 bg-white">
         <div class="rounded-md flex flex-col gap-4">
           <h4 class="text-xl font-semibold">Quick Links</h4>
           <div class="flex gap-3 flex-col flex-1 w-full justify-between">

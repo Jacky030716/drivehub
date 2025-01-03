@@ -32,7 +32,7 @@ export const useCreateCategory = () => {
       )
       return response.data
     },
-    onSuccess: () => {
+    onSuccess: (_, newData) => {
       toast.success('Category added successfully!')
       queryClient.invalidateQueries(["categories"])
     },

@@ -1,14 +1,17 @@
 <script setup>
+import { computed, onMounted, onUnmounted } from 'vue';
 import { RouterView, useRoute, useRouter } from 'vue-router';
 import SheetProvider from './providers/SheetProvider.vue';
 import { Toaster } from 'vue-sonner'
 import Navbar from "./components/Navbar.vue"
 import Header from './components/Header.vue';
-import { computed } from 'vue';
+import { useNotifications } from './composables/useNotifications';
 
 const route = useRoute()
 const router = useRouter()
 const isSignInRoute = computed(() => route.path === '/sign-in')
+
+const { setupNotifications, cleanupNotifications } = useNotifications();
 
 // Extract user information
 const email = localStorage.getItem('email');
@@ -19,6 +22,13 @@ if (!isSignInRoute.value) {
   }
 }
 
+onMounted(() => {
+  setupNotifications();
+});
+
+onUnmounted(() => {
+  cleanupNotifications();
+});
 </script>
 
 <template>

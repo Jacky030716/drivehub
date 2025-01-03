@@ -28,6 +28,7 @@ const categoryController = {
   createCategory: async (req, res) => {
     try {
       const { userEmail, newCategory } = req.body;
+      const { io } = req;
 
       if (!userEmail) {
         return res.status(400).json({ message: "Missing userEmail" });
@@ -39,6 +40,18 @@ const categoryController = {
           name: newCategory
         })
         .returning();
+              
+      // Notifcation
+      if(data){
+        try {
+          io.emit("notification", {
+            userEmail,
+            message: `New category created: ${newCategory}`,
+          });
+        } catch (emitError) {
+          console.error("Socket.IO Emit Error:", emitError);
+        }
+      }
       
       res.status(200).json({
         data
