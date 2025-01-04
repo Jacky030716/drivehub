@@ -7,6 +7,7 @@ import {
   linkShareDetails,
   users,
 } from "../drizzle/schema.js";
+import { notifyUsers } from "../utils/notifyUsers.js";
 
 const linkController = {
   getLink: async (req, res) => {
@@ -118,7 +119,7 @@ const linkController = {
   },
   addLink: async (req, res) => {
     const { userEmail, link } = req.body;
-    let targetedUsers = []; // Array to store target user emails for notifications
+    let targetedUsers = new Set(); // Array to store target user emails for notifications
 
     if (!userEmail) {
       return res.status(401).json({
@@ -155,14 +156,20 @@ const linkController = {
       if (link.shared_with === "Student") {
         const studentEmails = allUsers.filter((user) => user.role === "Student").map((user) => user.email).filter((email) => email !== userEmail);
 
-        targetedUsers.push(...studentEmails);
+        studentEmails.forEach(email => targetedUsers.add(email));
+
+        const message = `New link (${link.ref_name}) shared with you by ${userEmail}`;
+        notifyUsers(io, targetedUsers, message);
       }
 
       // Handle shared with "Lecturers"
       if (link.shared_with === "Lecturer") {
         const lecturerEmails = allUsers.filter((user) => user.role === "Lecturer").map((user) => user.email).filter((email) => email !== userEmail);
 
-        targetedUsers.push(...lecturerEmails);
+        lecturerEmails.forEach(email => targetedUsers.add(email));
+
+        const message = `New link (${link.ref_name}) shared with you by ${userEmail}`;
+        notifyUsers(io, targetedUsers, message);
       }
 
       let sharedData = [];
@@ -184,7 +191,11 @@ const linkController = {
           }));
 
           // Add targeted users for notifications
-          targetedUsers.push(...shared_emails);
+          shared_emails.forEach(email => targetedUsers.add(email));
+
+          // Notify shared users
+          const message = `New link (${link.ref_name}) shared with you by ${userEmail}`;
+          notifyUsers(io, targetedUsers, message);
         }
 
         // Scenario 2: Only shared group
@@ -196,6 +207,30 @@ const linkController = {
               sharedGroupId: link.shared_details.group,
             },
           ];
+
+          // get the group participants
+          const groupParticipantsList = await db
+            .select({
+              email: groupParticipants.email,
+              hub_name: hubs.name,
+            })
+            .from(groupParticipants)
+            .leftJoin(hubs, eq(groupParticipants.hubId, hubs.id))
+            .where(
+              or(
+                eq(groupParticipants.hubId, link.shared_details.group),
+                eq(hubs.owner_email, userEmail)
+              )
+            );
+          
+          const hub_name = groupParticipantsList[0].hub_name;
+
+          // Create notifications
+          const groupParticipantsEmails = groupParticipantsList.map((participant) => participant.email);
+          groupParticipantsEmails.forEach(email => targetedUsers.add(email));
+
+          const message = `New link (${link.ref_name}) shared within your group (${hub_name}) by ${userEmail}`;
+          notifyUsers(io, targetedUsers, message);
         }
 
         // Scenario 3: Both shared emails and group
@@ -205,26 +240,33 @@ const linkController = {
             sharedEmail: email,
             sharedGroupId: link.shared_details.group,
           }));
+
+          // get the group participants
+          const groupParticipantsList = await db
+            .select({
+              email: groupParticipants.email,
+            })
+            .from(groupParticipants)
+            .leftJoin(hubs, eq(groupParticipants.hubId, hubs.id))
+            .where(
+              or(
+                eq(groupParticipants.hubId, link.shared_details.group),
+                eq(hubs.owner_email, userEmail)
+              )
+            );
+
+          const groupParticipantsEmails = groupParticipantsList.map((participant) => participant.email);
+          groupParticipantsEmails.forEach(email => targetedUsers.add(email));
+
+          // Notify shared users
+          const message = `New link (${link.ref_name}) shared with you by ${userEmail}`;
+          notifyUsers(io, targetedUsers, message);
         }
 
         // Insert shared data if exists
         if (sharedData.length > 0) {
           await db.insert(linkShareDetails).values(sharedData).returning();
         }
-      }
-
-      if (targetedUsers.length > 0) {
-        // Notify shared users
-        targetedUsers.forEach((targetUser) => {
-          try {
-            io.to(targetUser).emit("notification", {
-              userEmail: targetUser,
-              message: `New link shared with you by ${userEmail}`,
-            });
-          } catch (emitError) {
-            console.error("Socket.IO Emit Error:", emitError);
-          }
-        });
       }
 
       res.status(201).json({
@@ -268,94 +310,181 @@ const linkController = {
   updateLink: async (req, res) => {
     const { userEmail, link } = req.body;
     const { linkId } = req.params;
-
+  
     if (!userEmail) {
       return res.status(401).json({
         message: "Unauthorized",
       });
     }
-
+  
     if (!linkId || !link) {
       return res.status(400).json({
         message: "Bad request",
       });
     }
-
-    const [data] = await db
-      .update(links)
-      .set({
-        ...link,
-        hubId: link.shared_details?.group || null,
-      })
-      .where(and(eq(links.owner_email, userEmail), eq(links.id, linkId)))
-      .returning();
-
-    if (!data || data.length === 0) {
-      return res.status(404).json({
-        message: "No link found",
+  
+    try {
+      const { io } = req;
+  
+      const allUsers = await db
+        .select({
+          email: users.email,
+          role: users.role,
+        })
+        .from(users);
+  
+      const [data] = await db
+        .update(links)
+        .set({
+          ...link,
+          hubId: link.shared_details?.group || null,
+        })
+        .where(and(eq(links.owner_email, userEmail), eq(links.id, linkId)))
+        .returning();
+  
+      if (!data) {
+        return res.status(404).json({
+          message: "No link found",
+        });
+      }
+  
+      let targetedUsers = new Set();
+  
+      // Handle shared with "Students"
+      if (link.shared_with === "Student") {
+        const studentEmails = allUsers
+          .filter((user) => user.role === "Student")
+          .map((user) => user.email)
+          .filter((email) => email !== userEmail);
+  
+        studentEmails.forEach((email) => targetedUsers.add(email));
+  
+        const message = `Link (${link.ref_name}) has been updated by ${userEmail}`;
+        notifyUsers(io, targetedUsers, message);
+      }
+  
+      // Handle shared with "Lecturers"
+      if (link.shared_with === "Lecturer") {
+        const lecturerEmails = allUsers
+          .filter((user) => user.role === "Lecturer")
+          .map((user) => user.email)
+          .filter((email) => email !== userEmail);
+  
+        lecturerEmails.forEach((email) => targetedUsers.add(email));
+  
+        const message = `Link (${link.ref_name}) has been updated by ${userEmail}`;
+        notifyUsers(io, targetedUsers, message);
+      }
+  
+      if (link.shared_with === "Others" && link.shared_details) {
+        let sharedData = [];
+  
+        const shared_emails = link.shared_details.email
+          ? link.shared_details.email
+              .split(",")
+              .map((email) => email.trim())
+              .filter((email) => email)
+          : [];
+  
+        // Clear existing sharing details for this link
+        await db.delete(linkShareDetails).where(eq(linkShareDetails.linkId, linkId));
+  
+        // Scenario 1: Only shared emails
+        if (shared_emails.length > 0 && !link.shared_details.group) {
+          sharedData = shared_emails.map((email) => ({
+            linkId: data.id,
+            sharedEmail: email,
+            sharedGroupId: null,
+          }));
+  
+          shared_emails.forEach((email) => targetedUsers.add(email));
+  
+          const message = `Link (${link.ref_name}) has been updated and shared with you by ${userEmail}`;
+          notifyUsers(io, targetedUsers, message);
+        }
+  
+        // Scenario 2: Only shared group
+        else if (shared_emails.length === 0 && link.shared_details.group) {
+          sharedData = [
+            {
+              linkId: data.id,
+              sharedEmail: null,
+              sharedGroupId: link.shared_details.group,
+            },
+          ];
+  
+          const groupParticipantsList = await db
+            .select({
+              email: groupParticipants.email,
+              hub_name: hubs.name,
+            })
+            .from(groupParticipants)
+            .leftJoin(hubs, eq(groupParticipants.hubId, hubs.id))
+            .where(
+              or(
+                eq(groupParticipants.hubId, link.shared_details.group),
+                eq(hubs.owner_email, userEmail)
+              )
+            );
+  
+          const hub_name = groupParticipantsList[0]?.hub_name || "your group";
+          const groupParticipantsEmails = groupParticipantsList.map(
+            (participant) => participant.email
+          );
+          groupParticipantsEmails.forEach((email) => targetedUsers.add(email));
+  
+          const message = `Link (${link.ref_name}) has been updated in your group (${hub_name}) by ${userEmail}`;
+          notifyUsers(io, targetedUsers, message);
+        }
+  
+        // Scenario 3: Both shared emails and group
+        else if (shared_emails.length > 0 && link.shared_details.group) {
+          sharedData = shared_emails.map((email) => ({
+            linkId: data.id,
+            sharedEmail: email,
+            sharedGroupId: link.shared_details.group,
+          }));
+  
+          const groupParticipantsList = await db
+            .select({
+              email: groupParticipants.email,
+            })
+            .from(groupParticipants)
+            .leftJoin(hubs, eq(groupParticipants.hubId, hubs.id))
+            .where(
+              or(
+                eq(groupParticipants.hubId, link.shared_details.group),
+                eq(hubs.owner_email, userEmail)
+              )
+            );
+  
+          const groupParticipantsEmails = groupParticipantsList.map(
+            (participant) => participant.email
+          );
+          groupParticipantsEmails.forEach((email) => targetedUsers.add(email));
+  
+          const message = `Link (${link.ref_name}) has been updated and shared with you by ${userEmail}`;
+          notifyUsers(io, targetedUsers, message);
+        }
+  
+        // Insert shared data if exists
+        if (sharedData.length > 0) {
+          await db.insert(linkShareDetails).values(sharedData).returning();
+        }
+      }
+  
+      res.json({
+        message: "Link updated successfully",
+        data,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        message: "Internal server error",
       });
     }
-
-    // Handle shared details if `shared_with` is "Others"
-    if (link.shared_with === "Others" && link.shared_details) {
-      let sharedData = [];
-
-      const shared_emails = link.shared_details.email
-        ? link.shared_details.email
-            .split(",")
-            .map((email) => email.trim())
-            .filter((email) => email)
-        : [];
-
-      // Clear existing sharing details for this link
-      await db
-        .delete(linkShareDetails)
-        .where(eq(linkShareDetails.linkId, linkId));
-
-      // Scenario 1: Only shared emails
-      if (shared_emails.length > 0 && !link.shared_details.group) {
-        sharedData = shared_emails.map((email) => ({
-          linkId: data.id,
-          sharedEmail: email,
-          sharedGroupId: null,
-        }));
-      }
-
-      // Scenario 2: Only shared group
-      else if (shared_emails.length === 0 && link.shared_details.group) {
-        sharedData = [
-          {
-            linkId: data.id,
-            sharedEmail: null,
-            sharedGroupId: link.shared_details.group,
-          },
-        ];
-      }
-
-      // Scenario 3: Both shared emails and group
-      else if (shared_emails.length > 0 && link.shared_details.group) {
-        sharedData = shared_emails.map((email) => ({
-          linkId: data.id,
-          sharedEmail: email,
-          sharedGroupId: link.shared_details.group,
-        }));
-      }
-
-      // Insert shared data if exists
-      if (sharedData.length > 0) {
-        await db.insert(linkShareDetails).values(sharedData).returning();
-      }
-    } else {
-      // New thing
-      await db
-        .delete(linkShareDetails)
-        .where(eq(linkShareDetails.linkId, linkId));
-    }
-
-    res.json({
-      data,
-    });
   },
+  
 };
 
 export default linkController;

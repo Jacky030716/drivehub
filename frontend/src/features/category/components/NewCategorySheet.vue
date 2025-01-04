@@ -44,7 +44,7 @@ const onSubmit = handleSubmit((values) => {
       <SheetHeader>
         <SheetTitle>New Category</SheetTitle>
         <SheetDescription>
-          Create a new category
+          Add a new category to better categorize your links.
         </SheetDescription>
       </SheetHeader>
       <form class="space-y-6 w-full" @submit="onSubmit">
