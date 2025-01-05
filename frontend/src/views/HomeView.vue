@@ -50,7 +50,7 @@ onMounted(() => {
 
   <div v-else class="sec-container font-sans px-0 py-0 gap-2">
     <!-- Header -->
-    <div class="bg-white shadow py-6 w-full flex-shrink-0 h-fit">
+    <div class="bg-white shadow py-6 w-full flex-shrink-0 space-y-6 h-fit">
       <h1 class="text-2xl font-semibold text-center">
         Welcome to
         <span class="font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-500 to-blue-500">
@@ -71,39 +71,39 @@ onMounted(() => {
     <!-- Content Area -->
     <div class="h-[calc(100vh-180px)] flex flex-col overflow-y-auto">
       <!-- Links details -->
-      <div class="w-full flex-1 grid grid-cols-3 gap-8 p-4 bg-white">
-        <div class="rounded-md flex flex-col gap-4">
+      <div class="w-full flex-1 grid md:grid-cols-3 grid-cols-1 gap-8 p-4 bg-white">
+        <div class="w-full rounded-md flex flex-col gap-4">
           <h4 class="text-xl font-semibold">Quick Links</h4>
-          <div class="flex gap-3 flex-col flex-1 w-full justify-between">
+          <div class="flex gap-3 md:flex-col flex-row flex-1 w-full justify-between">
             <RouterLink to="/share"
               class="flex flex-col items-center justify-center text-center h-auto border rounded-xl shadow-md p-4 flex-1 gap-2.5 hover:bg-slate-100 ease-in-out">
-              <img src="../assets/share.png" alt="Share icon" class="w-14" />
-              <h3 class="font-semibold">Share a link</h3>
+              <img src="../assets/share.png" alt="Share icon" class="md:w-14 w-10" />
+              <h3 class="font-semibold md:text-base text-sm">Share a link</h3>
             </RouterLink>
             <RouterLink to="/shared"
               class="flex flex-col items-center justify-center text-center h-auto border rounded-xl shadow-md p-4 flex-1 gap-2.5 hover:bg-slate-100 ease-in-out">
-              <img src="../assets/link.png" alt="Share icon" class="w-14" />
-              <h3 class="font-semibold">Views all links</h3>
+              <img src="../assets/link.png" alt="Share icon" class="md:w-14 w-10" />
+              <h3 class="font-semibold md:text-base text-sm">Views all links</h3>
             </RouterLink>
             <RouterLink to="/group"
               class="flex flex-col items-center justify-center text-center h-auto border rounded-xl shadow-md p-4 flex-1 gap-2.5 hover:bg-slate-100 ease-in-out">
-              <img src="../assets/hubs.png" alt="Share icon" class="w-14" />
-              <h3 class="font-semibold">View all groups</h3>
+              <img src="../assets/hubs.png" alt="Share icon" class="md:w-14 w-10" />
+              <h3 class="font-semibold md:text-base text-sm">View all groups</h3>
             </RouterLink>
           </div>
         </div>         
 
-        <div class="col-span-2 w-full flex flex-col gap-4">
+        <div class="md:col-span-2 w-full flex flex-col gap-4">
           <div class="w-full space-y-4">
             <h4 class="text-xl font-semibold">Links Sharing Overview</h4>
             <div 
-              class="w-full grid grid-cols-3 auto-rows-auto gap-4"
+              class="w-full grid xl:grid-cols-3 grid-cols-2 auto-rows-auto gap-4"
             
             >
               <div 
                 v-for="category in categories.data" 
                 :key="category.id"
-                class="w-full flex items-center gap-6 border rounded-md p-4  cursor-pointer hover:bg-gray-100"
+                class="w-full flex items-center gap-4 border rounded-md p-4  cursor-pointer hover:bg-gray-100"
                 @click="handleNavigation(category.name)"
               >
                 <img 
@@ -112,8 +112,8 @@ onMounted(() => {
                   class="w-[40px] h-[40px] object-cover"
                 />
                 <div>
-                  <h5 class="font-semibold">{{category.name}}</h5>
-                  <p class="text-sm text-gray-400">Total links: {{ groupedLinks[category.name]?.length || 0 }}</p>
+                  <h5 class="font-semibold md:text-base text-sm">{{category.name}}</h5>
+                  <p class="md:text-sm text-xs text-gray-400">Total links: {{ groupedLinks[category.name]?.length || 0 }}</p>
                 </div>
               </div>
             </div>

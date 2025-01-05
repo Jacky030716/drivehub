@@ -3,13 +3,14 @@ import { Button } from "@/components/ui/button"
 import { Separator } from '@/components/ui/separator'
 import { navlinks } from "../constant/navlinks.js"
 import { RouterLink, useRoute } from 'vue-router'
+import { LayoutPanelLeft } from "lucide-vue-next"
 
 const overviewLinks = navlinks.slice(0, 3)
 const resourcesLinks = navlinks.slice(3)
 
 const route = useRoute()
 const isActive = (link) => {
-  const linkPath = link.href;
+  const linkPath = link.href || link;
   const currentPath = route.path;
 
   if (linkPath === "/") {
@@ -25,7 +26,7 @@ const name = localStorage.getItem('name')
 </script>
 
 <template>
-  <nav class="px-5 py-8 md:flex hidden flex-col justify-between gap-10 min-w-[250px] border min-h-screen shadow-lg">
+  <nav class="px-5 py-8 lg:flex hidden flex-col justify-between gap-10 min-w-[250px] border min-h-screen shadow-lg">
     <!-- Welcome Text -->
     <div class="space-y-3">
       <h1 class="text-3xl text-primary font-bold">DriveHub</h1>
@@ -43,6 +44,13 @@ const name = localStorage.getItem('name')
             :class="{ 'font-medium bg-secondary-300/20 rounded-md': isActive(link) }">
             <img :src="link.icon" :alt="link.name" class="w-5 h-5" />
             {{ link.name }}
+          </RouterLink>
+          <RouterLink 
+            to="/admin"
+            class="flex w-full items-center gap-3 text-secondary-500 hover:font-medium transition-colors ease-in-out hover:text-primary-500 cursor-pointer p-2"
+            :class="{ 'font-medium bg-secondary-300/20 rounded-md': isActive('/admin') }">
+            <LayoutPanelLeft :size="20"/>
+            Admin Panel
           </RouterLink>
         </div>
       </div>

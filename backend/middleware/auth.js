@@ -16,11 +16,11 @@ const requireAuth = async (req, res, next) => {
         const { email } = jwt.verify(token, process.env.SECRET);
 
         // Fetch user from database
-        const user = await db
+        const [user] = await db
             .select()
             .from(users)
             .where(eq(users.email, email))
-
+        
         if (!user) {
             return res.status(401).json({ error: 'User not found' });
         }

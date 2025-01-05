@@ -27,7 +27,7 @@ const userController = {
       .where(
         eq(users.email, email),
       );
-        
+            
     const token = createToken(email);
 
     if (data.length === 0) {
@@ -100,7 +100,7 @@ const userController = {
     res.json({
       data
     });
-  }
+  },
 };
 
 export default userController;

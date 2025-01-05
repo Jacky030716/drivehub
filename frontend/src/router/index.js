@@ -11,7 +11,8 @@ import EditShareView from "@/views/EditShareView.vue"
 import NotificationsView from "@/views/NotificationsView.vue";
 import SignInView from "@/views/SignInView.vue";
 import NotFoundView from '@/views/NotFoundView.vue'
-import CategoryView from "@/views/CategoryView.vue";
+import AdminPanelView from "@/views/AdminPanelView.vue";
+import axios from "axios";
 
 export const routes = [
   {
@@ -77,8 +78,8 @@ export const routes = [
   {
     name: "Admin Panel",
     path: "/admin",
-    component: CategoryView,
-    meta: { title: 'Admin Panel' },
+    component: AdminPanelView,
+    meta: { title: 'Admin Panel', requiresAdmin: true },
   },
   {
     path: '/:catchAll(.*)',
@@ -93,10 +94,25 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   const token = localStorage.getItem("token");
+  const email = localStorage.getItem("email");
+
   if (!token && to.path !== '/sign-in') {
     next('/sign-in');
+  } else if (to.meta.requiresAdmin) {
+    try {
+      const res = await axios.get(`/api/users/${email}`)
+      const data = await res.data
+
+      if (data.data.user.role.toLowerCase() !== 'admin') {
+        next('/')
+      } else {
+        next();
+      }
+    } catch (error) {
+      next('/')
+    }
   } else {
     next();
   }

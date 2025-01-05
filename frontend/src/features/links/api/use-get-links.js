@@ -17,7 +17,7 @@ export const useGetLinks = () => {
   const query = useQuery({
     queryKey: ["links"],
     queryFn: async () => {
-      const response = await axios.get(`http://localhost:3000/api/links`, {
+      const response = await axios.get(`/api/links`, {
         params: {
           userEmail,
         },
@@ -29,6 +29,8 @@ export const useGetLinks = () => {
       if (!response.data) {
         throw new Error("No links found");
       }
+
+      console.log(response.data);
 
       return response.data;
     },

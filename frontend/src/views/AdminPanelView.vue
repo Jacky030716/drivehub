@@ -2,29 +2,17 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { columns } from '@/features/category/components/column';
 import DataTable from '@/features/category/components/DataTable.vue';
-import { useGetLinks } from '@/features/links/api/use-get-links';
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
+import { useGetAllLinks } from '@/features/links/api/use-get-all-links';
 
-const linksQuery = useGetLinks();
+const linksQuery = useGetAllLinks();
 
 const isDisabled = computed(() => linksQuery.isLoading.value);
-const links = computed(() => linksQuery.data.value?.data || []);
-
-const data = ref([]);
-
-// Update data reactively when links change
-watch(links, (newLinks) => {
-  data.value = newLinks.map(link => ({
-    email: link.email,
-    category: link.category,
-    url: link.url,
-    ref_name: link.ref_name,
-  }));
-});
+const links = computed(() => linksQuery.data.value || []);
 
 // Ensure data is refetched on mount if not already present
 onMounted(() => {
-  if (!linksQuery.data.value) {
+  if (!linksQuery.data.value && !linksQuery.isLoading.value) {
     linksQuery.refetch();
   }
 });
@@ -35,6 +23,6 @@ onMounted(() => {
     <PulseLoader color="#882C4C" />
   </div>
   <section v-else class="sec-container overflow-y-auto">
-    <DataTable :columns="columns" :data="data" />
+    <DataTable :columns="columns" :data="links" />
   </section>
 </template>

@@ -490,6 +490,33 @@ const linkController = {
     }
   },
   
+  // Only for admin users
+  getAllLinks: async (req, res) => {
+    const { user } = req; // `user` is set by `requireAuth` middleware
+
+    if (!user || !user.role.toLowerCase() === "admin") {
+        return res.status(403).json({ message: "Forbidden" });
+    }
+
+    const data = await db.select().from(links);
+
+    if (!data || data.length === 0) {
+        return res.status(404).json({ message: "No links found" });
+    }
+
+    const normalizedData = data.map((row) => ({
+        id: row.id,
+        url: row.url,
+        ref_name: row.ref_name,
+        description: row.description,
+        category: row.category,
+        session: row.session,
+        semester: row.semester,
+        email: row.owner_email,
+    }))
+
+    res.json(normalizedData);
+  }
 };
 
 export default linkController;
