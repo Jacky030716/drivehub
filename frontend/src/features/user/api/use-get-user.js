@@ -5,9 +5,7 @@ export const useGetUser = (email) => {
     enabled: !!email,
     queryKey: ["user", { email }],
     queryFn: async () => {
-      const response = await axios.get(`/api/users`, {
-        email
-      })
+      const response = await axios.get(`/api/users/${email}`)
   
       if(!response.data) {
         throw new Error("No user found")
