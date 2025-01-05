@@ -8,11 +8,13 @@ import hubRoutes from "./hubs.js"
 import linkRoutes from "./links.js"
 import categoryRoutes from "./categories.js"
 import bookmarkRoutes from "./bookmark.js"
+import notificationRoutes from "./notification.js"
 
 router.use('/users', userRoutes);
 router.use('/hubs', hubRoutes);
 router.use('/links', linkRoutes);
 router.use('/categories', categoryRoutes);
 router.use('/bookmarks',bookmarkRoutes)
+router.use('/notifications', notificationRoutes)
 
 export default router;

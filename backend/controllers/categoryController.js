@@ -4,12 +4,6 @@ import { desc } from "drizzle-orm";
 
 const categoryController = {
   getCategories: async (req, res) => {
-    const { userId } = req.query;
-
-    if (!userId) {
-      return res.status(400).json({ message: "Missing userId" });
-    }
-
     const data = await db
       .select()
       .from(category)
@@ -61,7 +55,6 @@ const categoryController = {
         message: "Internal Server Error"
       });
     }
-
   }
 }
 

@@ -9,19 +9,14 @@ const setupSocketIO = (server) => {
   });
 
   io.on("connection", (socket) => {
-    console.log(`New client connected: ${socket.id}`);
-
     // Listen for new messages
     socket.on("notify", (data) => {
-      console.log(`Notification received: ${data}`);
-      console.log(`Total connected clients: ${io.engine.clientsCount}`);
       io.emit("notification", data);
     })
 
     socket.on("join", (userEmail) => {
       if (userEmail){
         socket.join(userEmail);
-        console.log(`Client ${socket.id} joined room: ${userEmail}`);
       }
     })
 

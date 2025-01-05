@@ -21,8 +21,9 @@ const route = useRoute();
 
 const userEmail = localStorage.getItem('email');
 const categoryName = route.query.category;
+const ref_name = route.query.ref_name || "";
 
-const searchQuery = ref('');
+const searchQuery = ref(ref_name || "");
 const selectedSession = ref('reset');
 const selectedSemester = ref('reset');
 const selectedCategory = ref(categoryName || 'reset');

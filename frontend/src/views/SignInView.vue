@@ -43,7 +43,7 @@ const onSubmit = form.handleSubmit((values) => {
       </div>
 
         <!-- Login Form -->
-        <form class="w-full flex flex-col gap-10" @submit="onSubmit">
+        <form class="w-full flex flex-col gap-10" @submit.prevent="onSubmit">
           <div class="w-full grid grid-cols-1 gap-4">
             <CustomInputField 
               :label="'Username'"

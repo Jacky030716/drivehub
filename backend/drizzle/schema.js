@@ -140,3 +140,36 @@ export const bookmarkRelations = relations(bookmarks, ({ one }) => ({
     references: [users.email],
   }),
 }));
+
+// Notification Table
+export const notifications = pgTable("notifications", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userEmail: text("user_id").references(() => users.email, {
+    onDelete: "CASCADE",
+  }).notNull(),
+  message: text("message").notNull(),
+  isRead: boolean("is_read").notNull().default(false),
+  linkId: uuid("link_id").references(() => links.id, {
+    onDelete: "CASCADE",
+  }),
+  hubId: uuid("hub_id").references(() => hubs.id, {
+    onDelete: "CASCADE",
+  }),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+})
+
+export const notificationRelations = relations(notifications, ({ one }) => ({
+  user: one(users, {
+    fields: [notifications.userEmail],
+    references: [users.email],
+  }),
+  link: one(links, {
+    fields: [notifications.linkId],
+    references: [links.id],
+  }),
+  hub: one(hubs, {
+    fields: [notifications.hubId],
+    references: [hubs.id],
+  }),
+}))

@@ -2,6 +2,7 @@ import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 import { course_files, internship, meeting, timetable, psm, training, research, coordinator, defaultImage } from "@/assets/category";
+import { formatDistanceToNow } from "date-fns";
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -40,4 +41,8 @@ export const getCategoryImage = (categoryName) => {
   };
 
   return images[categoryName.toLowerCase()] || defaultImage;
+}
+
+export const formatDateDistance = (date) => {
+  return formatDistanceToNow(new Date(date), { addSuffix: true })
 }

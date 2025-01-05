@@ -14,6 +14,8 @@ import { useCreateCategory } from "../use-create-category"
 import { useSheet } from "@/composables/useSheet"
 import CustomInputField from "@/components/CustomInputField.vue"
 import { Button } from "@/components/ui/button"
+import { useRoute } from "vue-router"
+import { computed } from "vue"
 
 const formSchema = toTypedSchema(z.object({
   category: z.string().min(1, { message: "Category name is required" }),
@@ -35,6 +37,9 @@ const onSubmit = handleSubmit((values) => {
     }
   })
 })
+
+const route = useRoute()
+const isSignInPage = computed(() => route.path === '/sign-in')
 
 </script>
 

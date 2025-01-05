@@ -8,12 +8,10 @@ export const useCreateCategory = () => {
   const token = localStorage.getItem("token")
 
   if (!token) {
-    toast.error('Please log in to create a link')
     return
   }
 
   if (!userEmail) {
-    toast.error('No user email found')
     return
   }
 

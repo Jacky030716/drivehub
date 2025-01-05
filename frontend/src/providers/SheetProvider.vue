@@ -1,6 +1,7 @@
 <script setup>
 import { provide, reactive } from 'vue'
 import NewCategorySheet from '@/features/category/components/NewCategorySheet.vue'
+import { useRoute } from 'vue-router'
 
 const state = reactive({
   isOpen: false,
@@ -21,6 +22,9 @@ provide('sheet', {
   onOpen,
   onClose
 })
+
+const route = useRoute();
+
 </script>
 
 <template>

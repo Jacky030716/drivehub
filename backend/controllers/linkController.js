@@ -159,7 +159,7 @@ const linkController = {
         studentEmails.forEach(email => targetedUsers.add(email));
 
         const message = `New link (${link.ref_name}) shared with you by ${userEmail}`;
-        notifyUsers(io, targetedUsers, message);
+        notifyUsers(io, targetedUsers, message, data.id, null);
       }
 
       // Handle shared with "Lecturers"
@@ -169,7 +169,7 @@ const linkController = {
         lecturerEmails.forEach(email => targetedUsers.add(email));
 
         const message = `New link (${link.ref_name}) shared with you by ${userEmail}`;
-        notifyUsers(io, targetedUsers, message);
+        notifyUsers(io, targetedUsers, message, data.id, null);
       }
 
       let sharedData = [];
@@ -195,7 +195,7 @@ const linkController = {
 
           // Notify shared users
           const message = `New link (${link.ref_name}) shared with you by ${userEmail}`;
-          notifyUsers(io, targetedUsers, message);
+          notifyUsers(io, targetedUsers, message, data.id, null);
         }
 
         // Scenario 2: Only shared group
@@ -213,6 +213,7 @@ const linkController = {
             .select({
               email: groupParticipants.email,
               hub_name: hubs.name,
+              hub_id: hubs.id,
             })
             .from(groupParticipants)
             .leftJoin(hubs, eq(groupParticipants.hubId, hubs.id))
@@ -224,13 +225,14 @@ const linkController = {
             );
           
           const hub_name = groupParticipantsList[0].hub_name;
+          const hub_id = groupParticipantsList[0].hub_id;
 
           // Create notifications
           const groupParticipantsEmails = groupParticipantsList.map((participant) => participant.email);
           groupParticipantsEmails.forEach(email => targetedUsers.add(email));
 
           const message = `New link (${link.ref_name}) shared within your group (${hub_name}) by ${userEmail}`;
-          notifyUsers(io, targetedUsers, message);
+          notifyUsers(io, targetedUsers, message, data.id, hub_id);
         }
 
         // Scenario 3: Both shared emails and group
@@ -245,6 +247,7 @@ const linkController = {
           const groupParticipantsList = await db
             .select({
               email: groupParticipants.email,
+              hub_id: hubs.id,
             })
             .from(groupParticipants)
             .leftJoin(hubs, eq(groupParticipants.hubId, hubs.id))
@@ -258,9 +261,11 @@ const linkController = {
           const groupParticipantsEmails = groupParticipantsList.map((participant) => participant.email);
           groupParticipantsEmails.forEach(email => targetedUsers.add(email));
 
+          const hub_id = groupParticipantsList[0].hub_id;
+
           // Notify shared users
           const message = `New link (${link.ref_name}) shared with you by ${userEmail}`;
-          notifyUsers(io, targetedUsers, message);
+          notifyUsers(io, targetedUsers, message, data.id, hub_id);
         }
 
         // Insert shared data if exists
@@ -360,7 +365,7 @@ const linkController = {
         studentEmails.forEach((email) => targetedUsers.add(email));
   
         const message = `Link (${link.ref_name}) has been updated by ${userEmail}`;
-        notifyUsers(io, targetedUsers, message);
+        notifyUsers(io, targetedUsers, message, data.id, null);
       }
   
       // Handle shared with "Lecturers"
@@ -373,7 +378,7 @@ const linkController = {
         lecturerEmails.forEach((email) => targetedUsers.add(email));
   
         const message = `Link (${link.ref_name}) has been updated by ${userEmail}`;
-        notifyUsers(io, targetedUsers, message);
+        notifyUsers(io, targetedUsers, message, data.id, null);
       }
   
       if (link.shared_with === "Others" && link.shared_details) {
@@ -400,7 +405,7 @@ const linkController = {
           shared_emails.forEach((email) => targetedUsers.add(email));
   
           const message = `Link (${link.ref_name}) has been updated and shared with you by ${userEmail}`;
-          notifyUsers(io, targetedUsers, message);
+          notifyUsers(io, targetedUsers, message, data.id, null);
         }
   
         // Scenario 2: Only shared group
@@ -434,7 +439,7 @@ const linkController = {
           groupParticipantsEmails.forEach((email) => targetedUsers.add(email));
   
           const message = `Link (${link.ref_name}) has been updated in your group (${hub_name}) by ${userEmail}`;
-          notifyUsers(io, targetedUsers, message);
+          notifyUsers(io, targetedUsers, message, data.id, link.shared_details.group);
         }
   
         // Scenario 3: Both shared emails and group
@@ -464,7 +469,7 @@ const linkController = {
           groupParticipantsEmails.forEach((email) => targetedUsers.add(email));
   
           const message = `Link (${link.ref_name}) has been updated and shared with you by ${userEmail}`;
-          notifyUsers(io, targetedUsers, message);
+          notifyUsers(io, targetedUsers, message, data.id, link.shared_details.group);
         }
   
         // Insert shared data if exists
