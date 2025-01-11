@@ -1,10 +1,9 @@
 import { toast } from "vue-sonner";
-import { useMutation, useQueryClient } from "@tanstack/vue-query";
+import { useMutation } from "@tanstack/vue-query";
 import axios from "axios";
+import { queryClient } from "@/main";
 
 export const useLoginUser = () => {
-  const queryClient = useQueryClient();
-
   const mutation = useMutation({
     mutationFn: async (user) => {
       try {

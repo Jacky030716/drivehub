@@ -1,6 +1,7 @@
 import { toast } from "vue-sonner"
-import { useMutation, useQueryClient } from "@tanstack/vue-query"
+import { useMutation } from "@tanstack/vue-query"
 import axios from "axios"
+import { queryClient } from "@/main"
 
 export const useDeleteHub = (hubId) => {
   const userEmail = localStorage.getItem("email")
@@ -15,8 +16,6 @@ export const useDeleteHub = (hubId) => {
     toast.error('Please log in to delete a hub')
     return
   }
-
-  const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: async () => {

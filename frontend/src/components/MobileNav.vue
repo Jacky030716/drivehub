@@ -3,12 +3,25 @@ import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/s
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
-import { RouterLink } from "vue-router";
+import { RouterLink, useRoute } from "vue-router";
 import { navlinks } from "@/constant/navlinks.js";
-import { Menu } from "lucide-vue-next";
+import { LayoutPanelLeft, Menu } from "lucide-vue-next";
 
 const overviewLinks = navlinks.slice(0, 3);
 const resourcesLinks = navlinks.slice(3);
+
+const route = useRoute()
+const isActive = (link) => {
+  const linkPath = link.href || link;
+  const currentPath = route.path;
+
+  if (linkPath === "/") {
+    return currentPath === linkPath;
+  }
+
+  const regex = new RegExp(`^${linkPath}(/|$)`);
+  return regex.test(currentPath);
+}
 
 const username = localStorage.getItem("name");
 </script>
@@ -16,7 +29,7 @@ const username = localStorage.getItem("name");
 <template>
   <Sheet>
     <SheetTrigger as-child>
-      <Button variant="outline" class="md:hidden block">
+      <Button variant="outline" class="lg:hidden block">
         <Menu />
       </Button>
     </SheetTrigger>
@@ -38,6 +51,14 @@ const username = localStorage.getItem("name");
                   class="flex items-center gap-3 text-secondary-500 hover:font-medium transition-colors ease-in-out hover:text-primary-500 cursor-pointer p-0.5">
                   <img :src="link.icon" :alt="link.name" class="w-5 h-5" />
                   {{ link.name }}
+                </SheetClose>
+              </RouterLink>
+              <RouterLink @click="closeNav" to="/admin">
+                <SheetClose
+                  class="flex items-center gap-3 text-secondary-500 hover:font-medium transition-colors ease-in-out hover:text-primary-500 cursor-pointer p-0.5"
+                >
+                  <LayoutPanelLeft class="w-5 h-5" />
+                  Admin Panel
                 </SheetClose>
               </RouterLink>
             </div>

@@ -8,5 +8,8 @@ router.use(requireAuth); // This middleware will be executed for every route def
 
 router.get('/', categoryController.getCategories)
 router.post('/', categoryController.createCategory)
+router.get('/:categoryId', categoryController.getCategory)
+router.delete('/:categoryId', categoryController.deleteCategory)
+router.put('/:categoryId', categoryController.editCategory)
 
 export default router;

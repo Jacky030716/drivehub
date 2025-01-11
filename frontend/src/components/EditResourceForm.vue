@@ -66,7 +66,7 @@ const formState = ref({
 })
 
 // Initialize email option based on whether there are emails
-const emailOption = ref(formState.value.shared_details.email.length > 0)
+const emailOption = ref(props.link.sharedEmail.length > 0)
 const groupOption = ref(formState.value.shared_details.group !== '')
 
 const { handleSubmit, resetField, isSubmitting } = useForm({

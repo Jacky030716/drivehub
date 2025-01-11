@@ -24,8 +24,6 @@ export const notifyUsers = async (io, targetedUsers, message, link_id, hub_id) =
     await db
       .insert(notifications)
       .values(notificationsData)
-      .returning();
-
-    
+      .returning();    
   }
 };

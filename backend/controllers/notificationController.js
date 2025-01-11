@@ -108,7 +108,27 @@ const notificationController = {
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
-  }
+  },
+  bulkDeleteNotifications: async (req, res) => {
+    const { userEmail } = req.query;
+
+    try {
+      const data = await db
+        .delete(notifications)
+        .where(
+          eq(notifications.userEmail, userEmail)
+        )
+        .returning()
+      
+      if (data.length === 0) {
+        return res.status(404).json({ message: "Notifications not found" });
+      }
+
+      res.status(200).json(data);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
 }
 
 export default notificationController;

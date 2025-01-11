@@ -1,9 +1,9 @@
 import { toast } from "vue-sonner";
-import { useMutation, useQueryClient } from "@tanstack/vue-query";
+import { useMutation } from "@tanstack/vue-query";
 import axios from "axios";
+import { queryClient } from "@/main";
 
 export const useCreateLink = () => {
-  const queryClient = useQueryClient();
   const userEmail = localStorage.getItem("email")
   const token = localStorage.getItem("token")
 
@@ -35,6 +35,7 @@ export const useCreateLink = () => {
     onSuccess: () => {
       toast.success('Link created successfully!')
       queryClient.invalidateQueries(["links"])
+      queryClient.invalidateQueries(["notifications"])
     },
     onError: () => {
       toast.error('Error creating link')

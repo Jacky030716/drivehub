@@ -29,7 +29,7 @@ const router = useRouter()
   <div class="max-w-7xl mx-auto w-full h-full flex flex-col items-center justify-center gap-2">
     <img src="/src/assets/drive.png" class="aspect-auto w-28" />
     <div class="space-y-6 flex flex-col items-center">
-      <div class="w-full flex flex-col items-center justify-center">
+      <div class="w-full flex flex-col text-center items-center justify-center">
         <h1 class="text-3xl font-bold uppercase">{{ message }}</h1>
         <p class="text-gray-600">{{ description }}</p>
       </div>

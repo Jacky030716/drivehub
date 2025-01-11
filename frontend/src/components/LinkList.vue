@@ -123,11 +123,11 @@ const isOwner = localStorage.getItem("email") === props.link.email;
     </div>
 
     <!-- Content -->
-    <div>
+    <div class="w-full">
       <!-- Title with link icon -->
-      <div class="flex items-center mb-2">
+      <div class="flex items-center max-w-[90%] mb-2">
         <Link2 :class="['text-blue-500', 'w-4 h-4 mr-2']" />
-        <a :href="link.url" target="_blank" class="text-blue-500 hover:underline text-sm font-semibold">
+        <a :href="link.url" target="_blank" class="w-full line-clamp-3 text-blue-500 hover:underline text-sm font-semibold">
           {{ link.url }}
         </a>
       </div>

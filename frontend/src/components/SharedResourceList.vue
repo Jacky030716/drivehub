@@ -65,7 +65,7 @@ const filteredLinks = computed(() => {
     const matchesSession = selectedSession.value === "reset" || link.session.includes(selectedSession.value.trim());
     const matchesSemester = selectedSemester.value === "reset" || link.semester.includes(selectedSemester.value.trim());
     const matchesCategory = selectedCategory.value === "reset" || link.category.includes(selectedCategory.value.trim());
-    const matchesSharedBy = selectedSharedBy.value === "Me" ? link.email.includes(userEmail) : selectedSharedBy.value === "Others" ? !link.email.includes(userEmail) : true;
+    const matchesSharedBy = selectedSharedBy.value === "Private" ? link.shared_with === "Private" : selectedSharedBy.value === "Me" ? link.email.includes(userEmail) : selectedSharedBy.value === "Others" ? !link.email.includes(userEmail) : true;
     const matchesSearchQuery = link.description.toLowerCase().includes(searchQuery.value.toLowerCase()) || link.ref_name.toLowerCase().includes(searchQuery.value.toLowerCase());
 
     return matchesSession && matchesSemester && matchesCategory && matchesSearchQuery && matchesSharedBy;
@@ -117,12 +117,12 @@ const filteredLinks = computed(() => {
     </div>
 
     <!-- All Files Section -->
-    <div class="h-full w-full space-y-2">
+    <div class="h-full w-full overflow-y-auto  space-y-2">
       <div class="w-full flex items-center justify-between px-6">
         <h3 class="font-semibold">All Links</h3>
         <span class="text-sm text-gray-800 font-medium">{{ filteredLinks.length }} link(s) found</span>
       </div>
-      <div v-if="filteredLinks.length > 0" class="w-full h-full flex flex-col gap-2 px-4 overflow-y-auto shadow-t">
+      <div v-if="filteredLinks.length > 0" class="w-full h-full flex flex-col gap-2 px-4 shadow-t">
         <LinkList v-for="link in filteredLinks" :key="link.id" :link="link" />
       </div>
 

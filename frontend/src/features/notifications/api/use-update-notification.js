@@ -1,4 +1,5 @@
-import { useMutation, useQueryClient } from "@tanstack/vue-query";
+import { queryClient } from "@/main";
+import { useMutation } from "@tanstack/vue-query";
 import axios from "axios";
 import { toast } from "vue-sonner";
 
@@ -13,8 +14,6 @@ export const useUpdateNotification = (notificationId) => {
   if (!token) {
     toast.error("Please log in to perform your action");
   }
-
-  const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: async (markedAsRead) => {

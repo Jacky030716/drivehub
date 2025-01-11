@@ -1,6 +1,7 @@
 import { toast } from "vue-sonner"
-import { useMutation, useQueryClient } from "@tanstack/vue-query"
+import { useMutation } from "@tanstack/vue-query"
 import axios from "axios"
+import { queryClient } from "@/main"
 
 export const useDeleteLink = (linkId) => {
   const userEmail = localStorage.getItem("email")
@@ -13,8 +14,6 @@ export const useDeleteLink = (linkId) => {
   if(!token) {
     toast.error("Please log in to delete a link")
   }
-
-  const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: async () => {

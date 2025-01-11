@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/vue-query"
 import axios from "axios"
 import { queryClient } from "@/main"
 
-export const useDeleteNotification = (notificationId) => {
+export const useBulkDeleteNotification = () => {
   const userEmail = localStorage.getItem("email")
   const token = localStorage.getItem("token")
 
@@ -17,7 +17,7 @@ export const useDeleteNotification = (notificationId) => {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const response = await axios.delete(`/api/notifications/${notificationId}`, {
+      const response = await axios.delete(`/api/notifications`, {
         params: {
           userEmail
         },
@@ -33,7 +33,7 @@ export const useDeleteNotification = (notificationId) => {
       return response.data
     },
     onSuccess: () => {
-      toast.success("Notification deleted successfully!")
+      toast.success("All notifications deleted successfully!")
       queryClient.invalidateQueries(["notifications"])
     },
     onError: () => {

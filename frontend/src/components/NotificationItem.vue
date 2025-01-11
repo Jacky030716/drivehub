@@ -30,7 +30,7 @@ const handleClick = async () => {
     await router.push(`/shared?ref_name=${props.notification.ref_name}`)
   }
 
-  if (!isRead) {
+  if (!props.notification.isRead) {
     await markAsReadMutation.mutateAsync({
       isRead: true,
     });

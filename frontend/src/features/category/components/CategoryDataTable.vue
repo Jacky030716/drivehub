@@ -10,13 +10,6 @@ import {
 } from '@/components/ui/table'
 
 import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-
-import {
   FlexRender,
   getCoreRowModel,
   getPaginationRowModel,
@@ -27,9 +20,7 @@ import {
 
 import { ref } from 'vue';
 import { valueUpdater } from '@/lib/utils';
-import { Input } from '@/components/ui/input'
 import Button from '@/components/ui/button/Button.vue';
-import { ChevronDown, Plus } from 'lucide-vue-next';
 import DataTablePagination from '@/components/DataTablePagination.vue';
 import { useSheet } from '@/composables/useSheet';
 
@@ -66,35 +57,15 @@ const table = useVueTable({
 </script>
 
 <template>
-  <div class="border rounded-md p-2 max-w-full">
+  <div class="border shadow rounded-md p-2 max-w-full bg-gray-50">
     <div class="flex justify-between items-center p-4">
-      <Input class="max-w-sm" placeholder="Filter emails..." :model-value="table.getColumn('email')?.getFilterValue()"
-        @update:model-value=" table.getColumn('email')?.setFilterValue($event)" />
-
-      <div class="space-x-2 flex items-center">
+      <div class="w-full space-x-2 flex justify-end items-center">
         <Button variant="outline" @click="onOpen">
           Add New Category
         </Button>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger as-child>
-            <Button variant="outline" class="ml-auto">
-              Columns
-              <ChevronDown class="w-4 h-4 ml-2" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuCheckboxItem v-for="column in table.getAllColumns().filter((column) => column.getCanHide())"
-              :key="column.id" class="capitalize" :checked="column.getIsVisible()" @update:checked="(value) => {
-                column.toggleVisibility(!!value)
-              }">
-              {{ column.id }}
-            </DropdownMenuCheckboxItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
       </div>
     </div>
-    <Table>
+    <Table class="mb-2">
       <TableHeader>
         <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
           <TableHead v-for="header in headerGroup.headers" :key="header.id">
@@ -106,8 +77,10 @@ const table = useVueTable({
       <TableBody>
         <template v-if="table.getRowModel().rows?.length">
           <TableRow v-for="row in table.getRowModel().rows" :key="row.id"
-            :data-state="row.getIsSelected() ? 'selected' : undefined">
-            <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
+            :data-state="row.getIsSelected() ? 'selected' : undefined"
+            class="hover:bg-slate-200"
+          >
+            <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id" class="py-3">
               <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
             </TableCell>
           </TableRow>

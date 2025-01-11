@@ -1,10 +1,11 @@
 <script setup>
 import { provide, reactive } from 'vue'
 import NewCategorySheet from '@/features/category/components/NewCategorySheet.vue'
-import { useRoute } from 'vue-router'
+import EditCategorySheet from '@/features/category/components/EditCategorySheet.vue'
 
 const state = reactive({
   isOpen: false,
+  isEditOpen: false,
   id: undefined
 })
 
@@ -17,19 +18,29 @@ const onClose = () => {
   state.id = undefined
 }
 
+const onEditOpen = (id) => {
+  state.isEditOpen = true
+  state.id = id
+}
+
+const onEditClose = () => {
+  state.isEditOpen = false
+  state.id = undefined
+}
+
 provide('sheet', {
   state,
   onOpen,
-  onClose
+  onClose,
+  onEditOpen,
+  onEditClose
 })
-
-const route = useRoute();
-
 </script>
 
 <template>
   <div>
     <slot />
     <NewCategorySheet />
+    <EditCategorySheet />
   </div>
 </template>

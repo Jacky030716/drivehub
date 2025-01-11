@@ -4,6 +4,14 @@ import axios from "axios";
 
 export const useGetLinks = () => {
   const userEmail = localStorage.getItem("email");
+  let role = localStorage.getItem("role");
+
+  if (role.includes("Pelajar")){
+    role = "Student";
+  } else {
+    role = "Lecturer"
+  }
+
   const token = localStorage.getItem("token");
 
   if (!userEmail) {
@@ -20,6 +28,7 @@ export const useGetLinks = () => {
       const response = await axios.get(`/api/links`, {
         params: {
           userEmail,
+          role,
         },
         headers: {
           Authorization: `Bearer ${token}`,
@@ -29,8 +38,6 @@ export const useGetLinks = () => {
       if (!response.data) {
         throw new Error("No links found");
       }
-
-      console.log(response.data);
 
       return response.data;
     },

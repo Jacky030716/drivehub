@@ -1,9 +1,9 @@
 import { toast } from "vue-sonner";
-import { useMutation, useQueryClient } from "@tanstack/vue-query";
+import { useMutation } from "@tanstack/vue-query";
 import axios from "axios";
+import { queryClient } from "@/main";
 
 export const useDeleteBookmark = () => {
-  const queryClient = useQueryClient();
   const token = localStorage.getItem("token");
 
   if (!token) {

@@ -33,7 +33,7 @@ const linkController = {
       .leftJoin(linkShareDetails, eq(links.id, linkShareDetails.linkId))
       .leftJoin(hubs, eq(links.hubId, hubs.id))
       .where(and(eq(links.owner_email, userEmail), eq(links.id, linkId)));
-
+    
     if (!data) {
       return res.status(404).json({
         message: "No link found",
@@ -66,10 +66,10 @@ const linkController = {
     });
   },
   getLinks: async (req, res) => {
-    const { userEmail } = req.query;
+    const { userEmail, role } = req.query;
 
     const data = await db
-      .selectDistinctOn([links.createdAt]) // Use links.id to avoid duplicates
+      .selectDistinctOn([links.id])
       .from(links)
       .innerJoin(users, eq(links.owner_email, users.email)) // Link's owner
       .leftJoin(linkShareDetails, eq(links.id, linkShareDetails.linkId)) // Shared details
@@ -90,11 +90,11 @@ const linkController = {
           eq(hubs.owner_email, userEmail),
 
           // Role are same
-          eq(links.shared_with, users.role)
+          eq(links.shared_with, role)
         )
       )
-      .orderBy(desc(links.createdAt));
-
+      .orderBy(desc(links.id));
+    
     if (!data) {
       return res.status(404).json({
         message: "No links found",
@@ -106,12 +106,17 @@ const linkController = {
       url: row.links.url,
       ref_name: row.links.ref_name,
       description: row.links.description,
+      createdAt: row.links.createdAt,
       category: row.links.category,
+      shared_with: row.links.shared_with,
       session: row.links.session,
       semester: row.links.semester,
       email: row.user.email,
       username: row.user.name,
     }));
+
+    // Sort by descending order of creation date
+    normalizedData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     res.json({
       data: normalizedData,
@@ -193,6 +198,8 @@ const linkController = {
           // Add targeted users for notifications
           shared_emails.forEach(email => targetedUsers.add(email));
 
+          console.log("Shared through email", targetedUsers);
+
           // Notify shared users
           const message = `New link (${link.ref_name}) shared with you by ${userEmail}`;
           notifyUsers(io, targetedUsers, message, data.id, null);
@@ -230,6 +237,8 @@ const linkController = {
           // Create notifications
           const groupParticipantsEmails = groupParticipantsList.map((participant) => participant.email);
           groupParticipantsEmails.forEach(email => targetedUsers.add(email));
+
+          console.log("Shared through group", targetedUsers);
 
           const message = `New link (${link.ref_name}) shared within your group (${hub_name}) by ${userEmail}`;
           notifyUsers(io, targetedUsers, message, data.id, hub_id);
@@ -476,6 +485,8 @@ const linkController = {
         if (sharedData.length > 0) {
           await db.insert(linkShareDetails).values(sharedData).returning();
         }
+      } else {
+        await db.delete(linkShareDetails).where(eq(linkShareDetails.linkId, linkId));
       }
   
       res.json({

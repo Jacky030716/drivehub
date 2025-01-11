@@ -12,6 +12,7 @@ export const sessionOptions = [
 ]
 
 export const sharedByOptions = [
+  { value: "Private", label: "Private" },
   { value: "Me", label: "Me" },
   { value: "Others", label: "Others" },
 ]

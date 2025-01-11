@@ -40,7 +40,7 @@ watch(() => linksQuery.data, (newData) => {
   <section v-else class="sec-container px-0">
     <div class="flex flex-col items-center">
       <h1 class="text-2xl font-bold text-center">Shared Links List</h1>
-      <p class="text-muted-foreground leading-tight text-sm">Here are the list of links that you've shared with others before</p>
+      <p class="text-muted-foreground leading-tight text-sm">Here are the list of links that you have in DriveHub</p>
     </div>
     <div class="w-full h-full pb-20">
       <SharedResourceList 

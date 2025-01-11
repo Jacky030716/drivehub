@@ -1,6 +1,7 @@
 <script setup>
 import NotificationItem from '@/components/NotificationItem.vue';
 import { Button } from '@/components/ui/button';
+import { useBulkDeleteNotification } from '@/features/notifications/api/use-bulk-delete-notifications';
 import { useBulkUpdateNotifications } from '@/features/notifications/api/use-bulk-update-notifications';
 import { useGetNotifications } from '@/features/notifications/api/use-get-notifications';
 import { computed, onMounted, ref, watch } from 'vue';
@@ -15,13 +16,15 @@ const currentCategory = ref(route.query.category || 'All');
 
 const notificationsQuery = useGetNotifications();
 const markAllMutation = useBulkUpdateNotifications();
+const deleteAllMutation = useBulkDeleteNotification();
 
 // Create a reactive reference for notifications based on query data
 const notifications = computed(() => notificationsQuery.data?.value || []);
 
 const isDisabled = computed(() => 
   notificationsQuery.isLoading.value || 
-  markAllMutation.isPending.value
+  markAllMutation.isPending.value || 
+  deleteAllMutation.isPending.value
 );
 
 const handleFilter = (category) => {
@@ -36,6 +39,10 @@ const isActiveFilter = (category) => {
 const markAllAsRead = async () => {
   await markAllMutation.mutateAsync();
 };
+
+const deleteAllNotifications = async () => {
+  await deleteAllMutation.mutateAsync();
+}
 
 // Filter notifications based on current category
 const filteredNotifications = computed(() => {
@@ -88,12 +95,21 @@ onMounted(() => {
           </Button>
         </li>
       </ul>
-      <Button 
-        @click="markAllAsRead"
-        :disabled="isDisabled"
-      >
-        Mark all as read
-      </Button>
+      <div class="space-x-2">
+        <Button 
+          @click="markAllAsRead"
+          :disabled="isDisabled"
+        >
+          Mark all as read
+        </Button>
+        <Button 
+          @click="deleteAllNotifications"
+          :disabled="isDisabled"
+          variant="destructive"
+        >
+          Delete all
+        </Button>
+      </div>
     </div>
 
     <div class="space-y-4">

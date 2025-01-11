@@ -1,6 +1,7 @@
 import { toast } from "vue-sonner"
-import { useMutation, useQueryClient } from "@tanstack/vue-query"
+import { useMutation } from "@tanstack/vue-query"
 import axios from "axios"
+import { queryClient } from "@/main"
 
 export const useEditLink = (linkId) => {
   const userEmail = localStorage.getItem('email')
@@ -13,8 +14,6 @@ export const useEditLink = (linkId) => {
   if(!token) {
     toast.error('Please log in to edit a link')
   }
-
-  const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: async (link) => {
@@ -39,6 +38,8 @@ export const useEditLink = (linkId) => {
       queryClient.invalidateQueries({ queryKey: ["link", { linkId }]})
       queryClient.invalidateQueries({ queryKey: ["links"]})
       queryClient.invalidateQueries({ queryKey: ["groups"]})
+      queryClient.invalidateQueries({ queryKey: ["notifications"], refetchType: 'inactive'})
+      queryClient.refetchQueries(["notifications"], { active: true });
     },
     onError: () => {
       toast.error('Error editing link')

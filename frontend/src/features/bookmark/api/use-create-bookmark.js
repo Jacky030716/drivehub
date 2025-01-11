@@ -1,9 +1,9 @@
 import { toast } from "vue-sonner";
-import { useMutation, useQueryClient } from "@tanstack/vue-query";
+import { useMutation } from "@tanstack/vue-query";
 import axios from "axios";
+import { queryClient } from "@/main";
 
 export const useCreateBookmark = () => {
-  const queryClient = useQueryClient();
   const userEmail = localStorage.getItem("email");
   const token = localStorage.getItem("token");
 
