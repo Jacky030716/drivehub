@@ -1,5 +1,4 @@
 <script setup>
-import { defineProps } from 'vue';
 import { Circle, EllipsisVertical, File, SquareCheck, Trash } from 'lucide-vue-next';
 import { useUpdateNotification } from '@/features/notifications/api/use-update-notification';
 import { formatDateDistance } from '@/lib/utils';

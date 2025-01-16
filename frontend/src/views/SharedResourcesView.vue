@@ -1,14 +1,13 @@
 <script setup>
  import SharedResourceList from '@/components/SharedResourceList.vue';
-import { useGetCategories } from '@/features/category/use-get-categories';
+import { useGetCategoriesByUser } from '@/features/category/use-get-categories-by-user';
 import { useGetLinks } from '@/features/links/api/use-get-links';
-import { useGetUsers } from '@/features/user/api/use-get-users';
 import { computed, onMounted, watch } from 'vue';
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 
  // Fetch links using Vue Query
 const linksQuery = useGetLinks();
-const categoriesQuery = useGetCategories();
+const categoriesQuery = useGetCategoriesByUser();
 
 // Computed properties for reactivity
 const isDisabled = computed(() => linksQuery.isLoading.value || categoriesQuery.isLoading.value);

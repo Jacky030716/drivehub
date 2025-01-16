@@ -5,6 +5,8 @@ export const notifyUsers = async (io, targetedUsers, message, link_id, hub_id) =
   if (targetedUsers.size > 0) {
     targetedUsers.forEach((targetUser) => {
       try {
+        console.log(`Emitting notification to ${targetUser}:`, message);
+
         io.to(targetUser).emit("notification", {
           userEmail: targetUser,
           message,

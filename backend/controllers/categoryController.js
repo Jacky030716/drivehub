@@ -1,6 +1,6 @@
 import { category, links } from "../drizzle/schema.js";
 import { db } from "../drizzle/drizzle.js";
-import { desc, eq } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
 
 const categoryController = {
   getCategory: async (req, res) => {
@@ -32,18 +32,77 @@ const categoryController = {
   },
   getCategories: async (req, res) => {
     const { user } = req;
-
-    const data = await db.select().from(category).orderBy(desc(category.name));
-
+  
+    if (!user) {
+      return res.status(404).json({
+        message: "Unauthorized"
+      });
+    }
+  
+    const data = await db
+      .select({
+        id: category.id,
+        categoryName: category.name,
+        linkCount: sql`count(${links.id})`.as('linkCount')
+      })
+      .from(category)
+      .leftJoin(links, eq(links.category, category.name))
+      .groupBy(category.name, category.id)
+      .orderBy(desc(category.name));
+  
     if (!data || data.length === 0) {
       return res.status(404).json({
         message: "No categories found",
       });
     }
 
+    console.log(data);
+  
     res.json({
       data,
     });
+  },
+  getCategoriesByUser: async (req, res) => {
+    const { user } = req;
+    const { role } = req.params;
+
+    if (!user){
+      return res.status(404).json({
+        message: "Unauthorized"
+      })
+    }
+
+    if (!role) {
+      return res.status(400).json({
+        message: "Missing role"
+      })
+    }
+
+    const data = await db
+      .select()
+      .from(category)
+      .orderBy(desc(category.name));
+    
+    if (!data || data.length === 0) {
+      return res.status(404).json({
+        message: "No categories found",
+      });
+    }
+
+    let filteredCategories = data;
+
+    // Normalize data by roles
+    if (role.toLowerCase() === 'student'){
+      // exclude course files and course coordination
+      filteredCategories = data.filter((category) => {
+        return category.name !== 'Course Files' && category.name !== 'Course Coordination';
+      })
+    }
+
+    res.json({
+      data: filteredCategories
+    });
+
   },
   createCategory: async (req, res) => {
     try {

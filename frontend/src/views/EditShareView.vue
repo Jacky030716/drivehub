@@ -1,6 +1,7 @@
 <script setup>
 import EditResourceForm from '@/components/EditResourceForm.vue';
 import { useGetCategories } from '@/features/category/use-get-categories';
+import { useGetCategoriesByUser } from '@/features/category/use-get-categories-by-user';
 import { useGetHubs } from '@/features/hubs/api/use-get-hubs';
 import { useGetLink } from '@/features/links/api/use-get-link';
 import { computed } from 'vue';
@@ -13,7 +14,7 @@ const linkId = route.params.linkId
 // Fetch hubs using Vue Query
 const hubsQuery = useGetHubs();
 const linkQuery = useGetLink(linkId)
-const categoriesQuery = useGetCategories()
+const categoriesQuery = useGetCategoriesByUser()
 
 // Computed properties for reactivity
 const isDisabled = computed(() => hubsQuery.isLoading.value || linkQuery.isLoading.value);

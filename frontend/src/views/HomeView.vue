@@ -1,15 +1,14 @@
 <script setup>
 import { computed, onMounted } from "vue";
-import { useGetCategories } from "@/features/category/use-get-categories";
 import { useGetLinks } from "@/features/links/api/use-get-links";
 import { RouterLink, useRouter } from "vue-router";
 import RecentFiles from "@/components/RecentFiles.vue";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
-import { useGetHubs } from "@/features/hubs/api/use-get-hubs";
 import { getCategoryImage } from "@/lib/utils";
+import { useGetCategoriesByUser } from "@/features/category/use-get-categories-by-user";
 
 // Fetch the data
-const categoriesQuery = useGetCategories();
+const categoriesQuery = useGetCategoriesByUser();
 const linksQuery = useGetLinks();
 
 // Router
@@ -33,7 +32,7 @@ const groupedLinks = computed(() => {
 });
 
 const handleNavigation = (categoryName) => {
-  router.push({ name: "Shared Links", query: { category: categoryName } });
+  router.push({ name: "Shared Links", query: { category: categoryName }});
 };
 
 onMounted(() => {

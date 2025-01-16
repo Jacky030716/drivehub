@@ -1,6 +1,6 @@
 <script setup>
 import ResourceForm from '@/components/ResourceForm.vue';
-import { useGetCategories } from '@/features/category/use-get-categories';
+import { useGetCategoriesByUser } from '@/features/category/use-get-categories-by-user';
 import { useGetHubs } from '@/features/hubs/api/use-get-hubs';
 import { useGetUsers } from '@/features/user/api/use-get-users';
 import { computed } from 'vue';
@@ -8,7 +8,7 @@ import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 
 // Fetch hubs using Vue Query
 const hubsQuery = useGetHubs();
-const categoriesQuery = useGetCategories()
+const categoriesQuery = useGetCategoriesByUser()
 const usersQuery = useGetUsers();
 
 // Computed properties for reactivity

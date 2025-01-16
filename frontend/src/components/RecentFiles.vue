@@ -1,6 +1,5 @@
 <script setup>
 import drivehub from "../assets/drive.png"
-import { defineProps, onMounted } from 'vue';
 
 const props = defineProps({
   links: {

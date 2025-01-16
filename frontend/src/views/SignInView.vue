@@ -12,10 +12,16 @@ const router = useRouter()
 const createMutation = useLoginUser()
 
 
-const formSchema = toTypedSchema(z.object({
-  username: z.string().min(4, { message: 'Username must be at least 4 characters' }),
-  password: z.string().min(5, { message: 'Password must be at least 5 characters' }),
-}))
+const formSchema = toTypedSchema(
+  z.object({
+    username: z.string()
+      .min(4, { message: 'Username must be at least 4 characters' })
+      .regex(/^[a-zA-Z0-9]*$/, { message: 'Username must not contain special characters' }),
+    password: z.string()
+      .min(5, { message: 'Password must be at least 5 characters' })
+      .regex(/^[a-zA-Z0-9]*$/, { message: 'Password must not contain special characters' }),
+  })
+);
 
 const form = useForm({
   validationSchema: formSchema,

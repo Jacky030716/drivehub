@@ -65,7 +65,7 @@ const filteredLinks = computed(() => {
     const matchesSession = selectedSession.value === "reset" || link.session.includes(selectedSession.value.trim());
     const matchesSemester = selectedSemester.value === "reset" || link.semester.includes(selectedSemester.value.trim());
     const matchesCategory = selectedCategory.value === "reset" || link.category.includes(selectedCategory.value.trim());
-    const matchesSharedBy = selectedSharedBy.value === "Private" ? link.shared_with === "Private" : selectedSharedBy.value === "Me" ? link.email.includes(userEmail) : selectedSharedBy.value === "Others" ? !link.email.includes(userEmail) : true;
+    const matchesSharedBy = selectedSharedBy.value === "Private" ? link.shared_with === "Private" && link.email === userEmail : selectedSharedBy.value === "Me" ? link.email.includes(userEmail) : selectedSharedBy.value === "Others" ? !link.email.includes(userEmail) : true;
     const matchesSearchQuery = link.description.toLowerCase().includes(searchQuery.value.toLowerCase()) || link.ref_name.toLowerCase().includes(searchQuery.value.toLowerCase());
 
     return matchesSession && matchesSemester && matchesCategory && matchesSearchQuery && matchesSharedBy;

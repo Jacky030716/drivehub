@@ -94,6 +94,7 @@ const linkController = {
         )
       )
       .orderBy(desc(links.id));
+
     
     if (!data) {
       return res.status(404).json({
@@ -198,8 +199,6 @@ const linkController = {
           // Add targeted users for notifications
           shared_emails.forEach(email => targetedUsers.add(email));
 
-          console.log("Shared through email", targetedUsers);
-
           // Notify shared users
           const message = `New link (${link.ref_name}) shared with you by ${userEmail}`;
           notifyUsers(io, targetedUsers, message, data.id, null);
@@ -223,11 +222,13 @@ const linkController = {
               hub_id: hubs.id,
             })
             .from(groupParticipants)
+            .innerJoin(links, eq(groupParticipants.hubId, links.hubId))
             .leftJoin(hubs, eq(groupParticipants.hubId, hubs.id))
             .where(
-              or(
+              and(
                 eq(groupParticipants.hubId, link.shared_details.group),
-                eq(hubs.owner_email, userEmail)
+                eq(hubs.owner_email, userEmail),
+                eq(links.hubId, link.shared_details.group)
               )
             );
           
@@ -261,7 +262,7 @@ const linkController = {
             .from(groupParticipants)
             .leftJoin(hubs, eq(groupParticipants.hubId, hubs.id))
             .where(
-              or(
+              and(
                 eq(groupParticipants.hubId, link.shared_details.group),
                 eq(hubs.owner_email, userEmail)
               )
@@ -433,15 +434,17 @@ const linkController = {
               hub_name: hubs.name,
             })
             .from(groupParticipants)
+            .innerJoin(links, eq(groupParticipants.hubId, links.hubId))
             .leftJoin(hubs, eq(groupParticipants.hubId, hubs.id))
             .where(
-              or(
+              and(
                 eq(groupParticipants.hubId, link.shared_details.group),
-                eq(hubs.owner_email, userEmail)
+                eq(hubs.owner_email, userEmail),
+                eq(links.hubId, link.shared_details.group)
               )
             );
-  
-          const hub_name = groupParticipantsList[0]?.hub_name || "your group";
+          
+          const hub_name = groupParticipantsList[0].hub_name;
           const groupParticipantsEmails = groupParticipantsList.map(
             (participant) => participant.email
           );
