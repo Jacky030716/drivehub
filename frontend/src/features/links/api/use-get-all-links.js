@@ -2,7 +2,7 @@
 
 import { toast } from "vue-sonner";
 import { useQuery } from "@tanstack/vue-query";
-import axios from "axios";
+import { httpClient } from "@/lib/httpClient";
 
 export const useGetAllLinks = () => {
   const userEmail = localStorage.getItem("email");
@@ -20,8 +20,8 @@ export const useGetAllLinks = () => {
   const query = useQuery({
     queryKey: ["all_links"],
     queryFn: async () => {
-      try{
-        const response = await axios.get(`/api/admin/links`, {
+      try {
+        const response = await httpClient.get(`/admin/links`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -31,7 +31,7 @@ export const useGetAllLinks = () => {
           toast.error("You are not authorized to view this page");
           throw new Error("You are not authorized to view this page");
         }
-  
+
         if (!response.data) {
           throw new Error("No links found");
         }

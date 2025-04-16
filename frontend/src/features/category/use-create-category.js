@@ -1,43 +1,44 @@
 import { toast } from "vue-sonner";
 import { useMutation } from "@tanstack/vue-query";
-import axios from "axios";
 import { queryClient } from "@/main";
+import { httpClient } from "@/lib/httpClient";
 
 export const useCreateCategory = () => {
-  const userEmail = localStorage.getItem("email")
-  const token = localStorage.getItem("token")
+  const userEmail = localStorage.getItem("email");
+  const token = localStorage.getItem("token");
 
   if (!token) {
-    return
+    return;
   }
 
   if (!userEmail) {
-    return
+    return;
   }
 
   const mutation = useMutation({
     mutationFn: async (newCategory) => {
-      const response = await axios.post("/api/categories", 
+      const response = await httpClient.post(
+        "/categories",
         {
           userEmail: userEmail,
-          newCategory: newCategory.category
+          newCategory: newCategory.category,
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }
-      )
-      return response.data
+      );
+      return response.data;
     },
     onSuccess: (_, newData) => {
-      toast.success('Category added successfully!')
-      queryClient.invalidateQueries(["categories"])
+      toast.success("Category added successfully!");
+      queryClient.invalidateQueries(["categories"]);
     },
     onError: () => {
-      toast.error('Error adding new category')
-    }
-  })
+      toast.error("Error adding new category");
+    },
+  });
 
   return mutation;
-}
+};

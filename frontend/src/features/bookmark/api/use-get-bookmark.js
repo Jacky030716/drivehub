@@ -1,5 +1,5 @@
+import { httpClient } from "@/lib/httpClient";
 import { useQuery } from "@tanstack/vue-query";
-import axios from "axios";
 import { toast } from "vue-sonner";
 
 export const useGetBookmark = () => {
@@ -19,7 +19,7 @@ export const useGetBookmark = () => {
   const query = useQuery({
     queryKey: ["bookmarks", userEmail],
     queryFn: async () => {
-      const response = await axios.get("http://localhost:3000/api/bookmarks", {
+      const response = await httpClient.get("/bookmarks", {
         params: { userEmail },
         headers: {
           Authorization: `Bearer ${token}`,

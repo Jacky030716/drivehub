@@ -1,47 +1,47 @@
-import { toast } from "vue-sonner"
-import { useMutation } from "@tanstack/vue-query"
-import axios from "axios"
-import { queryClient } from "@/main"
+import { toast } from "vue-sonner";
+import { useMutation } from "@tanstack/vue-query";
+import { queryClient } from "@/main";
+import { httpClient } from "@/lib/httpClient";
 
 export const useDeleteHub = (hubId) => {
-  const userEmail = localStorage.getItem("email")
-  const token = localStorage.getItem("token")
+  const userEmail = localStorage.getItem("email");
+  const token = localStorage.getItem("token");
 
   if (!userEmail) {
-    toast.error('No user email found')
-    return
+    toast.error("No user email found");
+    return;
   }
 
   if (!token) {
-    toast.error('Please log in to delete a hub')
-    return
+    toast.error("Please log in to delete a hub");
+    return;
   }
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const response = await axios.delete(`http://localhost:3000/api/hubs/${hubId}`, {
+      const response = await httpClient.delete(`/hubs/${hubId}`, {
         params: {
-          userEmail
+          userEmail,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-    
-      if(!response.data) {
-        throw new Error("No Hub found")
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.data) {
+        throw new Error("No Hub found");
       }
 
-      return response.data
+      return response.data;
     },
     onSuccess: () => {
-      toast.success('Hub deleted successfully!')
-      queryClient.invalidateQueries(["hubs"])
+      toast.success("Hub deleted successfully!");
+      queryClient.invalidateQueries(["hubs"]);
     },
     onError: () => {
-      toast.error('Error deleting hub')
-    }
-  })
-  
-  return mutation
-}
+      toast.error("Error deleting hub");
+    },
+  });
+
+  return mutation;
+};

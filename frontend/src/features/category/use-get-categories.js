@@ -1,34 +1,34 @@
-import { useQuery } from "@tanstack/vue-query"
-import axios from "axios"
+import { httpClient } from "@/lib/httpClient";
+import { useQuery } from "@tanstack/vue-query";
 
 export const useGetCategories = () => {
-  const token = localStorage.getItem("token")
-  const userEmail = localStorage.getItem("email")
+  const token = localStorage.getItem("token");
+  const userEmail = localStorage.getItem("email");
 
   if (!token) {
-    return
+    return;
   }
 
   if (!userEmail) {
-    return
+    return;
   }
 
   const query = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
-      const response = await axios.get(`/api/categories`, {
+      const response = await httpClient.get(`/categories`, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-      if(!response.data) {
-        throw new Error("No categories found")
+      if (!response.data) {
+        throw new Error("No categories found");
       }
 
-      return response.data
+      return response.data;
     },
-  })
-  
-  return query
-}
+  });
+
+  return query;
+};

@@ -1,6 +1,6 @@
 import { toast } from "vue-sonner";
 import { useQuery } from "@tanstack/vue-query";
-import axios from "axios";
+import { httpClient } from "@/lib/httpClient";
 
 export const useGetNotifications = () => {
   const userEmail = localStorage.getItem("email");
@@ -17,7 +17,7 @@ export const useGetNotifications = () => {
   const query = useQuery({
     queryKey: ["notifications"],
     queryFn: async () => {
-      const response = await axios.get(`/api/notifications`, {
+      const response = await httpClient.get(`/notifications`, {
         params: {
           userEmail,
         },

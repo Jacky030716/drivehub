@@ -1,6 +1,6 @@
+import { httpClient } from "@/lib/httpClient";
 import { queryClient } from "@/main";
 import { useMutation } from "@tanstack/vue-query";
-import axios from "axios";
 import { toast } from "vue-sonner";
 
 export const useUpdateNotification = (notificationId) => {
@@ -19,8 +19,8 @@ export const useUpdateNotification = (notificationId) => {
     mutationFn: async (markedAsRead) => {
       const { isRead } = markedAsRead;
 
-      const response = await axios.put(
-        `/api/notifications/${notificationId}`,
+      const response = await httpClient.put(
+        `/notifications/${notificationId}`,
         {
           userEmail,
           isRead,

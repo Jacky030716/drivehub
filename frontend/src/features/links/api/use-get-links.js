@@ -1,15 +1,16 @@
 import { toast } from "vue-sonner";
 import { useQuery } from "@tanstack/vue-query";
 import axios from "axios";
+import { httpClient } from "@/lib/httpClient";
 
 export const useGetLinks = () => {
   const userEmail = localStorage.getItem("email");
   let role = localStorage.getItem("role");
 
-  if (role.includes("Pelajar")){
+  if (role.includes("Pelajar")) {
     role = "Student";
   } else {
-    role = "Lecturer"
+    role = "Lecturer";
   }
 
   const token = localStorage.getItem("token");
@@ -25,7 +26,7 @@ export const useGetLinks = () => {
   const query = useQuery({
     queryKey: ["links"],
     queryFn: async () => {
-      const response = await axios.get(`/api/links`, {
+      const response = await httpClient.get(`/links`, {
         params: {
           userEmail,
           role,

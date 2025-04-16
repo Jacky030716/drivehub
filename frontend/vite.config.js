@@ -1,10 +1,10 @@
-import { fileURLToPath, URL } from 'node:url'
+import { fileURLToPath, URL } from "node:url";
 
-import vue from '@vitejs/plugin-vue'
-import autoprefixer from 'autoprefixer'
+import vue from "@vitejs/plugin-vue";
+import autoprefixer from "autoprefixer";
 
-import tailwind from 'tailwindcss'
-import { defineConfig } from 'vite'
+import tailwind from "tailwindcss";
+import { defineConfig } from "vite";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -13,24 +13,22 @@ export default defineConfig({
       plugins: [tailwind(), autoprefixer()],
     },
   },
-  plugins: [
-    vue(),
-  ],
+  plugins: [vue()],
   server: {
     proxy: {
-      '/api': {
+      "/api": {
         target: "http://localhost:3000/api",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      }
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
     },
   },
   build: {
-    target: 'es2015'  // or higher
+    target: "es2015", // or higher
   },
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
-  }
-})
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+    },
+  },
+});
