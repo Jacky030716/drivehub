@@ -1,37 +1,47 @@
+import {
+  Bell,
+  Bookmark,
+  Dashboard,
+  Hub,
+  Profile,
+  Share,
+  Shared,
+} from "@/assets";
+
 export const navlinks = [
   {
-    name: 'Dashboard',
-    href: '/',
-    icon: '/src/assets/dashboard.svg'
+    name: "Dashboard",
+    href: "/",
+    icon: Dashboard,
   },
   {
-    name: 'Profile',
-    href: '/profile',
-    icon: '/src/assets/profile.svg'
+    name: "Profile",
+    href: "/profile",
+    icon: Profile,
   },
   {
-    name: 'Bookmark',
-    href: '/bookmark',
-    icon: '/src/assets/bookmark.svg'
+    name: "Bookmark",
+    href: "/bookmark",
+    icon: Bookmark,
   },
   {
     name: "Group",
     href: "/group",
-    icon: "/src/assets/hub.svg"
+    icon: Hub,
   },
   {
     name: "Shared Links",
     href: "/shared",
-    icon: "/src/assets/shared.svg"
+    icon: Shared,
   },
   {
     name: "Upload Link",
     href: "/share",
-    icon: "/src/assets/share.svg"
+    icon: Share,
   },
   {
     name: "Notifications",
     href: "/notifications",
-    icon: "/src/assets/bell.svg"
+    icon: Bell,
   },
-]
+];
