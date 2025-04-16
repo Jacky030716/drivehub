@@ -1,6 +1,5 @@
 import { toast } from "vue-sonner";
 import { useMutation } from "@tanstack/vue-query";
-import axios from "axios";
 import { queryClient } from "@/main";
 import { httpClient } from "@/lib/httpClient";
 

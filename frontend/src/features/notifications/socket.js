@@ -1,10 +1,11 @@
 import { queryClient } from "@/main";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:3000");
+const basePath = import.meta.env.VITE_API_BASE_PATH;
+const socket = io(basePath);
 
-socket.on('notification', () => {
-  queryClient.invalidateQueries(["notifications"])
-})
+socket.on("notification", () => {
+  queryClient.invalidateQueries(["notifications"]);
+});
 
 export default socket;

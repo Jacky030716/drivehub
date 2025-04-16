@@ -11,6 +11,20 @@ const userController = {
     res.json({ data: result });
   },
 
+  authenticateUser: async (req, res) => {
+    const { login, password } = req.body;
+
+    if (!login || !password) {
+      return res.status(400).json({ message: "Bad request" });
+    }
+
+    const result = await userService.authenticateUser(login, password);
+
+    if (!result) return res.status(404).json({ message: "No user found" });
+
+    res.json({ data: result });
+  },
+
   loginCreateUser: async (req, res) => {
     const { email, matricNumber, name, role } = req.body;
     if (!email || !matricNumber || !name || !role) {

@@ -1,6 +1,5 @@
 import { toast } from "vue-sonner";
 import { useQuery } from "@tanstack/vue-query";
-import axios from "axios";
 import { httpClient } from "@/lib/httpClient";
 
 export const useGetLinks = () => {
