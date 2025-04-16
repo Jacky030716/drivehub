@@ -12,7 +12,13 @@ const server = http.createServer(app); // Create HTTP server
 const io = setupSocketIO(server); // Pass the HTTP server to setupSocketIO
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://drivehub-pink.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
