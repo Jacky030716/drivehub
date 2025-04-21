@@ -15,7 +15,6 @@ Welcome to **DriveHub**, a multi-user web application designed to streamline **l
 
 ### 👥 Group Management
 - Create and manage groups (e.g., course classes)
-- Add or remove members (lecturers/students)
 - Share links within groups
 
 ### 🔔 Real-time Notifications
