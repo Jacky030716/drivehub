@@ -25,8 +25,7 @@ Welcome to **DriveHub**, a multi-user web application designed to streamline **l
 
 ### 🛠️ Admin Panel
 - Monitor and manage all user activities
-- Manage groups and permissions
-- System usage and performance overview
+- Control the sharing categories
 
 ---
 
